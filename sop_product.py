@@ -229,31 +229,34 @@ def parse_sop_evaluation(sop_text):
     return pd.DataFrame(data)
 
 def evaluator(client):
-    st.title("Step 1: Upload SOP File in any one of the file format")
-    uploaded_file = st.file_uploader("Choose a text file", type="txt")
-    uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
-    uploaded_file_docx = st.file_uploader("Choose a Word document", type="docx")
-    if uploaded_file is not None:
-        sop_content = uploaded_file.read().decode("utf-8")
-        st.session_state.sop_uploaded = True
-        modify_sop_content = st.text_area("SOP",sop_content, height=300)
-        st.session_state.sop_content = modify_sop_content
-    elif uploaded_file_docx is not None:
-        sop_content = read_docx(uploaded_file_docx)
-        st.session_state.sop_uploaded = True
-        modify_sop_content = st.text_area("SOP",sop_content, height=300)
-        st.session_state.sop_content = modify_sop_content
-    elif uploaded_file_pdf is not None:
-        sop_content = read_pdf(uploaded_file_pdf)
-        st.session_state.sop_uploaded = True
-        modify_sop_content = st.text_area("SOP",sop_content, height=300)
-        st.session_state.sop_content = modify_sop_content
-    else:
-        sop_content = st.text_area("Type your SOP content or Modify existing sop content", height=300)
-    
-    if st.button("Insert text"):
-        st.session_state.sop_uploaded = True
-        st.session_state.sop_content = sop_content
+    if st.session_state.step_1:
+        st.title("Step 1: Upload SOP File in any one of the file format")
+        uploaded_file = st.file_uploader("Choose a text file", type="txt")
+        uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
+        uploaded_file_docx = st.file_uploader("Choose a Word document", type="docx")
+        if uploaded_file is not None:
+            sop_content = uploaded_file.read().decode("utf-8")
+            st.session_state.sop_uploaded = True
+            modify_sop_content = st.text_area("SOP",sop_content, height=300)
+            st.session_state.sop_content = modify_sop_content
+        elif uploaded_file_docx is not None:
+            sop_content = read_docx(uploaded_file_docx)
+            st.session_state.sop_uploaded = True
+            modify_sop_content = st.text_area("SOP",sop_content, height=300)
+            st.session_state.sop_content = modify_sop_content
+        elif uploaded_file_pdf is not None:
+            sop_content = read_pdf(uploaded_file_pdf)
+            st.session_state.sop_uploaded = True
+            modify_sop_content = st.text_area("SOP",sop_content, height=300)
+            st.session_state.sop_content = modify_sop_content
+        else:
+            sop_content = st.text_area("Type your SOP content or Modify existing sop content", height=300)
+        
+        if st.button("Insert text"):
+            st.session_state.sop_uploaded = True
+            st.session_state.sop_uploaded = False
+            st.session_state.sop_content = sop_content
+            
 
     if st.session_state.sop_uploaded:
         st.title("Step 2: Client request")
@@ -388,10 +391,18 @@ def main():
         st.session_state.gmail_send = False
     if 'feedback' not in st.session_state:
         st.session_state.feedback = ""
+    if 'step_1' not in st.session_state:
+        st.session_state.step_1 = False
+    if 'step_2' not in st.session_state:
+        st.session_state.step_2 = False
+    if 'step_3' not in st.session_state:
+        st.session_state.step_3 = False
 
     client = Groq(api_key=st.secrets["API_KEY"])
     option = st.selectbox("Choose the tool", ("Evaluator",), index=None, placeholder='Choose an option')
     if option == "Evaluator":
+        nav = st.selectbox("Navigate Between the steps", ("Step1","Step2","Step3",), index=None, placeholder='Choose an option')
+        st.session_state.step_1 = True
         evaluator(client)
 
 if __name__ == "__main__":
