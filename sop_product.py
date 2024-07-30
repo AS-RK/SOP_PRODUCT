@@ -254,8 +254,10 @@ def evaluator(client):
         
         if st.button("Insert text"):
             st.session_state.sop_uploaded = True
-            st.session_state.sop_uploaded = False
             st.session_state.sop_content = sop_content
+
+        if st.session_state.sop_uploaded:
+            st.session_state.step_1 = False
             
 
     if st.session_state.sop_uploaded:
