@@ -32,7 +32,7 @@ def get_gmail_service():
             creds.refresh(Request())
         else:
             credentials_info = json.loads(GOOGLE_CREDENTIALS_JSON)
-            flow = InstalledAppFlow.from_client_config(credentials_info, SCOPES, redirect_uri='https://xbtyidczfte6j8nkwmvhm4.streamlit.app/')
+            flow = InstalledAppFlow.from_client_config(credentials_info, SCOPES, redirect_uri='https://sopappuct-7otfy47eudpdpdw4cpyrhe.streamlit.app/')
 
             auth_url, _ = flow.authorization_url(prompt='consent')
 
