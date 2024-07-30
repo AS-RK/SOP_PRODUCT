@@ -268,7 +268,7 @@ def evaluator(client):
                 st.session_state.gmail_content = client_request
                 st.session_state.gmail_fetched = True
 
-        if st.session_state.get('gmail_fetched', False):
+    if st.session_state.get('gmail_fetched', False):
             st.title("Step 3: Type your content to evaluate")
             user_input = st.text_area("Your content:", height=400)
             if st.button("Evaluate"):
