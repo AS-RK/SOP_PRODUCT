@@ -35,9 +35,7 @@ def get_gmail_service():
             flow = InstalledAppFlow.from_client_config(credentials_info, SCOPES, redirect_uri='https://sopappuct-7otfy47eudpdpdw4cpyrhe.streamlit.app/')
 
             auth_url, _ = flow.authorization_url(prompt='consent')
-
-            st.sidebar.write("Please go to this URL to authorize the application:")
-            st.sidebar.write(auth_url)
+            st.session_state.auth_url = auth_url
 
             auth_code = st.experimental_get_query_params().get('code')
             if auth_code:
@@ -524,6 +522,8 @@ def evaluator(client):
     st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward")
     if st.sidebar.button("Authenticate"):
         get_gmail_service()
+        st.sidebar.write("Please go to this URL to authorize the application:")
+        st.sidebar.write(st.session_state.auth_url)
     st.sidebar.title("Navigation")
     if st.session_state.step != 1:
         if st.sidebar.button("Step 1: Upload SOP"):
@@ -553,6 +553,8 @@ def main():
         st.session_state.gmail_send = False
     if 'feedback' not in st.session_state:
         st.session_state.feedback = ""
+    if 'auth_url' not in st.session_state:
+        st.session_state.auth_url = ""
     if 'step_1' not in st.session_state:
         st.session_state.step_1 = True
     if 'step_2' not in st.session_state:
