@@ -518,7 +518,7 @@ def evaluator(client):
     
         # if st.button("Previous"):
             
-        col1, col2, col3 = st.columns([1, 4, 1])
+        col1, col2, col3 = st.columns([1, 4, 2])
         with col1:
             if st.button("Previous"):
                 navigate_to_step(2)
