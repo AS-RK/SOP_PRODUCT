@@ -412,6 +412,8 @@ def evaluator(client):
                 if st.session_state.sop_content:
                     st.session_state.sop_uploaded = True
                     navigate_to_step(2)
+                else:
+                    st.error("Upload SOP File or Insert SOP content.")
     
     # Step 2: Client Request
     elif st.session_state.step == 2:
@@ -430,8 +432,11 @@ def evaluator(client):
         col1, col3 = st.columns([1, 1])
         with col3:
             if st.button("Next"):
-                st.session_state.gmail_fetched = True
-                navigate_to_step(3)
+                if st.session_state.gmail_content:
+                    st.session_state.gmail_fetched = True
+                    navigate_to_step(3)
+                else:
+                    st.error("Insert Client Request or Fetch Request from Gmail.")
         with col1:
             if st.button("Previous"):
                 navigate_to_step(1)
@@ -527,7 +532,10 @@ def evaluator(client):
         
         with col3:
             if st.button("Next"):
-                navigate_to_step(4)
+                if st.session_state.feedback:
+                    navigate_to_step(4)
+                else:
+                    st.error("Evaluate before sending the mail.")
 
     elif st.session_state.step == 4:
         st.session_state.gmail_send = True
