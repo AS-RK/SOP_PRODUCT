@@ -227,6 +227,12 @@ def parse_sop_evaluation(sop_text):
     }
 
     return pd.DataFrame(data)
+
+# Define navigation function
+def navigate_to_step(step):
+    st.session_state.step = step
+    st.experimental_rerun()
+    
 def go_to_step_1():
     st.title("Step 1: Upload SOP File in any one of the file format")
     uploaded_file = st.file_uploader("Choose a text file", type="txt")
@@ -386,13 +392,142 @@ def go_to_step_3():
             gmailsender()
 
 def evaluator(client):
-    st.sidebar.title('Navigation')
-    if st.sidebar.button('Step 1:Upload SOP') or st.session_state.step_1:
-        go_to_step_1()
-    if st.sidebar.button('Step 2: Client Request') or st.session_state.step_2:
-        go_to_step_2()
-    if st.sidebar.button('Step 3:Evaluation and feedback') or st.session_state.step_3:
-        go_to_step_3()
+    # Step 1: Upload SOP File
+    if st.session_state.step == 1:
+        st.title("Step 1: Upload SOP File in any one of the file format")
+        uploaded_file = st.file_uploader("Choose a text file", type="txt")
+        uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
+        uploaded_file_docx = st.file_uploader("Choose a Word document", type="docx")
+        
+        sop_content = ""
+        if uploaded_file is not None:
+            sop_content = uploaded_file.read().decode("utf-8")
+        elif uploaded_file_docx is not None:
+            sop_content = read_docx(uploaded_file_docx)
+        elif uploaded_file_pdf is not None:
+            sop_content = read_pdf(uploaded_file_pdf)
+        
+        st.session_state.sop_content = st.text_area("SOP", sop_content, height=300)
+        
+        if st.button("Next"):
+            if sop_content:
+                st.session_state.sop_uploaded = True
+                navigate_to_step(2)
+    
+    # Step 2: Client Request
+    elif st.session_state.step == 2:
+        st.title("Step 2: Client Request")
+        option = st.selectbox("Choose the way you want to get client request", ("By typing", "By gmail"), index=0, placeholder='Choose an option')
+        
+        if option == 'By gmail':
+            st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
+            sender_email = st.text_input('Sender Email Address', key='sender_email')
+            # Add your fetch_gmail function logic here
+        else:
+            client_request = st.text_area("Client Request:", height=500)
+            if st.button("Next"):
+                st.session_state.gmail_content = client_request
+                st.session_state.gmail_fetched = True
+                navigate_to_step(3)
+        
+        if st.button("Previous"):
+            navigate_to_step(1)
+    
+    # Step 3: Evaluate and provide feedback
+    elif st.session_state.step == 3:
+        st.title("Step 3: Type your content to evaluate")
+        user_input = st.text_area("Your content:", height=400)
+        
+        if st.button("Evaluate"):
+            if len(user_input) < 20:
+                st.error("Insufficient Information")
+            else:
+                prompt = f"""
+                            As a Quality Analyst, your task is to meticulously evaluate a user's response to a client email based on 
+                            our Standard Operating Procedure (SOP) for email communication. The client email outlines an issue or concern 
+                            they are experiencing with our product. Your evaluation involves identifying the specific problem mentioned by 
+                            the client and ensuring the response adheres to our SOP. Follow these steps:
+                            
+                            SOP Content
+                            {st.session_state.sop_content}
+                            
+                            Client Email
+                            {st.session_state.gmail_content}
+                            
+                            Evaluation Task
+                            Client's Issue:
+                            
+                            Clearly identify the specific problem or concern mentioned by the client in their email.
+                            Constructive Feedback:
+                            
+                            Provide actionable feedback aimed at improving future responses.
+                            Ensure feedback is specific and provides clear examples where applicable.
+                            Evaluation Based on SOP:
+                            
+                            For each criterion in the SOP, provide a mark (out of 10) with a reason for the score within 25 words.
+                            Present the criteria in a 2D list format: [[criteria], [mark(out of 10)], [reason]].
+                            Suggested Alternatives:
+                            
+                            Suggest better alternative email content, fully structured with subject and body, 
+                            that aligns with the SOP and addresses the client's concern effectively.
+                    """
+    
+                try:
+                    completion = client.chat.completions.create(
+                        messages=[
+                            {"role": "system", "content": prompt},
+                            {"role": "user", "content": user_input}
+                        ],
+                        model="llama3-8b-8192",
+                        temperature=0,
+                    )
+                    st.session_state.feedback = completion.choices[0].message.content
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
+        
+        if st.session_state.feedback:
+            feedback_parts = st.session_state.feedback.split("**Suggested Alternatives:**")
+            feedback_text = feedback_parts[0].strip()
+            
+            if feedback_text:
+                feedback, sop_evaluation = process_feedback(feedback_text)
+                
+                st.subheader('Feedback')
+                st.write(feedback)
+                
+                st.subheader('Evaluation Based on SOP')
+                df = parse_sop_evaluation(sop_evaluation)
+                st.table(df)
+            
+            suggested_alternatives_text = feedback_parts[1].strip()
+            subject_start = suggested_alternatives_text.find("Subject:")
+            subject_end = suggested_alternatives_text.find("\n\n", subject_start)
+            subject = suggested_alternatives_text[subject_start + len("Subject:"):subject_end].strip()
+            content_start = subject_end + 2
+            content = suggested_alternatives_text[content_start:].strip()
+    
+            st.title("Suggested Alternatives")
+            st.text_area("Subject", subject, height=100)
+            st.text_area("Content", content, height=300)
+            
+            if st.button("Send Email"):
+                st.session_state.gmail_send = True
+                # Add your gmailsender function logic here
+    
+        if st.button("Previous"):
+            navigate_to_step(2)
+    
+    # Navigation buttons
+    st.sidebar.title("Navigation")
+    if st.session_state.step != 1:
+        if st.sidebar.button("Step 1: Upload SOP"):
+            navigate_to_step(1)
+    if st.session_state.step != 2:
+        if st.sidebar.button("Step 2: Client Request"):
+            navigate_to_step(2)
+    if st.session_state.step != 3:
+        if st.sidebar.button("Step 3: Evaluation and feedback"):
+            navigate_to_step(3)
             
 
     
@@ -414,6 +549,8 @@ def main():
         st.session_state.step_2 = False
     if 'step_3' not in st.session_state:
         st.session_state.step_3 = False
+    if 'step' not in st.session_state:
+        st.session_state.step = 1
 
     client = Groq(api_key=st.secrets["API_KEY"])
     option = st.selectbox("Choose the tool", ("Evaluator",), index=None, placeholder='Choose an option')
