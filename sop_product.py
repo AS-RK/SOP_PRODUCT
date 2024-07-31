@@ -406,10 +406,11 @@ def evaluator(client):
         elif uploaded_file_pdf is not None:
             sop_content = read_pdf(uploaded_file_pdf)
         
-        st.session_state.sop_content = st.text_area("SOP", sop_content, height=300)
+        st.session_state.sop_content = sop_content
+        st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
         
         if st.button("Next"):
-            if sop_content:
+            if st.session_state.sop_content:
                 st.session_state.sop_uploaded = True
                 navigate_to_step(2)
     
