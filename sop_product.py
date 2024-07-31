@@ -397,6 +397,18 @@ def evaluator(client):
         st.sidebar.write("Please go to this URL to authorize the application:")
         st.sidebar.write(st.session_state.auth_url)
     st.sidebar.title("Navigation")
+    if st.sidebar.button("Step 1: Upload SOP"):
+        navigate_to_step(1)
+    if st.session_state.sop_uploaded:
+        if st.sidebar.button("Step 2: Client Request"):
+            navigate_to_step(2)
+    if st.session_state.gmail_fetched:
+        if st.sidebar.button("Step 3: Evaluation and feedback"):
+            navigate_to_step(3)
+    if st.session_state.feedback:
+        if st.sidebar.button("Step 4:Sending gmail"):
+            navigate_to_step(4)
+        
     
     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File ")
@@ -424,8 +436,8 @@ def evaluator(client):
     
     # Step 2: Client Request
     elif st.session_state.step == 2:
-        if st.sidebar.button("Step 1: Upload SOP"):
-            navigate_to_step(1)
+        # if st.sidebar.button("Step 1: Upload SOP"):
+        #     navigate_to_step(1)
         st.title("Step 2: Client Request")
         option = st.selectbox("Choose the way you want to get client request", ("Insert Client Request By Text", "Fetch Client Request From Gmail"), index=0, placeholder='Choose an option')
         
@@ -452,10 +464,10 @@ def evaluator(client):
     
     # Step 3: Evaluate and provide feedback
     elif st.session_state.step == 3:
-        if st.sidebar.button("Step 1: Upload SOP"):
-            navigate_to_step(1)
-        if st.sidebar.button("Step 2: Client Request"):
-            navigate_to_step(2)
+        # if st.sidebar.button("Step 1: Upload SOP"):
+        #     navigate_to_step(1)
+        # if st.sidebar.button("Step 2: Client Request"):
+        #     navigate_to_step(2)
         st.title("Step 3: Type your content to evaluate")
         st.session_state.user_input = st.text_area("Your content:",st.session_state.user_input, height=400)
         
@@ -551,12 +563,12 @@ def evaluator(client):
                     st.error("Evaluate before sending the mail.")
 
     elif st.session_state.step == 4:
-        if st.sidebar.button("Step 1: Upload SOP"):
-            navigate_to_step(1)
-        if st.sidebar.button("Step 2: Client Request"):
-            navigate_to_step(2)
-        if st.sidebar.button("Step 3: Evaluation and feedback"):
-            navigate_to_step(3)
+        # if st.sidebar.button("Step 1: Upload SOP"):
+        #     navigate_to_step(1)
+        # if st.sidebar.button("Step 2: Client Request"):
+        #     navigate_to_step(2)
+        # if st.sidebar.button("Step 3: Evaluation and feedback"):
+        #     navigate_to_step(3)
         gmailsender()
         col1, col3 = st.columns([1,1])
         with col1:
@@ -575,9 +587,10 @@ def evaluator(client):
     #     if st.sidebar.button("Step 3: Evaluation and feedback"):
     #         navigate_to_step(3)
     # if st.session_state.step != 4:
-    if st.session_state.gmail_send:
-        if st.sidebar.button("Step 4:Sending gmail"):
-            navigate_to_step(4)
+
+
+
+        
             
 
     
