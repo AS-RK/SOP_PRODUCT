@@ -517,8 +517,14 @@ def evaluator(client):
             
     
         # if st.button("Previous"):
-            
-        col1, col2, col3 = st.columns([1, 5, 1])
+            st.markdown("""
+        <style>
+        div.stButton > button:first-child {
+            width: 100%;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 4, 1])
         with col1:
             if st.button("Previous"):
                 navigate_to_step(2)
