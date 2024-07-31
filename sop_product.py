@@ -525,7 +525,7 @@ def evaluator(client):
             navigate_to_step(3)
     
     # Navigation buttons
-    st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward")
+    st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
     if st.sidebar.button("Authenticate"):
         get_gmail_service()
         st.sidebar.write("Please go to this URL to authorize the application:")
