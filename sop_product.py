@@ -424,7 +424,7 @@ def evaluator(client):
             sender_email = st.text_input('Sender Email Address', key='sender_email')
             fetch_gmail(sender_email)
         else:
-            st.session_state.gmail_content = st.text_area("Client Request:", height=500)
+            st.session_state.gmail_content = st.text_area("Client Request:",st.session_state.gmail_content height=500)
             if st.button("Next"):
                 st.session_state.gmail_fetched = True
                 navigate_to_step(3)
@@ -435,7 +435,7 @@ def evaluator(client):
     # Step 3: Evaluate and provide feedback
     elif st.session_state.step == 3:
         st.title("Step 3: Type your content to evaluate")
-        user_input = st.text_area("Your content:",st.session_state.gmail_content, height=400)
+        st.session_state.user_input = st.text_area("Your content:",st.session_state.user_input, height=400)
         
         if st.button("Evaluate"):
             if len(user_input) < 20:
@@ -475,7 +475,7 @@ def evaluator(client):
                     completion = client.chat.completions.create(
                         messages=[
                             {"role": "system", "content": prompt},
-                            {"role": "user", "content": user_input}
+                            {"role": "user", "content": st.session_state.user_input}
                         ],
                         model="llama3-8b-8192",
                         temperature=0,
@@ -541,6 +541,8 @@ def main():
         st.session_state.gmail_fetched = False
     if 'gmail_content' not in st.session_state:
         st.session_state.gmail_content = ""
+    if 'user_input' not in st.session_state:
+        st.session_state.user_input = ""
     if 'gmail_send' not in st.session_state:
         st.session_state.gmail_send = False
     if 'feedback' not in st.session_state:
