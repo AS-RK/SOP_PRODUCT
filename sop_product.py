@@ -392,7 +392,7 @@ def go_to_step_3():
             gmailsender()
 
 def evaluator(client):
-    if st.session_state.step == 1:
+     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File in any one of the file format")
         uploaded_file = st.file_uploader("Choose a text file", type="txt")
         uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
@@ -406,10 +406,11 @@ def evaluator(client):
         elif uploaded_file_pdf is not None:
             sop_content = read_pdf(uploaded_file_pdf)
         
-        st.session_state.sop_content = st.text_area("SOP", sop_content or st.session_state.sop_content, height=300)
+        st.session_state.sop_content = st.text_area("SOP", sop_content, height=300)
         
         if st.button("Next"):
             if sop_content:
+                st.session_state.sop_uploaded = True
                 navigate_to_step(2)
     
     # Step 2: Client Request
@@ -419,13 +420,13 @@ def evaluator(client):
         
         if option == 'By gmail':
             st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
-            st.session_state.sender_email = st.text_input('Sender Email Address', key='sender_email', value=st.session_state.sender_email)
+            sender_email = st.text_input('Sender Email Address', key='sender_email')
             # Add your fetch_gmail function logic here
         else:
-            st.session_state.gmail_content = st.text_area("Client Request:", height=500, value=st.session_state.gmail_content)
-        
-        if st.button("Next"):
-            if st.session_state.gmail_content:
+            client_request = st.text_area("Client Request:", height=500)
+            if st.button("Next"):
+                st.session_state.gmail_content = client_request
+                st.session_state.gmail_fetched = True
                 navigate_to_step(3)
         
         if st.button("Previous"):
