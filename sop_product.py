@@ -407,7 +407,7 @@ def evaluator(client):
             st.session_state.sop_content = read_pdf(uploaded_file_pdf)
         
         # st.session_state.sop_content = sop_content
-        st.text_area("Edit Your SOP Content", st.session_state.sop_content,st.session_state.gmail_content, height=300)
+        st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
         
         if st.button("Next"):
             if st.session_state.sop_content:
@@ -435,7 +435,7 @@ def evaluator(client):
     # Step 3: Evaluate and provide feedback
     elif st.session_state.step == 3:
         st.title("Step 3: Type your content to evaluate")
-        user_input = st.text_area("Your content:", height=400)
+        user_input = st.text_area("Your content:",st.session_state.gmail_content, height=400)
         
         if st.button("Evaluate"):
             if len(user_input) < 20:
