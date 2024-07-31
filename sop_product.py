@@ -142,7 +142,7 @@ def gmailsender():
     subject = st.text_input('Subject')
     message_text = st.text_area('Message',height=500)
 
-    if st.button('Send Email'):
+    if st.button('Send Email',key = 'process_end'):
         if sender_email and recipient_email and subject and message_text:
             service = get_gmail_service()
             message = create_message(sender_email, recipient_email, subject, message_text)
@@ -513,7 +513,7 @@ def evaluator(client):
             st.text_area("Content", content, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
-            if st.button("Send Email"):
+            if st.button("Send Email",key = 'process_start'):
                 st.session_state.gmail_send = True
                 gmailsender()
     
