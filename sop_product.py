@@ -203,7 +203,7 @@ def parse_feedback(text):
 
 # Function to process the input text
 def process_feedback(text):
-    feedback, sop_evaluation = text.split("**Evaluation Based on SOP:**")
+    feedback, sop_evaluation = text.split("Evaluation Based on SOP:")
     return feedback.strip(), sop_evaluation.strip()
 
 # Function to convert SOP evaluation to DataFrame
