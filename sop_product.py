@@ -438,7 +438,7 @@ def evaluator(client):
         st.session_state.user_input = st.text_area("Your content:",st.session_state.user_input, height=400)
         
         if st.button("Evaluate"):
-            if len(user_input) < 20:
+            if len(st.session_state.user_input) < 20:
                 st.error("Insufficient Information")
             else:
                 prompt = f"""
