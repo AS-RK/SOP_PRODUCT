@@ -257,18 +257,17 @@ def go_to_step_1():
         go_to_step_2()
 
 def go_to_step_2():
-    if st.session_state.sop_uploaded:
-        st.title("Step 2: Client request")
-        option = st.selectbox("Choose the way you want get client request", ("By typing","By gmail",), index=0, placeholder='Choose an option')
-        if option == 'By gmail':
-            st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
-            sender_email = st.text_input('Sender Email Address', key='sender_email')
-            fetch_gmail(sender_email)
-        else:
-            client_request = st.text_area("Client Request:", height=500)
-            if st.button("Insert Request"):
-                st.session_state.gmail_content = client_request
-                st.session_state.gmail_fetched = True
+    st.title("Step 2: Client request")
+    option = st.selectbox("Choose the way you want get client request", ("By typing","By gmail",), index=0, placeholder='Choose an option')
+    if option == 'By gmail':
+        st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
+        sender_email = st.text_input('Sender Email Address', key='sender_email')
+        fetch_gmail(sender_email)
+    else:
+        client_request = st.text_area("Client Request:", height=500)
+        if st.button("Insert Request"):
+            st.session_state.gmail_content = client_request
+            st.session_state.gmail_fetched = True
     if st.session_state.gmail_fetched:
         go_to_step_3()
 
