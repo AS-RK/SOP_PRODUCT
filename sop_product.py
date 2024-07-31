@@ -128,6 +128,7 @@ def send_message(service, user_id, message):
     try:
         sent_message = service.users().messages().send(userId=user_id, body=message).execute()
         st.write(f"Message sent successfully: {sent_message['id']}")
+        st.session_state.gmail_send = True
     except Exception as error:
         st.write(f"An error occurred: {error}")
 
@@ -390,7 +391,13 @@ def go_to_step_3():
             gmailsender()
 
 def evaluator(client):
-
+    st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
+    if st.sidebar.button("Authenticate"):
+        get_gmail_service()
+        st.sidebar.write("Please go to this URL to authorize the application:")
+        st.sidebar.write(st.session_state.auth_url)
+    st.sidebar.title("Navigation")
+    
     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File ")
         with st.expander("Upload File", expanded=False):
@@ -445,6 +452,10 @@ def evaluator(client):
     
     # Step 3: Evaluate and provide feedback
     elif st.session_state.step == 3:
+        if st.sidebar.button("Step 1: Upload SOP"):
+            navigate_to_step(1)
+        if st.sidebar.button("Step 2: Client Request"):
+            navigate_to_step(2)
         st.title("Step 3: Type your content to evaluate")
         st.session_state.user_input = st.text_area("Your content:",st.session_state.user_input, height=400)
         
@@ -540,7 +551,12 @@ def evaluator(client):
                     st.error("Evaluate before sending the mail.")
 
     elif st.session_state.step == 4:
-        st.session_state.gmail_send = True
+        if st.sidebar.button("Step 1: Upload SOP"):
+            navigate_to_step(1)
+        if st.sidebar.button("Step 2: Client Request"):
+            navigate_to_step(2)
+        if st.sidebar.button("Step 3: Evaluation and feedback"):
+            navigate_to_step(3)
         gmailsender()
         col1, col3 = st.columns([1,1])
         with col1:
@@ -548,22 +564,18 @@ def evaluator(client):
                 navigate_to_step(3)
     
     # Navigation buttons
-    st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
-    if st.sidebar.button("Authenticate"):
-        get_gmail_service()
-        st.sidebar.write("Please go to this URL to authorize the application:")
-        st.sidebar.write(st.session_state.auth_url)
-    st.sidebar.title("Navigation")
+
     # if st.session_state.step != 1:
     #     if st.sidebar.button("Step 1: Upload SOP"):
     #         navigate_to_step(1)
-    if st.session_state.step != 2:
-        if st.sidebar.button("Step 2: Client Request"):
-            navigate_to_step(2)
-    if st.session_state.step != 3:
-        if st.sidebar.button("Step 3: Evaluation and feedback"):
-            navigate_to_step(3)
-    if st.session_state.step != 4:
+    # if st.session_state.step != 2:
+    #     if st.sidebar.button("Step 2: Client Request"):
+    #         navigate_to_step(2)
+    # if st.session_state.step != 3:
+    #     if st.sidebar.button("Step 3: Evaluation and feedback"):
+    #         navigate_to_step(3)
+    # if st.session_state.step != 4:
+    if st.session_state.gmail_send:
         if st.sidebar.button("Step 4:Sending gmail"):
             navigate_to_step(4)
             
