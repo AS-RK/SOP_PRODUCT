@@ -406,11 +406,11 @@ def evaluator(client):
         
         # st.session_state.sop_content = sop_content
         st.session_state.sop_content = st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
-        
-        if st.button("Next"):
-            if st.session_state.sop_content:
-                st.session_state.sop_uploaded = True
-                navigate_to_step(2)
+        with st.session_state.col3:
+            if st.button("Next"):
+                if st.session_state.sop_content:
+                    st.session_state.sop_uploaded = True
+                    navigate_to_step(2)
     
     # Step 2: Client Request
     elif st.session_state.step == 2:
@@ -421,17 +421,18 @@ def evaluator(client):
             st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
             sender_email = st.text_input('Sender Email Address', key='sender_email')
             fetch_gmail(sender_email)
-            if st.button("Next"):
-                st.session_state.gmail_fetched = True
-                navigate_to_step(3)
+            # if st.button("Next"):
+            #     st.session_state.gmail_fetched = True
+            #     navigate_to_step(3)
         else:
             st.session_state.gmail_content = st.text_area("Client Request:",st.session_state.gmail_content, height=500)
+        with st.session_state.col3:
             if st.button("Next"):
                 st.session_state.gmail_fetched = True
                 navigate_to_step(3)
-        
-        if st.button("Previous"):
-            navigate_to_step(1)
+        with st.session_state.col1:
+            if st.button("Previous"):
+                navigate_to_step(1)
     
     # Step 3: Evaluate and provide feedback
     elif st.session_state.step == 3:
@@ -517,27 +518,21 @@ def evaluator(client):
             
     
         # if st.button("Previous"):
-            st.markdown("""
-        <style>
-        div.stButton > button:first-child {
-            width: 100%;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        col1, col2, col3 = st.columns([1, 4, 1])
-        with col1:
+
+        with st.session_state.col1:
             if st.button("Previous"):
                 navigate_to_step(2)
         
-        with col3:
+        with st.session_state.col3:
             if st.button("Next"):
                 navigate_to_step(4)
 
     elif st.session_state.step == 4:
         st.session_state.gmail_send = True
         gmailsender()
-        if st.button("Previous"):
-            navigate_to_step(3)
+        with st.session_state.col1:
+            if st.button("Previous"):
+                navigate_to_step(3)
     
     # Navigation buttons
     st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
@@ -563,6 +558,16 @@ def evaluator(client):
     
 
 def main():
+    st.markdown("""
+        <style>
+        div.stButton > button:first-child {
+            width: 100%;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+    st.session_state.col1, st.session_state.col2, st.session_state.col3 = st.columns([1, 4, 1])
+    
     if 'sop_uploaded' not in st.session_state:
         st.session_state.sop_uploaded = False
     if 'sop_content' not in st.session_state:
