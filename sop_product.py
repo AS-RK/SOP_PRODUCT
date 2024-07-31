@@ -392,7 +392,7 @@ def go_to_step_3():
             gmailsender()
 
 def evaluator(client):
-     if st.session_state.step == 1:
+    if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File in any one of the file format")
         uploaded_file = st.file_uploader("Choose a text file", type="txt")
         uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
