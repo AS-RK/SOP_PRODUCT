@@ -36,8 +36,8 @@ def get_gmail_service():
 
             auth_url, _ = flow.authorization_url(prompt='consent')
 
-            st.write("Please go to this URL to authorize the application:")
-            st.write(auth_url)
+            st.sidebar.write("Please go to this URL to authorize the application:")
+            st.sidebar.write(auth_url)
 
             auth_code = st.experimental_get_query_params().get('code')
             if auth_code:
@@ -521,6 +521,9 @@ def evaluator(client):
             navigate_to_step(2)
     
     # Navigation buttons
+    st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward")
+    if st.sidebar.button("Authenticate"):
+        get_gmail_service()
     st.sidebar.title("Navigation")
     if st.session_state.step != 1:
         if st.sidebar.button("Step 1: Upload SOP"):
