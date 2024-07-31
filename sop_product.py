@@ -390,6 +390,7 @@ def go_to_step_3():
             gmailsender()
 
 def evaluator(client):
+    col1, col2, col3 = st.columns([1, 4, 1])
     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File in any one of the file format")
         uploaded_file = st.file_uploader("Choose a text file", type="txt")
@@ -406,7 +407,7 @@ def evaluator(client):
         
         # st.session_state.sop_content = sop_content
         st.session_state.sop_content = st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
-        with st.session_state.col3:
+        with col3:
             if st.button("Next"):
                 if st.session_state.sop_content:
                     st.session_state.sop_uploaded = True
@@ -426,11 +427,11 @@ def evaluator(client):
             #     navigate_to_step(3)
         else:
             st.session_state.gmail_content = st.text_area("Client Request:",st.session_state.gmail_content, height=500)
-        with st.session_state.col3:
+        with col3:
             if st.button("Next"):
                 st.session_state.gmail_fetched = True
                 navigate_to_step(3)
-        with st.session_state.col1:
+        with col1:
             if st.button("Previous"):
                 navigate_to_step(1)
     
@@ -519,18 +520,18 @@ def evaluator(client):
     
         # if st.button("Previous"):
 
-        with st.session_state.col1:
+        with col1:
             if st.button("Previous"):
                 navigate_to_step(2)
         
-        with st.session_state.col3:
+        with col3:
             if st.button("Next"):
                 navigate_to_step(4)
 
     elif st.session_state.step == 4:
         st.session_state.gmail_send = True
         gmailsender()
-        with st.session_state.col1:
+        with col1:
             if st.button("Previous"):
                 navigate_to_step(3)
     
@@ -566,7 +567,7 @@ def main():
         </style>
         """, unsafe_allow_html=True)
 
-    st.session_state.col1, st.session_state.col2, st.session_state.col3 = st.columns([1, 4, 1])
+    # st.session_state.col1, st.session_state.col2, st.session_state.col3 = st.columns([1, 4, 1])
     
     if 'sop_uploaded' not in st.session_state:
         st.session_state.sop_uploaded = False
