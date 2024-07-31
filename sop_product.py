@@ -231,7 +231,7 @@ def parse_sop_evaluation(sop_text):
 # Define navigation function
 def navigate_to_step(step):
     st.session_state.step = step
-    st.experimental_rerun()
+    st.rerun()
     
 def go_to_step_1():
     st.title("Step 1: Upload SOP File in any one of the file format")
