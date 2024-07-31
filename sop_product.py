@@ -82,7 +82,7 @@ def fetch_gmail(sender_email):
 
     if st.button('Fetch Gmail Messages', key='fetch_gmail'):
         if sender_email and date:
-            # service = get_gmail_service()
+            service = get_gmail_service()
             date_str = date.strftime('%Y/%m/%d')
             next_date_str = (date + timedelta(days=1)).strftime('%Y/%m/%d')
             query = f'from:{sender_email} after:{date_str} before:{next_date_str}'
