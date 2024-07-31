@@ -428,6 +428,7 @@ def evaluator(client):
             #     navigate_to_step(3)
         else:
             st.session_state.gmail_content = st.text_area("Client Request:",st.session_state.gmail_content, height=500)
+        col1, col2, col3 = st.columns([1, 4, 1])
         with col3:
             if st.button("Next"):
                 st.session_state.gmail_fetched = True
@@ -520,7 +521,7 @@ def evaluator(client):
             
     
         # if st.button("Previous"):
-
+        col1, col2, col3 = st.columns([1, 4, 1])
         with col1:
             if st.button("Previous"):
                 navigate_to_step(2)
@@ -532,6 +533,7 @@ def evaluator(client):
     elif st.session_state.step == 4:
         st.session_state.gmail_send = True
         gmailsender()
+        col1, col2, col3 = st.columns([1, 4, 1])
         with col1:
             if st.button("Previous"):
                 navigate_to_step(3)
