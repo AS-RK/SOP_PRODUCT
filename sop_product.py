@@ -138,8 +138,8 @@ def gmailsender():
 
     sender_email = st.text_input('Sender Email Address')
     recipient_email = st.text_input('Recipient Email Address')
-    subject = st.text_input('Subject')
-    message_text = st.text_area('Message',height=500)
+    subject = st.text_input('Subject',st.session_state.subject)
+    message_text = st.text_area('Message',st.session_state.content,height=500)
 
     if st.button('Send Email',key = 'process_end'):
         if sender_email and recipient_email and subject and message_text:
@@ -549,13 +549,13 @@ def evaluator(client):
             suggested_alternatives_text = feedback_parts[1].strip()
             subject_start = suggested_alternatives_text.find("Subject:")
             subject_end = suggested_alternatives_text.find("\n\n", subject_start)
-            subject = suggested_alternatives_text[subject_start + len("Subject:"):subject_end].strip()
+            st.session_state.subject = suggested_alternatives_text[subject_start + len("Subject:"):subject_end].strip()
             content_start = subject_end + 2
-            content = suggested_alternatives_text[content_start:].strip()
+            st.session_state.content = suggested_alternatives_text[content_start:].strip()
     
             st.title("Suggested Alternatives")
-            st.text_area("Subject", subject, height=100)
-            st.text_area("Content", content, height=300)
+            st.text_area("Subject", st.session_state.subject, height=100)
+            st.text_area("Content", st.session_state.content, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
             # if st.button("Send Email",key = 'process_start'):
@@ -640,6 +640,10 @@ def main():
         st.session_state.feedback = ""
     if 'auth_url' not in st.session_state:
         st.session_state.auth_url = ""
+    if 'subject' not in st.session_state:
+        st.session_state.subject = ""
+    if 'content' not in st.session_state:
+        st.session_state.content = ""
     if 'step_1' not in st.session_state:
         st.session_state.step_1 = True
     if 'step_2' not in st.session_state:
