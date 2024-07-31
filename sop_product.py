@@ -491,7 +491,7 @@ def evaluator(client):
                             Client Email
                             {st.session_state.gmail_content}
                             
-                            Evaluation Task
+                            Evaluation Task has the heading of Client's Issue, Constructive Feedback, Criteria Instruction in SOP,Evaluation Based on SOP,Suggested Alternatives
                             Client's Issue:
                             
                             Clearly identify the specific problem or concern mentioned by the client in their email.
