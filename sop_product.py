@@ -393,7 +393,8 @@ def evaluator(client):
 
     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File ")
-        uploaded_file = st.file_uploader("Choose a file", type=["txt", "pdf", "docx"])
+        with st.expander("Upload File", expanded=False):
+            uploaded_file = st.file_uploader("Choose a file", type=["txt", "pdf", "docx"])
         
         if uploaded_file is not None:
             if uploaded_file.name.endswith(".txt"):
