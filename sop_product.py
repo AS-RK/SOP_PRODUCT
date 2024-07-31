@@ -393,17 +393,15 @@ def evaluator(client):
 
     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File in any one of the file format")
-        uploaded_file = st.file_uploader("Choose a text file", type="txt")
-        uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
-        uploaded_file_docx = st.file_uploader("Choose a Word document", type="docx")
+        uploaded_file = st.file_uploader("Choose a file", type=["txt", "pdf", "docx"])
         
-        # sop_content = ""
         if uploaded_file is not None:
-            st.session_state.sop_content = uploaded_file.read().decode("utf-8")
-        elif uploaded_file_docx is not None:
-            st.session_state.sop_content = read_docx(uploaded_file_docx)
-        elif uploaded_file_pdf is not None:
-            st.session_state.sop_content = read_pdf(uploaded_file_pdf)
+            if uploaded_file.name.endswith(".txt"):
+                st.session_state.sop_content = uploaded_file.read().decode("utf-8")
+            elif uploaded_file.name.endswith(".pdf"):
+                st.session_state.sop_content = read_pdf(uploaded_file)
+            elif uploaded_file.name.endswith(".docx"):
+                st.session_state.sop_content = read_docx(uploaded_file)
         
         # st.session_state.sop_content = sop_content
         st.session_state.sop_content = st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
