@@ -508,7 +508,7 @@ def evaluator(client):
             st.title("Suggested Alternatives")
             st.text_area("Subject", subject, height=100)
             st.text_area("Content", content, height=300)
-            st.text_area("feedback",st.session_state.feedback,height = 500)
+            # st.text_area("feedback",st.session_state.feedback,height = 500)
             
             if st.button("Send Email"):
                 st.session_state.gmail_send = True
