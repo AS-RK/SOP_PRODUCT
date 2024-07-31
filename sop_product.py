@@ -254,6 +254,8 @@ def go_to_step_1():
         st.session_state.sop_uploaded = True
         st.session_state.sop_content = sop_content
     if st.session_state.sop_uploaded:
+        st.session_state.step_1 = False
+        st.session_state.step_2 = True
         go_to_step_2()
 
 def go_to_step_2():
@@ -269,6 +271,8 @@ def go_to_step_2():
             st.session_state.gmail_content = client_request
             st.session_state.gmail_fetched = True
     if st.session_state.gmail_fetched:
+        st.session_state.step_2 = False
+        st.session_state.step_3 = True
         go_to_step_3()
 
 def go_to_step_3():
@@ -383,11 +387,11 @@ def go_to_step_3():
 
 def evaluator(client):
     st.sidebar.title('Navigation')
-    if st.sidebar.button('Step 1:Upload SOP'):
+    if st.sidebar.button('Step 1:Upload SOP') and st.session_state.step_1:
         go_to_step_1()
-    if st.sidebar.button('Step 2: Client Request'):
+    if st.sidebar.button('Step 2: Client Request') and st.session_state.step_2:
         go_to_step_2()
-    if st.sidebar.button('Step 3:Evaluation and feedback'):
+    if st.sidebar.button('Step 3:Evaluation and feedback') and st.session_state.step_3:
         go_to_step_3()
             
 
@@ -404,12 +408,12 @@ def main():
         st.session_state.gmail_send = False
     if 'feedback' not in st.session_state:
         st.session_state.feedback = ""
-    # if 'step_1' not in st.session_state:
-    #     st.session_state.step_1 = False
-    # if 'step_2' not in st.session_state:
-    #     st.session_state.step_2 = False
-    # if 'step_3' not in st.session_state:
-    #     st.session_state.step_3 = False
+    if 'step_1' not in st.session_state:
+        st.session_state.step_1 = True
+    if 'step_2' not in st.session_state:
+        st.session_state.step_2 = False
+    if 'step_3' not in st.session_state:
+        st.session_state.step_3 = False
 
     client = Groq(api_key=st.secrets["API_KEY"])
     option = st.selectbox("Choose the tool", ("Evaluator",), index=None, placeholder='Choose an option')
