@@ -511,12 +511,18 @@ def evaluator(client):
             st.text_area("Content", content, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
-            if st.button("Send Email",key = 'process_start'):
-                st.session_state.gmail_send = True
-                gmailsender()
+            # if st.button("Send Email",key = 'process_start'):
+        if st.button("Next"):
+            navigate_to_step(4)
     
         if st.button("Previous"):
             navigate_to_step(2)
+
+    elif st.session_state.step == 4:
+        st.session_state.gmail_send = True
+        gmailsender()
+        if st.button("Previous"):
+            navigate_to_step(3)
     
     # Navigation buttons
     st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward")
@@ -534,6 +540,9 @@ def evaluator(client):
     if st.session_state.step != 3:
         if st.sidebar.button("Step 3: Evaluation and feedback"):
             navigate_to_step(3)
+    if st.session_state.step != 4:
+        if st.sidebar.button("Step 4:Sending gmail"):
+            navigate_to_step(4)
             
 
     
