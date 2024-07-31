@@ -424,7 +424,7 @@ def evaluator(client):
             sender_email = st.text_input('Sender Email Address', key='sender_email')
             fetch_gmail(sender_email)
         else:
-            st.session_state.gmail_content = st.text_area("Client Request:",st.session_state.gmail_content height=500)
+            st.session_state.gmail_content = st.text_area("Client Request:",st.session_state.gmail_content, height=500)
             if st.button("Next"):
                 st.session_state.gmail_fetched = True
                 navigate_to_step(3)
