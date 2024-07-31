@@ -387,11 +387,11 @@ def go_to_step_3():
 
 def evaluator(client):
     st.sidebar.title('Navigation')
-    if st.sidebar.button('Step 1:Upload SOP') and st.session_state.step_1:
+    if st.sidebar.button('Step 1:Upload SOP') or st.session_state.step_1:
         go_to_step_1()
-    if st.sidebar.button('Step 2: Client Request') and st.session_state.step_2:
+    if st.sidebar.button('Step 2: Client Request') or st.session_state.step_2:
         go_to_step_2()
-    if st.sidebar.button('Step 3:Evaluation and feedback') and st.session_state.step_3:
+    if st.sidebar.button('Step 3:Evaluation and feedback') or st.session_state.step_3:
         go_to_step_3()
             
 
