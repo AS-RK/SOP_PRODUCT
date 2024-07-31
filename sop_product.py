@@ -513,11 +513,19 @@ def evaluator(client):
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
             # if st.button("Send Email",key = 'process_start'):
-        if st.button("Next"):
-            navigate_to_step(4)
+        # if st.button("Next"):
+            
     
-        if st.button("Previous"):
-            navigate_to_step(2)
+        # if st.button("Previous"):
+            
+        col1, col2, col3 = st.columns([1, 6, 1])
+        with col1:
+            if st.button("Previous"):
+                navigate_to_step(2)
+        
+        with col3:
+            if st.button("Next"):
+                navigate_to_step(4)
 
     elif st.session_state.step == 4:
         st.session_state.gmail_send = True
