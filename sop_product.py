@@ -136,8 +136,8 @@ def gmailsender():
     st.title('Send an Email via Gmail')
     st.write('Enter the details below to send an email.')
 
-    sender_email = st.text_input('Sender Email Address')
-    recipient_email = st.text_input('Recipient Email Address')
+    sender_email = st.text_input('Sender Email Address',st.session_state.user_gmail)
+    recipient_email = st.text_input('Recipient Email Address',st.session_state.gmail_sender)
     subject = st.text_input('Subject',st.session_state.subject)
     message_text = st.text_area('Message',st.session_state.content,height=500)
 
@@ -446,9 +446,10 @@ def evaluator(client):
         option = st.selectbox("Choose the way you want to get client request", ("Insert Client Request By Text", "Fetch Client Request From Gmail"), index=0, placeholder='Choose an option')
         
         if option == 'Fetch Client Request From Gmail':
-            st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
-            sender_email = st.text_input('Sender Email Address', key='sender_email')
-            fetch_gmail(sender_email)
+            st.write('Enter your gmail and the sender email address and the date to fetch your Gmail messages from that sender.')
+            st.session_state.user_gmail = st.text_input('Your Email Address', key='user_gmail')
+            st.session_state.gmail_sender = st.text_input('Sender Email Address', key='sender_email')
+            fetch_gmail(st.session_state.gmail_sender)
             # if st.button("Next"):
             #     st.session_state.gmail_fetched = True
             #     navigate_to_step(3)
@@ -638,6 +639,10 @@ def main():
         st.session_state.gmail_send = False
     if 'feedback' not in st.session_state:
         st.session_state.feedback = ""
+    if 'gmail_sender' not in st.session_state:
+        st.session_state.gmail_sender = ""
+    if 'user_gmail' not in st.session_state:
+        st.session_state.user_gmail = ""
     if 'auth_url' not in st.session_state:
         st.session_state.auth_url = ""
     if 'subject' not in st.session_state:
