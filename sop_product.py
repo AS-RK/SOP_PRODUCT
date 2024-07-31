@@ -608,6 +608,8 @@ def evaluator(client):
     
 
 def main():
+    st.set_page_config(layout="wide").
+    
     st.markdown("""
         <style>
         div.stButton > button:first-child {
