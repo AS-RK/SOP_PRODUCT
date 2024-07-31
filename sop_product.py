@@ -534,6 +534,8 @@ def evaluator(client):
 def main():
     if 'sop_uploaded' not in st.session_state:
         st.session_state.sop_uploaded = False
+    if 'sop_content' not in st.session_state:
+        st.session_state.sop_content = ''
     if 'gmail_fetched' not in st.session_state:
         st.session_state.gmail_fetched = False
     if 'gmail_content' not in st.session_state:
