@@ -417,6 +417,8 @@ def evaluator(client):
     
     # Step 2: Client Request
     elif st.session_state.step == 2:
+        if st.sidebar.button("Step 1: Upload SOP"):
+            navigate_to_step(1)
         st.title("Step 2: Client Request")
         option = st.selectbox("Choose the way you want to get client request", ("Insert Client Request By Text", "Fetch Client Request From Gmail"), index=0, placeholder='Choose an option')
         
@@ -552,9 +554,9 @@ def evaluator(client):
         st.sidebar.write("Please go to this URL to authorize the application:")
         st.sidebar.write(st.session_state.auth_url)
     st.sidebar.title("Navigation")
-    if st.session_state.step != 1:
-        if st.sidebar.button("Step 1: Upload SOP"):
-            navigate_to_step(1)
+    # if st.session_state.step != 1:
+    #     if st.sidebar.button("Step 1: Upload SOP"):
+    #         navigate_to_step(1)
     if st.session_state.step != 2:
         if st.sidebar.button("Step 2: Client Request"):
             navigate_to_step(2)
