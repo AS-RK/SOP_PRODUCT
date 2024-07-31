@@ -534,15 +534,17 @@ def evaluator(client):
             if feedback_text:
                 feedback_criteria, sop_evaluation = process_feedback(feedback_text)
                 feedback, criteria = process_criteria(feedback_criteria)
-                st.subheader('Feedback')
-                st.write(feedback)
-
-                st.subheader("Criteria Instruction In SOP:")
-                st.write(criteria)
-                
-                st.subheader('Evaluation Based on SOP')
-                df = parse_sop_evaluation(sop_evaluation)
-                st.table(df)
+                left, right = st.columns([2, 1])
+                with left:
+                    st.subheader('Feedback')
+                    st.write(feedback)
+    
+                    st.subheader("Criteria Instruction In SOP:")
+                    st.write(criteria)
+                    
+                    st.subheader('Evaluation Based on SOP')
+                    df = parse_sop_evaluation(sop_evaluation)
+                    st.table(df)
             
             suggested_alternatives_text = feedback_parts[1].strip()
             subject_start = suggested_alternatives_text.find("Subject:")
@@ -608,7 +610,7 @@ def evaluator(client):
     
 
 def main():
-    st.set_page_config(layout="wide")
+    # st.set_page_config(layout="wide")
     
     st.markdown("""
         <style>
