@@ -515,7 +515,7 @@ def evaluator(client):
             
             if st.button("Send Email"):
                 st.session_state.gmail_send = True
-                # Add your gmailsender function logic here
+                gmailsender()
     
         if st.button("Previous"):
             navigate_to_step(2)
