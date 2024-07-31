@@ -275,7 +275,7 @@ def evaluator(client):
     if st.sidebar.button('Step 1: Fetch Gmail Messages'):
         go_to_step_1()
     if st.sidebar.button('Step 2: Evaluate SOP'):
-        g0_to_step_2()
+        go_to_step_2()
     if st.sidebar.button('Step 3: Send Evaluation Email'):
         st.session_state.step = 3
             
