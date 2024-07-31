@@ -447,8 +447,8 @@ def evaluator(client):
         
         if option == 'Fetch Client Request From Gmail':
             st.write('Enter your gmail and the sender email address and the date to fetch your Gmail messages from that sender.')
-            st.session_state.user_gmail = st.text_input('Your Email Address', key='usergmail')
-            st.session_state.gmail_sender = st.text_input('Sender Email Address', key='sender_email')
+            st.session_state.user_gmail = st.text_input('Your Email Address',st.session_state.user_gmail, key='usergmail')
+            st.session_state.gmail_sender = st.text_input('Sender Email Address',st.session_state.gmail_sender, key='sender_email')
             fetch_gmail(st.session_state.gmail_sender)
             # if st.button("Next"):
             #     st.session_state.gmail_fetched = True
