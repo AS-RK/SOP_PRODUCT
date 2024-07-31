@@ -506,8 +506,8 @@ def evaluator(client):
                             Evaluation Based on SOP:
                             
                             For each criterion in the SOP, provide a mark (out of 10) with a reason for the score within 25 words.
-                            Present the criteria in a 2D list format: | Criteria | Mark (out of 10) | Reason |
-                                                                        | --- | --- | --- |.
+                            Present the criteria in a 2D list format: | Criteria |Instruction in the SOP| Evaluation (out of 10) | Reason |
+                                                                        | --- | --- | --- | --- |.
                             Suggested Alternatives:
                             
                             Suggest better alternative email content, fully structured with subject and body, 
@@ -535,16 +535,16 @@ def evaluator(client):
                 feedback_criteria, sop_evaluation = process_feedback(feedback_text)
                 feedback, criteria = process_criteria(feedback_criteria)
                 left, right = st.columns([2, 1])
-                with left:
-                    st.subheader('Feedback')
-                    st.write(feedback)
-    
-                    st.subheader("Criteria Instruction In SOP:")
-                    st.write(criteria)
-                    
-                    st.subheader('Evaluation Based on SOP')
-                    df = parse_sop_evaluation(sop_evaluation)
-                    st.table(df)
+                # with left:
+                st.subheader('Feedback')
+                st.write(feedback)
+
+                st.subheader("Criteria Instruction In SOP:")
+                st.write(criteria)
+                
+                st.subheader('Evaluation Based on SOP')
+                df = parse_sop_evaluation(sop_evaluation)
+                st.table(df)
             
             suggested_alternatives_text = feedback_parts[1].strip()
             subject_start = suggested_alternatives_text.find("Subject:")
