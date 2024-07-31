@@ -227,8 +227,7 @@ def parse_sop_evaluation(sop_text):
     }
 
     return pd.DataFrame(data)
-
-def evaluator(client):
+def go_to_step_1():
     st.title("Step 1: Upload SOP File in any one of the file format")
     uploaded_file = st.file_uploader("Choose a text file", type="txt")
     uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
@@ -254,8 +253,10 @@ def evaluator(client):
     if st.button("Insert text"):
         st.session_state.sop_uploaded = True
         st.session_state.sop_content = sop_content
-            
+    if st.session_state.sop_uploaded:
+        go_to_step_2()
 
+def go_to_step_2():
     if st.session_state.sop_uploaded:
         st.title("Step 2: Client request")
         option = st.selectbox("Choose the way you want get client request", ("By typing","By gmail",), index=0, placeholder='Choose an option')
@@ -268,6 +269,16 @@ def evaluator(client):
             if st.button("Insert Request"):
                 st.session_state.gmail_content = client_request
                 st.session_state.gmail_fetched = True
+
+def evaluator(client):
+    st.sidebar.title('Navigation')
+    if st.sidebar.button('Step 1: Fetch Gmail Messages'):
+        go_to_step_1()
+    if st.sidebar.button('Step 2: Evaluate SOP'):
+        gp_to_step_2()
+    if st.sidebar.button('Step 3: Send Evaluation Email'):
+        st.session_state.step = 3
+            
 
     if st.session_state.get('gmail_fetched', False):
             st.title("Step 3: Type your content to evaluate")
