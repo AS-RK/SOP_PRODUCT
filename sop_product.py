@@ -394,24 +394,6 @@ def evaluator(client):
     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File ")
         with st.expander("Upload File", expanded=False):
-            st.markdown(
-                """
-                <style>
-                .centered {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100%;
-                }
-                </style>
-                <div class="centered">
-                    <div>
-                        <input type="file" id="file-upload" />
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
             uploaded_file = st.file_uploader("Choose a file", type=["txt", "pdf", "docx"])
         
         if uploaded_file is not None:
@@ -583,6 +565,9 @@ def main():
         <style>
         div.stButton > button:first-child {
             width: 100%;
+        }
+        .expander .streamlit-expanderHeader {
+        text-align: center;
         }
         </style>
         """, unsafe_allow_html=True)
