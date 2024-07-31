@@ -205,7 +205,7 @@ def process_feedback(text):
     feedback, sop_evaluation = text.split("Evaluation Based on SOP:")
     return feedback.strip(), sop_evaluation.strip()
 
-def process_criteria(text)
+def process_criteria(text):
     feedback, criteria = text.split("Criteria Instruction in SOP:")
     return feedback.strip(), criteria.strip()
     
