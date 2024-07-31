@@ -422,11 +422,10 @@ def evaluator(client):
         if option == 'By gmail':
             st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
             sender_email = st.text_input('Sender Email Address', key='sender_email')
-            # Add your fetch_gmail function logic here
+            fetch_gmail(sender_email)
         else:
-            client_request = st.text_area("Client Request:", height=500)
+            st.session_state.gmail_content = st.text_area("Client Request:", height=500)
             if st.button("Next"):
-                st.session_state.gmail_content = client_request
                 st.session_state.gmail_fetched = True
                 navigate_to_step(3)
         
