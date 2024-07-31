@@ -205,6 +205,10 @@ def process_feedback(text):
     feedback, sop_evaluation = text.split("Evaluation Based on SOP:")
     return feedback.strip(), sop_evaluation.strip()
 
+def process_criteria(text)
+    feedback, criteria = text.split("Criteria Instruction in SOP:")
+    return feedback.strip(), criteria.strip()
+    
 # Function to convert SOP evaluation to DataFrame
 def parse_sop_evaluation(sop_text):
     lines = sop_text.split('\n')
@@ -523,30 +527,33 @@ def evaluator(client):
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
         
-        # if st.session_state.feedback:
-        #     feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
-        #     feedback_text = feedback_parts[0].strip()
+        if st.session_state.feedback:
+            feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
+            feedback_text = feedback_parts[0].strip()
             
-        #     if feedback_text:
-        #         feedback, sop_evaluation = process_feedback(feedback_text)
+            if feedback_text:
+                feedback_criteria, sop_evaluation = process_feedback(feedback_text)
+                feedback, criteria = process_criteria(feedback_criteria)
+                st.subheader('Feedback')
+                st.write(feedback)
+
+                st.subheader("Criteria Instruction In SOP:")
+                st.write(criteria)
                 
-        #         st.subheader('Feedback')
-        #         st.write(feedback)
-                
-        #         st.subheader('Evaluation Based on SOP')
-        #         df = parse_sop_evaluation(sop_evaluation)
-        #         st.table(df)
+                st.subheader('Evaluation Based on SOP')
+                df = parse_sop_evaluation(sop_evaluation)
+                st.table(df)
             
-        #     suggested_alternatives_text = feedback_parts[1].strip()
-        #     subject_start = suggested_alternatives_text.find("Subject:")
-        #     subject_end = suggested_alternatives_text.find("\n\n", subject_start)
-        #     subject = suggested_alternatives_text[subject_start + len("Subject:"):subject_end].strip()
-        #     content_start = subject_end + 2
-        #     content = suggested_alternatives_text[content_start:].strip()
+            suggested_alternatives_text = feedback_parts[1].strip()
+            subject_start = suggested_alternatives_text.find("Subject:")
+            subject_end = suggested_alternatives_text.find("\n\n", subject_start)
+            subject = suggested_alternatives_text[subject_start + len("Subject:"):subject_end].strip()
+            content_start = subject_end + 2
+            content = suggested_alternatives_text[content_start:].strip()
     
-        #     st.title("Suggested Alternatives")
-        #     st.text_area("Subject", subject, height=100)
-        #     st.text_area("Content", content, height=300)
+            st.title("Suggested Alternatives")
+            st.text_area("Subject", subject, height=100)
+            st.text_area("Content", content, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
             # if st.button("Send Email",key = 'process_start'):
@@ -554,7 +561,7 @@ def evaluator(client):
             
     
         # if st.button("Previous"):
-        st.text_area("feedback",st.session_state.feedback,height = 500)
+
         col1, col3 = st.columns([1, 1])
         with col1:
             if st.button("Previous"):
