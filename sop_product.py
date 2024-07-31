@@ -390,7 +390,7 @@ def go_to_step_3():
             gmailsender()
 
 def evaluator(client):
-    col1, col2, col3 = st.columns([1, 4, 1])
+
     if st.session_state.step == 1:
         st.title("Step 1: Upload SOP File in any one of the file format")
         uploaded_file = st.file_uploader("Choose a text file", type="txt")
@@ -407,6 +407,7 @@ def evaluator(client):
         
         # st.session_state.sop_content = sop_content
         st.session_state.sop_content = st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
+        col1, col2, col3 = st.columns([1, 4, 1])
         with col3:
             if st.button("Next"):
                 if st.session_state.sop_content:
