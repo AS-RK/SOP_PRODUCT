@@ -568,16 +568,8 @@ def main():
         }
         </style>
         """, unsafe_allow_html=True)
-    st.markdown(
-    """
-    <style>
-    .expander .streamlit-expanderHeader {
-        text-align: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-    )
+
+
 
     # st.session_state.col1, st.session_state.col2, st.session_state.col3 = st.columns([1, 4, 1])
     
