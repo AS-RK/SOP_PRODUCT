@@ -480,40 +480,41 @@ def evaluator(client):
                 st.error("Insufficient Information")
             else:
                 prompt = f"""
-                            As a Quality Analyst, your task is to meticulously evaluate a user's response to a client email based on 
-                            our Standard Operating Procedure (SOP) for email communication. The client email outlines an issue or concern 
-                            they are experiencing with our product. Your evaluation involves identifying the specific problem mentioned by 
-                            the client and ensuring the response adheres to our SOP. Follow these steps:
-                            
-                            SOP Content
-                            {st.session_state.sop_content}
-                            
-                            Client Email
-                            {st.session_state.gmail_content}
-                            
-                            Evaluation Task has the heading of Client's Issue, Constructive Feedback, Criteria Instruction in SOP,Evaluation Based on SOP,Suggested Alternatives
-                            Client's Issue:
-                            
-                            Clearly identify the specific problem or concern mentioned by the client in their email.
-                            Constructive Feedback:
-                            
-                            Provide actionable feedback aimed at improving future responses.
-                            Ensure feedback is specific and provides clear examples where applicable.
-                            Criteria Instruction in SOP:
-
-                            go through the SOP
-                            provide the instruction for each criteria from the SOP
-                            Evaluation Based on SOP:
-                            
-                            For each criterion in the SOP, provide a mark (out of 10) with a reason for the score within 25 words.
-                            Present the criteria in a 2D list format: 
-                            | Criteria |Instruction in the SOP| Evaluation (out of 10) | Reason |
-                            | --- | --- | --- | --- |.
-                            Suggested Alternatives:
-                            
-                            Suggest better alternative email content, fully structured with subject and body, 
-                            that aligns with the SOP and addresses the client's concern effectively.
-                    """
+                        As a Quality Analyst, your task is to meticulously evaluate a user's response to a client email based on 
+                        our Standard Operating Procedure (SOP) for email communication. The client email outlines an issue or concern 
+                        they are experiencing with our product. Your evaluation involves identifying the specific problem mentioned by 
+                        the client and ensuring the response adheres to our SOP. Follow these steps:
+                        
+                        **SOP Content:**
+                        {st.session_state.sop_content}
+                        
+                        **Client Email:**
+                        {st.session_state.gmail_content}
+                        
+                        **Evaluation Task:**
+                        
+                        1. **Client's Issue:**
+                           - Clearly identify the specific problem or concern mentioned by the client in their email.
+                        
+                        2. **Constructive Feedback:**
+                           - Provide actionable feedback aimed at improving future responses.
+                           - Ensure feedback is specific and provides clear examples where applicable.
+                        
+                        3. **Criteria Instruction in SOP:**
+                           - Go through the SOP.
+                           - Provide the instruction for each criterion from the SOP.
+                        
+                        4. **Evaluation Based on SOP:**
+                           - For each criterion in the SOP, provide a mark (out of 10) with a reason for the score (within 25 words).
+                           - Present the criteria in a table format:
+                        
+                        | Criteria | Instruction in the SOP | Evaluation (out of 10) | Reason |
+                        | --- | --- | --- | --- |
+                        
+                        5. **Suggested Alternatives:**
+                           - Suggest better alternative email content, fully structured with subject and body, that aligns with 
+                           the SOP and addresses the client's concern effectively.
+                        """
     
                 try:
                     completion = client.chat.completions.create(
