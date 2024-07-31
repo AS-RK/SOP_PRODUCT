@@ -545,7 +545,7 @@ def evaluator(client):
                 
                 st.subheader('Evaluation Based on SOP')
                 df = parse_sop_evaluation(sop_evaluation)
-                df = df.drop(0).reset_index(drop=True)
+                df = df.drop(0)
                 st.table(df)
             
             suggested_alternatives_text = feedback_parts[1].strip()
