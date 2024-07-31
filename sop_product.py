@@ -419,7 +419,7 @@ def evaluator(client):
         st.title("Step 2: Client Request")
         option = st.selectbox("Choose the way you want to get client request", ("Insert Client Request By Text", "Fetch Client Request From Gmail"), index=0, placeholder='Choose an option')
         
-        if option == 'By gmail':
+        if option == 'Fetch Client Request From Gmail':
             st.write('Enter the sender email address and the date to fetch your Gmail messages from that sender.')
             sender_email = st.text_input('Sender Email Address', key='sender_email')
             fetch_gmail(sender_email)
