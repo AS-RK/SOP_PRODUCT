@@ -398,15 +398,15 @@ def evaluator(client):
         uploaded_file_pdf = st.file_uploader("Choose a PDF file", type="pdf")
         uploaded_file_docx = st.file_uploader("Choose a Word document", type="docx")
         
-        sop_content = ""
+        # sop_content = ""
         if uploaded_file is not None:
-            sop_content = uploaded_file.read().decode("utf-8")
+            st.session_state.sop_content = uploaded_file.read().decode("utf-8")
         elif uploaded_file_docx is not None:
-            sop_content = read_docx(uploaded_file_docx)
+            st.session_state.sop_content = read_docx(uploaded_file_docx)
         elif uploaded_file_pdf is not None:
-            sop_content = read_pdf(uploaded_file_pdf)
+            st.session_state.sop_content = read_pdf(uploaded_file_pdf)
         
-        st.session_state.sop_content = sop_content
+        # st.session_state.sop_content = sop_content
         st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
         
         if st.button("Next"):
