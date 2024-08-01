@@ -15,7 +15,7 @@ import pandas as pd
 import json
 
 # Set up the necessary scopes and credentials file
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send']
+SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send','https://www.googleapis.com/auth/gmail.modify']
 GOOGLE_CREDENTIALS_JSON = st.secrets['GOOGLE_CREDENTIALS_JSON']
 
 def get_gmail_service():
