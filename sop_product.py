@@ -427,12 +427,11 @@ def go_to_step_3():
 def evaluator(client):
     st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
     if st.sidebar.button("Authenticate"):
-        try:
-            get_gmail_service()
-            st.sidebar.write("Please go to this URL to authorize the application:")
-            st.sidebar.write(st.session_state.auth_url)
-        except Exception as e:
-            st.sidebar.error("session expired")
+        
+        get_gmail_service()
+        st.sidebar.write("Please go to this URL to authorize the application:")
+        st.sidebar.write(st.session_state.auth_url)
+
     st.sidebar.title("Navigation")
     if st.sidebar.button("Step 1: Upload SOP"):
         navigate_to_step(1)
