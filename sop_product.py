@@ -473,7 +473,7 @@ def evaluator(client):
         # if st.sidebar.button("Step 1: Upload SOP"):
         #     navigate_to_step(1)
         st.title("Step 2: Client Request")
-        option = st.selectbox("Choose the way you want to get client request", ("Insert Client Request By Text", "Fetch Client Request From Gmail"), index=0, placeholder='Choose an option')
+        option = st.selectbox("Choose the way you want to get client request", ("Insert Client Request", "Fetch Client Request From Gmail"), index=0, placeholder='Choose an option')
         
         if option == 'Fetch Client Request From Gmail':
             st.write('Enter your gmail and the sender email address and the date to fetch your Gmail messages from that sender.')
