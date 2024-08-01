@@ -106,7 +106,7 @@ def fetch_gmail(sender_email):
                     st.write('Content:')
                     st.markdown(message_content, unsafe_allow_html=True)
                     st.write('---')
-                
+                st.session_state.msg_id - msg_id
                 st.session_state.gmail_fetched = True
                 st.session_state.gmail_content = f"""Subject:{subject}\nContent:{message_content}"""
                 
@@ -132,6 +132,34 @@ def send_message(service, user_id, message):
     except Exception as error:
         st.write(f"An error occurred: {error}")
 
+def create_message_for_reply(sender, to, subject, message_text, thread_id, message_id):
+    message = MIMEText(message_text)
+    message['to'] = to
+    message['from'] = sender
+    message['subject'] = subject
+    message['In-Reply-To'] = message_id
+    message['References'] = message_id
+    raw = base64.urlsafe_b64encode(message.as_bytes()).decode('utf-8')
+    return {'raw': raw, 'threadId': thread_id}
+
+def reply_to_message(service, message_id, reply_text):
+    original_message = service.users().messages().get(userId='me', id=message_id, format='full').execute()
+    thread_id = original_message['threadId']
+    
+    headers = original_message['payload']['headers']
+    for header in headers:
+        if header['name'] == 'From':
+            from_email = header['value']
+        if header['name'] == 'Subject':
+            subject = header['value']
+    
+    # Get the user's email address
+    profile = service.users().getProfile(userId='me').execute()
+    user_email = profile['emailAddress']
+    
+    reply_message = create_message_for_reply(user_email, from_email, subject, reply_text, thread_id, message_id)
+    service.users().messages().send(userId='me', body=reply_message).execute()
+
 def gmailsender():
     st.title('Send an Email via Gmail')
     st.write('Enter the details below to send an email.')
@@ -144,8 +172,10 @@ def gmailsender():
     if st.button('Send Email',key = 'process_end'):
         if sender_email and recipient_email and subject and message_text:
             service = get_gmail_service()
-            message = create_message(sender_email, recipient_email, subject, message_text)
-            send_message(service, 'me', message)
+            # message = create_message(sender_email, recipient_email, subject, message_text)
+            # send_message(service, 'me', message)
+            reply_to_message(service, st.session_state.gmail_content, st.session_state.msg_id)
+            st.success("Reply sent!")
         else:
             st.write('Please fill out all fields.')
 
@@ -650,6 +680,8 @@ def main():
         st.session_state.subject = ""
     if 'content' not in st.session_state:
         st.session_state.content = ""
+    if 'msg_id' not in st.session_state:
+        st.session_state.msg_id = ""
     if 'step_1' not in st.session_state:
         st.session_state.step_1 = True
     if 'step_2' not in st.session_state:
