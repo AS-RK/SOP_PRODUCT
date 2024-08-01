@@ -106,7 +106,7 @@ def fetch_gmail(sender_email):
                     st.write('Content:')
                     st.markdown(message_content, unsafe_allow_html=True)
                     st.write('---')
-                st.session_state.msg_id - msg_id
+                st.session_state.msg_id = msg_id
                 st.session_state.gmail_fetched = True
                 st.session_state.gmail_content = f"""Subject:{subject}\nContent:{message_content}"""
                 
