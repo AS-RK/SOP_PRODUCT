@@ -432,7 +432,7 @@ def evaluator(client):
             st.sidebar.write("Please go to this URL to authorize the application:")
             st.sidebar.write(st.session_state.auth_url)
         except Exception as e:
-            st.sidebar.write("session expired")
+            st.sidebar.error("session expired")
     st.sidebar.title("Navigation")
     if st.sidebar.button("Step 1: Upload SOP"):
         navigate_to_step(1)
@@ -482,7 +482,10 @@ def evaluator(client):
             st.write('Enter your gmail and the sender email address and the date to fetch your Gmail messages from that sender.')
             st.session_state.user_gmail = st.text_input('Your Email Address',st.session_state.user_gmail, key='usergmail')
             st.session_state.gmail_sender = st.text_input('Sender Email Address',st.session_state.gmail_sender, key='sender_email')
-            fetch_gmail(st.session_state.gmail_sender)
+            try:
+                fetch_gmail(st.session_state.gmail_sender)
+            except Exception as e:
+                st.error("please Authenticate your mail")
             # if st.button("Next"):
             #     st.session_state.gmail_fetched = True
             #     navigate_to_step(3)
@@ -618,7 +621,10 @@ def evaluator(client):
         #     navigate_to_step(2)
         # if st.sidebar.button("Step 3: Evaluation and feedback"):
         #     navigate_to_step(3)
-        gmailsender()
+        try:
+            gmailsender()
+        except Exception as e:
+            st.error("please Authenticate your mail")
         col1, col3 = st.columns([1,1])
         with col1:
             if st.button("Previous"):
