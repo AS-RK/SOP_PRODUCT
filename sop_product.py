@@ -36,7 +36,8 @@ def get_gmail_service():
             # st.write("1")
             auth_url, _ = flow.authorization_url(prompt='consent')
             st.session_state.auth_url = auth_url
-            st.sidebar.write(st.session_state.auth_url)
+            if st.session_state.Authenticate_check:
+                st.sidebar.write(st.session_state.auth_url)
             # st.write("1")
             auth_code = st.experimental_get_query_params().get('code')
             if auth_code:
@@ -428,7 +429,7 @@ def go_to_step_3():
 def evaluator(client):
     st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
     if st.sidebar.button("Authenticate"):
-        
+        st.session_state.Authenticate_check = True
         st.sidebar.write("Please go to this URL to authorize the application:")
         get_gmail_service()
         st.sidebar.write(st.session_state.auth_url)
@@ -697,6 +698,8 @@ def main():
         st.session_state.step_2 = False
     if 'step_3' not in st.session_state:
         st.session_state.step_3 = False
+    if 'Authenticate_check' not in st.session_state:
+        st.session_state.Authenticate_check = False
     if 'step' not in st.session_state:
         st.session_state.step = 1
 
