@@ -174,7 +174,7 @@ def gmailsender():
             service = get_gmail_service()
             # message = create_message(sender_email, recipient_email, subject, message_text)
             # send_message(service, 'me', message)
-            reply_to_message(service, st.session_state.gmail_content, st.session_state.msg_id)
+            reply_to_message(service, st.session_state.msg_id, st.session_state.gmail_content)
             st.success("Reply sent!")
         else:
             st.write('Please fill out all fields.')
