@@ -122,6 +122,8 @@ def create_message(sender, to, subject, message_text):
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
+    message['In-Reply-To'] = st.session_state.msg_id
+    message['References'] = st.session_state.msg_id
     raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
     return {'raw': raw_message}
 
