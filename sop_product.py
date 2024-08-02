@@ -593,7 +593,7 @@ def evaluator(client):
             #     st.session_state.gmail_fetched = True
             #     navigate_to_step(3)
         else:
-            st.session_state.fetched_subject = st.text_area("Client Request:",st.session_state.fetched_subject,height = 75)
+            st.session_state.fetched_subject = st.text_area("Client Request:",st.session_state.fetched_subject,height = 50)
             st.session_state.fetched_content = st.text_area("Client Request:",st.session_state.fetched_content, height=500)
         col1, col3 = st.columns([1, 1])
         with col3:
@@ -614,7 +614,7 @@ def evaluator(client):
         # if st.sidebar.button("Step 2: Client Request"):
         #     navigate_to_step(2)
         st.title("Step 3: Type your content to evaluate")
-        st.session_state.user_subject = st.text_area("Subject:",st.session_state.user_subject, height=400)
+        st.session_state.user_subject = st.text_area("Subject:",st.session_state.user_subject, height=50)
         st.session_state.user_msg= st.text_area("Message:",st.session_state.user_msg, height=400)
         st.session_state.user_input = f"subject: {st.session_state.user_subject} content:{st.session_state.user_msg}"
         
