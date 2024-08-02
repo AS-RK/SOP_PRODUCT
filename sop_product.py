@@ -725,10 +725,10 @@ def evaluator(client):
         #     navigate_to_step(2)
         # if st.sidebar.button("Step 3: Evaluation and feedback"):
         #     navigate_to_step(3)
-        try:
-            send_reply_email()
-        except Exception as e:
-            st.error("please Authenticate your mail")
+        # try:
+        send_reply_email()
+        # except Exception as e:
+        #     st.error("please Authenticate your mail")
         col1, col3 = st.columns([1,1])
         with col1:
             if st.button("Previous"):
