@@ -123,7 +123,7 @@ def fetch_latest_email():
             if original_email.is_multipart():
                 for part in original_email.walk():
                     if part.get_content_type() == "text/plain":
-                        email_body = part.get_payload(decode=True).decode()
+                        st.session_state.fetched_content = part.get_payload(decode=True).decode()
                         break
             else:
                 st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
