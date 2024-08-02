@@ -630,7 +630,7 @@ def evaluator(client):
                             {st.session_state.sop_content}
                             
                             Client Email
-                            {st.session_state.gmail_content}
+                            {st.session_state.fetched_subject + st.session_state.fetched_content}
                             
                             Evaluation Task
                             Client's Issue:
