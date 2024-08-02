@@ -87,7 +87,7 @@ def fetch_latest_email():
             # Connect to the IMAP server
             mail = imaplib.IMAP4_SSL(imap_server)
             try:
-                mail.login(email_account, password)
+                mail.login(st.session_state.user_gmail, st.session_state.password)
             except Exception as e:
                 st.error("invalid username or password")
             mail.select("inbox")
