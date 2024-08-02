@@ -141,7 +141,7 @@ def send_reply_email():
 
     sender_email = st.text_input('Sender Email Address',st.session_state.user_gmail)
     recipient_email = st.text_input('Recipient Email Address',st.session_state.gmail_sender)
-    subject = st.text_input('Subject',f"Re:{st.session_state.subject}")
+    subject = st.text_input('Subject',st.session_state.subject)
     message_text = st.text_area('Message',st.session_state.content,height=500)
 
     if st.button('Send Email',key = 'process_end'):
