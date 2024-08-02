@@ -426,6 +426,12 @@ def go_to_step_3():
             st.session_state.gmail_send = True
             gmailsender()
 
+def load_default_sop_file():
+    # Read the content of the default file (e.g., default.txt)
+    with open("default_sop_content.txt", "r") as file:
+        default_content = file.read()
+    return default_content
+
 def evaluator(client):
     st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
     if st.sidebar.button("Authenticate"):
@@ -452,6 +458,8 @@ def evaluator(client):
         st.title("Step 1: Upload SOP File ")
         with st.expander("Upload File", expanded=False):
             uploaded_file = st.file_uploader("Choose a file", type=["txt", "pdf", "docx"])
+            if st.button("Use default SOP"):
+                uploaded_file = load_default_sop_file()
         
         if uploaded_file is not None:
             if uploaded_file.name.endswith(".txt"):
