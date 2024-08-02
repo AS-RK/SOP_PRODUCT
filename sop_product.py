@@ -153,7 +153,7 @@ def send_reply_email():
         msg["In-Reply-To"] = st.session_state.msg_id
         msg["References"] = st.session_state.msg_id
         
-        msg.set_content(reply_message)
+        msg.set_content(st.session_state.content)
         
         smtp_server = smtplib.SMTP("smtp.gmail.com", 587)
         smtp_server.starttls()
