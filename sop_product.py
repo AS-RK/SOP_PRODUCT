@@ -141,8 +141,7 @@ def send_reply_email():
 
     sender_email = st.text_input('Sender Email Address',st.session_state.user_gmail)
     recipient_email = st.text_input('Recipient Email Address',st.session_state.gmail_sender)
-    if st.session_state.password:
-        st.session_state.password = st.text_input("Password", type="password")
+    password = st.text_input("Password", type="password")
     subject = st.text_input('Subject',st.session_state.subject)
     message_text = st.text_area('Message',st.session_state.content,height=500)
 
@@ -159,7 +158,7 @@ def send_reply_email():
         
         smtp_server = smtplib.SMTP("smtp.gmail.com", 587)
         smtp_server.starttls()
-        smtp_server.login(st.session_state.user_gmail, st.session_state.password)
+        smtp_server.login(st.session_state.user_gmail, password)
         smtp_server.send_message(msg)
         smtp_server.quit()
         
