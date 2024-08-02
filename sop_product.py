@@ -141,6 +141,8 @@ def send_reply_email():
 
     sender_email = st.text_input('Sender Email Address',st.session_state.user_gmail)
     recipient_email = st.text_input('Recipient Email Address',st.session_state.gmail_sender)
+    if st.session_state.password:
+        st.session_state.password = st.text_input("Password", type="password")
     subject = st.text_input('Subject',st.session_state.subject)
     message_text = st.text_area('Message',st.session_state.content,height=500)
 
