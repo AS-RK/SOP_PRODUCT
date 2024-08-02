@@ -614,7 +614,9 @@ def evaluator(client):
         # if st.sidebar.button("Step 2: Client Request"):
         #     navigate_to_step(2)
         st.title("Step 3: Type your content to evaluate")
-        st.session_state.user_input = st.text_area("Your content:",st.session_state.user_input, height=400)
+        st.session_state.user_subject = st.text_area("Subject:",st.session_state.user_subject, height=400)
+        st.session_state.user_msg= st.text_area("Message:",st.session_state.user_msg, height=400)
+        st.session_state.user_input = f"subject: {st.session_state.user_subject} content:{st.session_state.user_msg}"
         
         if st.button("Evaluate"):
             if len(st.session_state.user_input) < 20:
@@ -630,7 +632,8 @@ def evaluator(client):
                             {st.session_state.sop_content}
                             
                             Client Email
-                            {st.session_state.fetched_subject + st.session_state.fetched_content}
+                            subject:{st.session_state.fetched_subject}
+                            content:{st.session_state.fetched_content}
                             
                             Evaluation Task
                             Client's Issue:
@@ -805,6 +808,10 @@ def main():
         st.session_state.fetched_content = ""
     if 'default_sop_content' not in st.session_state:
         st.session_state.default_sop_content = ""
+    if 'user_subject' not in st.session_state:
+        st.session_state.user_subject = ""
+    if 'user_msg' not in st.session_state:
+        st.session_state.user_msg = ""
     if 'step_1' not in st.session_state:
         st.session_state.step_1 = True
     if 'step_2' not in st.session_state:
