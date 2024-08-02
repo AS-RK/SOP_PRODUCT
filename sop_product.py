@@ -581,10 +581,10 @@ def evaluator(client):
             st.session_state.user_gmail = st.text_input('Your Email Address',st.session_state.user_gmail, key='usergmail')
             st.session_state.gmail_sender = st.text_input('Sender Email Address',st.session_state.gmail_sender, key='sender_email')
             st.session_state.password = st.text_input("Password", type="password")
-            try:
-                fetch_latest_email()
-            except Exception as e:
-                st.error("please Authenticate your mail")
+            # try:
+            fetch_latest_email()
+            # except Exception as e:
+            #     st.error("please Authenticate your mail")
             # if st.button("Next"):
             #     st.session_state.gmail_fetched = True
             #     navigate_to_step(3)
