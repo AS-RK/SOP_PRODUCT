@@ -1,0 +1,32 @@
+criteria:
+Grammar:
+ 
+Correctness:
+Assess for proper grammar, punctuation, and spelling.
+Ensure clarity, conciseness, and a well-structured response.
+Evaluate consistency in tense and point of view.
+Structure and Style:
+Check for proper sentence structure and varied sentence length.
+Look for appropriate use of vocabulary and avoid jargon unless necessary.
+Ensure the response flows logically from one point to the next.
+Empathy:
+ 
+Emotional Understanding:
+Evaluate the level of empathy demonstrated.
+Determine if the response shows understanding and sensitivity towards others' feelings and situations.
+Supportive Language:
+Identify the use of supportive and encouraging language.
+Assess the acknowledgment of different perspectives or emotions.
+Look for active listening cues, such as paraphrasing or summarizing the other person's points.
+Ownership:
+ 
+Responsibility:
+Assess if the response takes responsibility, shows initiative, and provides solutions or action steps.
+Identify instances where the user admits mistakes or shortcomings.
+Proactive Approach:
+Look for proactive language indicating a willingness to improve or rectify situations.
+Check for follow-up actions or commitments to ensure resolution.
+Purpose:
+The aim is to ensure the response is grammatically sound, empathetic, and demonstrates a strong sense of ownership.
+has context menu
+
