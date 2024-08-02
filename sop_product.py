@@ -593,11 +593,12 @@ def evaluator(client):
             #     st.session_state.gmail_fetched = True
             #     navigate_to_step(3)
         else:
-            st.session_state.gmail_content = st.text_area("Client Request:",st.session_state.gmail_content, height=500)
+            st.session_state.fetched_subject = st.text_area("Client Request:",st.st.session_state.fetched_subject,height = 75)
+            st.session_state.fetched_content = st.text_area("Client Request:",st.session_state.fetched_content, height=500)
         col1, col3 = st.columns([1, 1])
         with col3:
             if st.button("Next"):
-                if st.session_state.gmail_content:
+                if st.session_state.fetched_content and st.session_state.fetched_subject:
                     st.session_state.gmail_fetched = True
                     navigate_to_step(3)
                 else:
