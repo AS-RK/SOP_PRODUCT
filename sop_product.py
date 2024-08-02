@@ -93,7 +93,7 @@ def fetch_latest_email():
             mail.select("inbox")
             
             # Search for emails from the specific sender
-            status, data = mail.search(None, f'FROM "{sender_email}"')
+            status, data = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
             
             email_ids = data[0].split()
             if not email_ids:
