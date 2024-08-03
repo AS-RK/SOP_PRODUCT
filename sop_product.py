@@ -813,7 +813,7 @@ def sop_creator(client):
                 completion = client.chat.completions.create(
                 messages=[
                                 {"role": "system", "content": prompt},
-                                {"role": "user", "content": st.session_state.user_input}
+                                {"role": "user", "content": f"department:{st.session_state.department } purpose:{st.session_state.purpose} criteria:{st.session_state.criteria}"}
                             ],
                             model="llama3-8b-8192",
                             temperature=0,
