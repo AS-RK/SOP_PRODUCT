@@ -805,7 +805,7 @@ def sop_creator(client):
                 Criteria:
                 
                 Ensure the SOP meets the specific criteria mentioned by the user: "user gven criteria".
-                Provide detailed instructions or guidelines on how to adhere to these criteria.
+                Must Provide detailed instructions or guidelines on how to adhere to these criteria.
                 Appendices:
                 
                 Add any supplementary information such as templates, sample forms, or additional references."""
