@@ -757,7 +757,7 @@ def sop_creator(client):
     # st.checkbox("Grammer")
     st.session_state.department = st.text_input("Department:",st.session_state.department)
     st.session_state.purpose = st.text_input("Purpose of the SOP:", st.session_state.purpose)
-    st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 100)
+    st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 400)
     if st.button("Create SOP"):
         if st.session_state.department and st.session_state.purpose and st.session_state.criteria:
             prompt =f"""
