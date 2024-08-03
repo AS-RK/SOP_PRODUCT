@@ -908,7 +908,7 @@ def main():
         st.session_state.Authenticate_check = False
     if 'step' not in st.session_state:
         st.session_state.step = 1
-    if sop_created not in st.session_state:
+    if 'sop_created' not in st.session_state:
         st.session_state.created_sop = ""
 
     client = Groq(api_key=st.secrets["API_KEY"])
