@@ -753,7 +753,8 @@ def evaluator(client):
 
 
 
-        
+def sop_creator(client):
+    pass
             
 
     
@@ -825,9 +826,11 @@ def main():
         st.session_state.step = 1
 
     client = Groq(api_key=st.secrets["API_KEY"])
-    option = st.selectbox("Choose the tool", ("Evaluator",), index=None, placeholder='Choose an option')
+    option = st.selectbox("Choose the tool", ("Evaluator","SOP creator",), index=None, placeholder='Choose an option')
     if option == "Evaluator":
         evaluator(client)
+    elif option == "SOP creator":
+        sop_creator(client)
 
 if __name__ == "__main__":
     main()
