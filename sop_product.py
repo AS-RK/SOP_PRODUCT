@@ -758,82 +758,83 @@ def sop_creator(client):
     st.session_state.department = st.text_input("Department:",st.session_state.department)
     st.session_state.purpose = st.text_input("Purpose of the SOP:", st.session_state.purpose)
     st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 500)
-    if st.button("Create SOP") and st.session_state.department and st.session_state.purpose and st.session_state.criteria:
-        Prompt =f"""
-            You are an SOP (Standard Operating Procedure) engineer tasked with creating a comprehensive SOP for the "mentioned br user". 
-            The purpose of this SOP is to "mentioned by user". Ensure that the SOP adheres to the following criteria:
-            
-            Introduction:
-            
-            Provide a clear overview of the SOP.
-            State the objectives and scope.
-            Mention the target audience and their roles.
-            Purpose:
-            
-            Explain the specific goals and intended outcomes of this SOP.
-            Detail how it aligns with the department's overall mission and objectives.
-            Definitions:
-            
-            Define any technical terms, acronyms, or jargon used within the SOP.
-            Include a glossary if necessary.
-            Procedures:
-            
-            Step-by-step instructions for completing the tasks outlined in the SOP.
-            Include detailed sub-steps, decision points, and potential variations.
-            Use diagrams, flowcharts, or checklists to enhance clarity.
-            Roles and Responsibilities:
-            
-            Clearly define the roles and responsibilities of each individual or team involved.
-            Specify any required qualifications or training.
-            Materials and Equipment:
-            
-            List all necessary materials, tools, and equipment needed to perform the procedures.
-            Include specifications or standards if applicable.
-            Safety and Compliance:
-            
-            Highlight any safety precautions or regulatory compliance requirements.
-            Include guidelines for emergency procedures and reporting incidents.
-            Documentation and Records:
-            
-            Specify the type of documentation required at each step.
-            Detail how records should be maintained, stored, and accessed.
-            Quality Assurance:
-            
-            Outline the measures in place to ensure the quality and consistency of the procedures.
-            Include methods for auditing and continuous improvement.
-            Criteria:
-            
-            Ensure the SOP meets the specific criteria mentioned by the user: "user gven criteria".
-            Provide detailed instructions or guidelines on how to adhere to these criteria.
-            Appendices:
-            
-            Add any supplementary information such as templates, sample forms, or additional references."""
-        try:
-            completion = client.chat.completions.create(
-            messages=[
-                            {"role": "system", "content": prompt},
-                            {"role": "user", "content": st.session_state.user_input}
-                        ],
-                        model="llama3-8b-8192",
-                        temperature=0,
+    if st.button("Create SOP"):
+        if st.session_state.department and st.session_state.purpose and st.session_state.criteria:
+            Prompt =f"""
+                You are an SOP (Standard Operating Procedure) engineer tasked with creating a comprehensive SOP for the "mentioned br user". 
+                The purpose of this SOP is to "mentioned by user". Ensure that the SOP adheres to the following criteria:
+                
+                Introduction:
+                
+                Provide a clear overview of the SOP.
+                State the objectives and scope.
+                Mention the target audience and their roles.
+                Purpose:
+                
+                Explain the specific goals and intended outcomes of this SOP.
+                Detail how it aligns with the department's overall mission and objectives.
+                Definitions:
+                
+                Define any technical terms, acronyms, or jargon used within the SOP.
+                Include a glossary if necessary.
+                Procedures:
+                
+                Step-by-step instructions for completing the tasks outlined in the SOP.
+                Include detailed sub-steps, decision points, and potential variations.
+                Use diagrams, flowcharts, or checklists to enhance clarity.
+                Roles and Responsibilities:
+                
+                Clearly define the roles and responsibilities of each individual or team involved.
+                Specify any required qualifications or training.
+                Materials and Equipment:
+                
+                List all necessary materials, tools, and equipment needed to perform the procedures.
+                Include specifications or standards if applicable.
+                Safety and Compliance:
+                
+                Highlight any safety precautions or regulatory compliance requirements.
+                Include guidelines for emergency procedures and reporting incidents.
+                Documentation and Records:
+                
+                Specify the type of documentation required at each step.
+                Detail how records should be maintained, stored, and accessed.
+                Quality Assurance:
+                
+                Outline the measures in place to ensure the quality and consistency of the procedures.
+                Include methods for auditing and continuous improvement.
+                Criteria:
+                
+                Ensure the SOP meets the specific criteria mentioned by the user: "user gven criteria".
+                Provide detailed instructions or guidelines on how to adhere to these criteria.
+                Appendices:
+                
+                Add any supplementary information such as templates, sample forms, or additional references."""
+            try:
+                completion = client.chat.completions.create(
+                messages=[
+                                {"role": "system", "content": prompt},
+                                {"role": "user", "content": st.session_state.user_input}
+                            ],
+                            model="llama3-8b-8192",
+                            temperature=0,
+                        )
+                st.session_state.created_sop = completion.choices[0].message.content
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+            file_name = st.text_input("Enter the name of the file to save (e.g., improved_text.txt):", "sop.txt")
+    
+                # Button to save the edited content to a new file
+            if st.button("Save to new file"):
+                    # Save the edited content to a new file
+                st.sidebar.download_button(
+                        label="Download improved text file",
+                        data=st.session_state.created_sop.encode('utf-8'),
+                        file_name=file_name,
+                        mime="text/plain"
                     )
-            st.session_state.created_sop = completion.choices[0].message.content
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-        file_name = st.text_input("Enter the name of the file to save (e.g., improved_text.txt):", "sop.txt")
-
-            # Button to save the edited content to a new file
-        if st.button("Save to new file"):
-                # Save the edited content to a new file
-            st.sidebar.download_button(
-                    label="Download improved text file",
-                    data=st.session_state.created_sop.encode('utf-8'),
-                    file_name=file_name,
-                    mime="text/plain"
-                )
-            st.success(f"File '{file_name}' processed and ready for download.")
-    else:
-        st.error("Fill all the neccessary field")
+                st.success(f"File '{file_name}' processed and ready for download.")
+        else:
+            st.error("Fill all the neccessary field")
     
     
 
