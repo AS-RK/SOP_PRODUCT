@@ -821,7 +821,7 @@ def sop_creator(client):
                 st.session_state.created_sop = completion.choices[0].message.content
             except Exception as e:
                 st.error(f"An error occurred: {e}")
-            st.session_state.created_sop = st.text_area("SOP for {st.session_state.purpose}",st.session_state.created_sop)
+            st.session_state.created_sop = st.text_area("SOP for {st.session_state.purpose}",st.session_state.created_sop, height=500)
             file_name = st.text_input("Enter the name of the file to save (e.g., improved_text.txt):", "sop.txt")
     
                 # Button to save the edited content to a new file
