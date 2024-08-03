@@ -525,12 +525,12 @@ def load_default_sop_file():
     return default_content
 
 def evaluator(client):
-    st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
-    if st.sidebar.button("Authenticate"):
-        st.session_state.Authenticate_check = True
-        st.sidebar.write("Please go to this URL to authorize the application:")
-        get_gmail_service()
-        st.sidebar.write(st.session_state.auth_url)
+    # st.sidebar.write("If you use gmail to fetch or send gmail please authenticate then move forward if alreadydid it ignore it")
+    # if st.sidebar.button("Authenticate"):
+    #     st.session_state.Authenticate_check = True
+    #     st.sidebar.write("Please go to this URL to authorize the application:")
+    #     get_gmail_service()
+    #     st.sidebar.write(st.session_state.auth_url)
 
     st.sidebar.title("Navigation")
     if st.sidebar.button("Step 1: Upload SOP"):
