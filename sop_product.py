@@ -757,7 +757,7 @@ def sop_creator(client):
     # st.checkbox("Grammer")
     st.session_state.department = st.text_input("Department:",st.session_state.department)
     st.session_state.purpose = st.text_input("Purpose of the SOP:", st.session_state.purpose)
-    st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 500)
+    st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 100)
     if st.button("Create SOP"):
         if st.session_state.department and st.session_state.purpose and st.session_state.criteria:
             prompt =f"""
@@ -821,6 +821,7 @@ def sop_creator(client):
                 st.session_state.created_sop = completion.choices[0].message.content
             except Exception as e:
                 st.error(f"An error occurred: {e}")
+            st.session_state.created_sop = st.text_area("SOP for {st.session_state.purpose}",st.session_state.created_sop)
             file_name = st.text_input("Enter the name of the file to save (e.g., improved_text.txt):", "sop.txt")
     
                 # Button to save the edited content to a new file
