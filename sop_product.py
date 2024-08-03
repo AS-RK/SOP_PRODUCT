@@ -760,7 +760,7 @@ def sop_creator(client):
     st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 500)
     if st.button("Create SOP"):
         if st.session_state.department and st.session_state.purpose and st.session_state.criteria:
-            Prompt =f"""
+            prompt =f"""
                 You are an SOP (Standard Operating Procedure) engineer tasked with creating a comprehensive SOP for the "mentioned br user". 
                 The purpose of this SOP is to "mentioned by user". Ensure that the SOP adheres to the following criteria:
                 
