@@ -729,7 +729,7 @@ def evaluator(client):
                     
                     # Create a new DataFrame with criteria as columns and marks as a single row
                     transformed_data = {
-                        # 'User': st.session_state.user_gmail,
+                        'User': st.session_state.user_gmail,
                         # 'Time': datetime.now(),
                         'Grammar': [marks[0]],
                         'Structure and Style': [marks[1]],
