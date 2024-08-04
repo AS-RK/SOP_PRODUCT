@@ -694,7 +694,7 @@ def evaluator(client):
                 st.subheader('Evaluation Based on SOP')
                 df = parse_sop_evaluation(sop_evaluation)
                 df = df.drop(0)
-                data_to_append = df.values.tolist()
+                st.dataframe(df)
                 conn.write(df, sheet="Employee Performance", mode="append")
                 st.success("Data appended to Google Sheets successfully!")
                 st.table(df)
