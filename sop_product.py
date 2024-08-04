@@ -724,13 +724,18 @@ def evaluator(client):
                     st.write('table')
                     data_to_append = df.values.tolist()
                     st.write(data_to_append)
-                    if st.session_state.evaluation_count > st.session_state.gsheet_count:
-                        sheet.append_rows(data_to_append, value_input_option="RAW")
-                        st.session_state.gsheet_count = st.session_state.gsheet_count + 1
+                    # if st.session_state.evaluation_count > st.session_state.gsheet_count:
+                    #     sheet.append_rows(data_to_append, value_input_option="RAW")
+                    #     st.session_state.gsheet_count = st.session_state.gsheet_count + 1
                     # st.success("Data appended to Google Sheets successfully!")
                     st.table(df)
                 except Exception as e:
+                    st.session_state.evaluation_count = st.session_state.evaluation_count - 1
                     st.error(f"An error occurred: {e}")
+
+                if st.session_state.evaluation_count > st.session_state.gsheet_count:
+                    sheet.append_rows(data_to_append, value_input_option="RAW")
+                    st.session_state.gsheet_count = st.session_state.gsheet_count + 1
             
             suggested_alternatives_text = feedback_parts[1].strip()
             subject_start = suggested_alternatives_text.find("Subject:")
