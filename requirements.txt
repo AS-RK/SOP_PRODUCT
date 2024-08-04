@@ -82,4 +82,4 @@ uritemplate==4.1.1
 urllib3==2.2.2
 watchdog==4.0.1
 gspread==6.1.2
-st-gsheets-connection
+git+https://github.com/streamlit/gsheets-connection
