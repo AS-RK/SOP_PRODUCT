@@ -675,7 +675,7 @@ def evaluator(client):
                     st.session_state.feedback = completion.choices[0].message.content
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
-        
+        st.write(st.session_state.feedback)
         if st.session_state.feedback:
             feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
             feedback_text = feedback_parts[0].strip()
