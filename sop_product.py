@@ -691,7 +691,7 @@ def evaluator(client):
                     left, right = st.columns([2, 1])
                     # with left:
                     st.subheader('Feedback and Criteria')
-                    st.write(feedback_criteria)
+                    st.write(feedback)
     
                     st.subheader("Criteria Instruction In SOP:")
                     st.write(criteria)
