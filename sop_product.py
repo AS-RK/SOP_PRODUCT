@@ -733,6 +733,7 @@ def evaluator(client):
                     st.session_state.evaluation_count = st.session_state.evaluation_count - 1
                     st.error(f"An error occurred: {e}")
                 data = sheet.get_all_values()
+                st.write(data)
                 if data:
                     data_to_append = df.values.tolist()
                 else:
