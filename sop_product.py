@@ -723,7 +723,7 @@ def evaluator(client):
                     st.write(df)
                     st.write('table')
                     
-                    st.write(data_to_append)
+            
                     # if st.session_state.evaluation_count > st.session_state.gsheet_count:
                     #     sheet.append_rows(data_to_append, value_input_option="RAW")
                     #     st.session_state.gsheet_count = st.session_state.gsheet_count + 1
