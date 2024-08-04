@@ -722,8 +722,8 @@ def evaluator(client):
                         # Convert DataFrame to a list of lists for appending
                     st.write(df)
                     st.write('table')
-                    data_to_append = df.tolist()
-                    st.write("data_to_append")
+                    data_to_append = df.values.tolist()
+                    st.write(data_to_append)
             
                     # if st.session_state.evaluation_count > st.session_state.gsheet_count:
                     #     sheet.append_rows(data_to_append, value_input_option="RAW")
