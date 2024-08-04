@@ -914,12 +914,12 @@ def main():
     if 'sop_created' not in st.session_state:
         st.session_state.created_sop = ""
 
-    gsheet_id = "1WWGaGc-rVpMYhUjsxDuYDELynzQlq5XKVv3kDU1DuVU"
-    workbook = get_workbook(gsheet_id)
-    try:
-        sheet = workbook.worksheet('hello')
-    except gspread.exceptions.WorksheetNotFound:
-        sheet = workbook.add_worksheet(title='hello', rows="1000", cols="200")
+    # gsheet_id = "1WWGaGc-rVpMYhUjsxDuYDELynzQlq5XKVv3kDU1DuVU"
+    # workbook = get_workbook(gsheet_id)
+    # try:
+    #     sheet = workbook.worksheet('hello')
+    # except gspread.exceptions.WorksheetNotFound:
+    #     sheet = workbook.add_worksheet(title='hello', rows="1000", cols="200")
     
     client = Groq(api_key=st.secrets["API_KEY"])
     option = st.selectbox("Choose the tool", ("Evaluator","SOP creator",), index=None, placeholder='Choose an option')
