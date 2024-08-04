@@ -724,11 +724,25 @@ def evaluator(client):
                     # st.write(df)
                     # st.write('table')
                     data = sheet.get_all_values()
+                    marks = df['Mark (out of 10)'].tolist()
+                    reason = ' '.join(df['Reason'].values)
+                    
+                    # Create a new DataFrame with criteria as columns and marks as a single row
+                    transformed_data = {
+                        'Grammar': [marks[0]],
+                        'Structure and Style': [marks[1]],
+                        'Empathy': [marks[2]],
+                        'Ownership': [marks[3]],
+                        'Reason': [reason]
+                    }
+                    
+                    transformed_df = pd.DataFrame(transformed_data)
+                    data_to_append = transformed_df.values.tolist()
                     # st.write(data)
-                    if len(data) > 1:
-                        data_to_append = df.values.tolist()
-                    else:
-                        data_to_append = [df.columns.tolist()] + df.values.tolist()
+                    # if len(data) > 1:
+                    #     data_to_append = df.values.tolist()
+                    # else:
+                    #     data_to_append = [df.columns.tolist()] + df.values.tolist()
                     # st.write(data_to_append)
             
                     # if st.session_state.evaluation_count > st.session_state.gsheet_count:
