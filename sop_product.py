@@ -723,7 +723,7 @@ def evaluator(client):
                     # st.write(df)
                     # st.write('table')
                     data = sheet.get_all_values()
-                    if data:
+                    if len(data) > 0:
                         data_to_append = df.values.tolist()
                     else:
                         data_to_append = [df.columns.tolist()] + df.values.tolist()
