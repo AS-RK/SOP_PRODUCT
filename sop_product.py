@@ -699,7 +699,7 @@ def evaluator(client):
                 client = gspread.authorize(creds)
                 
                 # Open the Google Sheet
-                sheet = client.open_by_key("1h9Mfg-VRZKm9YB9dhg5iguX_Yfg01BCyl2qzpvGPMcU").worksheet("Employee Performance")
+                sheet = client.open("sop").sheet1
                 df = parse_sop_evaluation(sop_evaluation)
                 df = df.drop(0)
                 # st.dataframe(df)
