@@ -673,7 +673,7 @@ def evaluator(client):
                             {"role": "user", "content": st.session_state.user_input}
                         ],
                         model="llama3-70b-8192",
-                        temperature=0,
+                        temperature=0.01,
                     )
                     st.session_state.feedback = completion.choices[0].message.content
                 except Exception as e:
@@ -687,7 +687,7 @@ def evaluator(client):
             if feedback_text:
                 try:
                     feedback_criteria, sop_evaluation = process_feedback(feedback_text)
-                    # feedback, criteria = process_criteria(feedback_criteria)
+                    feedback, criteria = process_criteria(feedback_criteria)
                     left, right = st.columns([2, 1])
                     # with left:
                     st.subheader('Feedback and Criteria')
