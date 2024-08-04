@@ -693,8 +693,13 @@ def evaluator(client):
                     st.write(criteria)
                     
                     st.subheader('Evaluation Based on SOP')
+                    scope = ["https://www.googleapis.com/auth/spreadsheets"]
+                    
                     # Load credentials from Streamlit secrets
-                    creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
+                    credentials = Credentials.from_service_account_info(
+                        st.secrets["gcp_service_account"],
+                        scopes=scope
+                    )
                     
                     # Create a client to interact with the Google Drive API
                     sop_client = gspread.authorize(creds)
