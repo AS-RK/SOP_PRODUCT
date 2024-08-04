@@ -682,7 +682,8 @@ def evaluator(client):
             
             # Create a client to interact with the Google Drive API
             client = gspread.authorize(creds)
-            
+            st.write(st.secrets)
+
             # Open the Google Sheet
             sheet = client.open_by_url(st.secrets["https://docs.google.com/spreadsheets/d/1WWGaGc-rVpMYhUjsxDuYDELynzQlq5XKVv3kDU1DuVU/"]).worksheet("Employee Performance")
             
