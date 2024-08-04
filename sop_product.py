@@ -18,7 +18,6 @@ import email
 from email.message import EmailMessage
 import smtplib
 import gspread
-from streamlit_gsheets import GSheetsConnection
 from google.oauth2.service_account import Credentials
 
 # Set up the necessary scopes and credentials file
