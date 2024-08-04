@@ -700,6 +700,7 @@ def evaluator(client):
                         st.secrets["gcp_service_account"],
                         scopes=scope
                     )
+                    st.write("hello there")
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
                 try:
