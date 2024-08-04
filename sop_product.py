@@ -702,7 +702,7 @@ def evaluator(client):
                     )
                     
                     # Create a client to interact with the Google Drive API
-                    sop_client = gspread.authorize(creds)
+                    sop_client = gspread.authorize(credentials)
                     
                     # Open the Google Sheet
                     sheet = sop_client.open("sop").sheet1
