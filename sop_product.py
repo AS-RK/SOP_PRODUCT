@@ -696,10 +696,10 @@ def evaluator(client):
                 creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
                 
                 # Create a client to interact with the Google Drive API
-                client = gspread.authorize(creds)
+                sop_client = gspread.authorize(creds)
                 
                 # Open the Google Sheet
-                sheet = client.open("sop").sheet1
+                sheet = sop_client.open("sop").sheet1
                 df = parse_sop_evaluation(sop_evaluation)
                 df = df.drop(0)
                 # st.dataframe(df)
