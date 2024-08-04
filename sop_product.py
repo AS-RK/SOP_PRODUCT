@@ -18,6 +18,7 @@ import email
 from email.message import EmailMessage
 import smtplib
 import gspread
+from streamlit_gsheets import GSheetsConnection
 
 # Set up the necessary scopes and credentials file
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send','https://www.googleapis.com/auth/gmail.modify']
@@ -678,16 +679,7 @@ def evaluator(client):
             feedback_text = feedback_parts[0].strip()
             # st.write(st.secrets)
 
-            # Load credentials from Streamlit secrets
-            creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
-            
-            # Create a client to interact with the Google Drive API
-            client = gspread.authorize(creds)
-            
-
-            # Open the Google Sheet
-            sheet = client.open_by_url(st.secrets["https://docs.google.com/spreadsheets/d/1WWGaGc-rVpMYhUjsxDuYDELynzQlq5XKVv3kDU1DuVU/"]).worksheet("Employee Performance")
-            
+            conn = st.connection("gsheets", type=GSheetsConnection)
             if feedback_text:
                 feedback_criteria, sop_evaluation = process_feedback(feedback_text)
                 feedback, criteria = process_criteria(feedback_criteria)
@@ -703,7 +695,7 @@ def evaluator(client):
                 df = parse_sop_evaluation(sop_evaluation)
                 df = df.drop(0)
                 data_to_append = df.values.tolist()
-                sheet.append_rows(data_to_append, value_input_option="RAW")
+                conn.write(df, sheet="Employee Performance", mode="append")
                 st.success("Data appended to Google Sheets successfully!")
                 st.table(df)
             
