@@ -676,13 +676,14 @@ def evaluator(client):
         if st.session_state.feedback:
             feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
             feedback_text = feedback_parts[0].strip()
+            st.write(st.secrets)
 
             # Load credentials from Streamlit secrets
             creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
             
             # Create a client to interact with the Google Drive API
             client = gspread.authorize(creds)
-            st.write(st.secrets)
+            
 
             # Open the Google Sheet
             sheet = client.open_by_url(st.secrets["https://docs.google.com/spreadsheets/d/1WWGaGc-rVpMYhUjsxDuYDELynzQlq5XKVv3kDU1DuVU/"]).worksheet("Employee Performance")
