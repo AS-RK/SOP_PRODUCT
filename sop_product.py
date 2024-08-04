@@ -656,6 +656,7 @@ def evaluator(client):
                             For each criterion in the SOP, provide a mark (out of 10) with a reason for the score within 25 words.
                             Present the criteria in a 2D list format: | Criteria | Mark (out of 10) | Reason |
                                                                         | --- | --- | --- |.
+                            give the mark in a single integer
                             Suggested Alternatives:
                             
                             Suggest better alternative email content, fully structured with subject and body, 
@@ -723,7 +724,7 @@ def evaluator(client):
                     # st.write(df)
                     # st.write('table')
                     data = sheet.get_all_values()
-                    st.write(data)
+                    # st.write(data)
                     if len(data) > 1:
                         data_to_append = df.values.tolist()
                     else:
