@@ -713,6 +713,7 @@ def evaluator(client):
                 try:
                     # Open the Google Sheet
                     sheet = sop_client.open("sop").sheet1
+                    st.write('hellololo')
                     df = parse_sop_evaluation(sop_evaluation)
                     df = df.drop(0)
                     # st.dataframe(df)
