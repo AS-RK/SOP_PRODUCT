@@ -676,7 +676,7 @@ def evaluator(client):
         if st.session_state.feedback:
             feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
             feedback_text = feedback_parts[0].strip()
-            st.write(st.secrets)
+            # st.write(st.secrets)
 
             # Load credentials from Streamlit secrets
             creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
