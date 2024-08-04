@@ -722,7 +722,7 @@ def evaluator(client):
                         # Convert DataFrame to a list of lists for appending
                     st.write(df)
                     st.write('table')
-                    data_to_append = [df.columns.tolist()] + df.values.tolist()
+                    
                     st.write(data_to_append)
                     # if st.session_state.evaluation_count > st.session_state.gsheet_count:
                     #     sheet.append_rows(data_to_append, value_input_option="RAW")
@@ -732,7 +732,12 @@ def evaluator(client):
                 except Exception as e:
                     st.session_state.evaluation_count = st.session_state.evaluation_count - 1
                     st.error(f"An error occurred: {e}")
-
+                data = sheet.get_all_values()
+                if data:
+                    data_to_append = df.values.tolist()
+                else:
+                    data_to_append = [df.columns.tolist()] + df.values.tolist()
+                        
                 if st.session_state.evaluation_count > st.session_state.gsheet_count:
                     sheet.append_rows(data_to_append, value_input_option="RAW")
                     st.session_state.gsheet_count = st.session_state.gsheet_count + 1
