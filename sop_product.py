@@ -734,10 +734,10 @@ def evaluator(client):
                     st.error(f"An error occurred: {e}")
                 data = sheet.get_all_values()
                 # st.write(data)
-                if len(data) > 0:
-                    data_to_append = df.values.tolist()
-                else:
-                    data_to_append = [df.columns.tolist()] + df.values.tolist()
+                # if len(data) > 0:
+                #     data_to_append = df.values.tolist()
+                # else:
+                data_to_append = [df.columns.tolist()] + df.values.tolist()
                         
                 if st.session_state.evaluation_count > st.session_state.gsheet_count:
                     sheet.append_rows(data_to_append, value_input_option="RAW")
