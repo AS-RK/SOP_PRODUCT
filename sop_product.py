@@ -678,7 +678,6 @@ def evaluator(client):
                     st.session_state.feedback = completion.choices[0].message.content
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
-        st.write(st.session_state.feedback)
         if st.session_state.feedback:
             feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
             feedback_text = feedback_parts[0].strip()
@@ -688,11 +687,11 @@ def evaluator(client):
             if feedback_text:
                 try:
                     feedback_criteria, sop_evaluation = process_feedback(feedback_text)
-                    feedback, criteria = process_criteria(feedback_criteria)
+                    # feedback, criteria = process_criteria(feedback_criteria)
                     left, right = st.columns([2, 1])
                     # with left:
-                    st.subheader('Feedback')
-                    st.write(feedback)
+                    st.subheader('Feedback and Criteria')
+                    st.write(feedback_criteria)
     
                     st.subheader("Criteria Instruction In SOP:")
                     st.write(criteria)
