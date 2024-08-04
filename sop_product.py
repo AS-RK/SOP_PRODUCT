@@ -332,7 +332,10 @@ def process_feedback(text):
     return feedback.strip(), sop_evaluation.strip()
 
 def process_criteria(text):
-    feedback, criteria = text.split("Criteria Instruction in SOP:")
+    try:
+        feedback, criteria = text.split("Criteria Instruction in SOP:")
+    except Exception as e:
+        feedback, criteria = text.split("SOP Criteria Instruction:")
     return feedback.strip(), criteria.strip()
     
 # Function to convert SOP evaluation to DataFrame
