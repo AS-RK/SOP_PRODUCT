@@ -679,7 +679,7 @@ def evaluator(client):
             feedback_text = feedback_parts[0].strip()
             # st.write(st.secrets)
 
-            conn = st.connection("gsheets", type=GSheetsConnection)
+            # conn = st.connection("gsheets", type=GSheetsConnection)
             if feedback_text:
                 feedback_criteria, sop_evaluation = process_feedback(feedback_text)
                 feedback, criteria = process_criteria(feedback_criteria)
@@ -691,7 +691,7 @@ def evaluator(client):
                 st.subheader("Criteria Instruction In SOP:")
                 st.write(criteria)
                 
-                # st.subheader('Evaluation Based on SOP')
+                st.subheader('Evaluation Based on SOP')
                 # Load credentials from Streamlit secrets
                 creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
                 
