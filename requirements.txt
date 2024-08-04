@@ -88,3 +88,4 @@ pandas>=1.3.0, <2
 duckdb>=0.8.1
 sql-metadata>=2.7.0
 validators>=0.22.0
+git+https://github.com/streamlit/gsheets-connection
