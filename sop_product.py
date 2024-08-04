@@ -724,7 +724,7 @@ def evaluator(client):
                     # st.write('table')
                     data = sheet.get_all_values()
                     st.write(data)
-                    if len(data) > 0:
+                    if len(data) > 1:
                         data_to_append = df.values.tolist()
                     else:
                         data_to_append = [df.columns.tolist()] + df.values.tolist()
