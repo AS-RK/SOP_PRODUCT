@@ -706,6 +706,7 @@ def evaluator(client):
                 try:
                     # Create a client to interact with the Google Drive API
                     sop_client = gspread.authorize(credentials)
+                    st.write("hello tere")
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
 
