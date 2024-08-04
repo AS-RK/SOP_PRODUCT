@@ -625,6 +625,7 @@ def evaluator(client):
             if len(st.session_state.user_input) < 20:
                 st.error("Insufficient Information")
             else:
+                st.session_state.evaluation_count = st.session_state.evaluation_count + 1
                 prompt = f"""
                             As a Quality Analyst, your task is to meticulously evaluate a user's response to a client email based on 
                             our Standard Operating Procedure (SOP) for email communication. The client email outlines an issue or concern 
@@ -719,9 +720,13 @@ def evaluator(client):
                     # st.dataframe(df)
                     # conn.write(df, sheet="Employee Performance", mode="append")
                         # Convert DataFrame to a list of lists for appending
+                    st.write(df)
                     data_to_append = df.values.tolist()
-                    sheet.append_rows(data_to_append, value_input_option="RAW")
-                    st.success("Data appended to Google Sheets successfully!")
+                    st.write(data_to_append)
+                    if st.session_state.evaluation_count > st.session_state.gsheet_count:
+                        sheet.append_rows(data_to_append, value_input_option="RAW")
+                        st.session_state.gsheet_count = st.session_state.gsheet_count + 1
+                    # st.success("Data appended to Google Sheets successfully!")
                     st.table(df)
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
@@ -944,6 +949,10 @@ def main():
         st.session_state.Authenticate_check = False
     if 'step' not in st.session_state:
         st.session_state.step = 1
+    if 'evaluation_count' not in st.session_state:
+        st.session_state.evaluation_count = 0
+    if 'gsheet_count' not in st.session_state:
+        st.session_state.gsheet_count = 0
     if 'sop_created' not in st.session_state:
         st.session_state.created_sop = ""
 
