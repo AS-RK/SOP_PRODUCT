@@ -681,34 +681,37 @@ def evaluator(client):
 
             # conn = st.connection("gsheets", type=GSheetsConnection)
             if feedback_text:
-                feedback_criteria, sop_evaluation = process_feedback(feedback_text)
-                feedback, criteria = process_criteria(feedback_criteria)
-                left, right = st.columns([2, 1])
-                # with left:
-                st.subheader('Feedback')
-                st.write(feedback)
-
-                st.subheader("Criteria Instruction In SOP:")
-                st.write(criteria)
-                
-                st.subheader('Evaluation Based on SOP')
-                # Load credentials from Streamlit secrets
-                creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
-                
-                # Create a client to interact with the Google Drive API
-                sop_client = gspread.authorize(creds)
-                
-                # Open the Google Sheet
-                sheet = sop_client.open("sop").sheet1
-                df = parse_sop_evaluation(sop_evaluation)
-                df = df.drop(0)
-                # st.dataframe(df)
-                # conn.write(df, sheet="Employee Performance", mode="append")
-                    # Convert DataFrame to a list of lists for appending
-                data_to_append = df.values.tolist()
-                sheet.append_rows(data_to_append, value_input_option="RAW")
-                st.success("Data appended to Google Sheets successfully!")
-                st.table(df)
+                try:
+                    feedback_criteria, sop_evaluation = process_feedback(feedback_text)
+                    feedback, criteria = process_criteria(feedback_criteria)
+                    left, right = st.columns([2, 1])
+                    # with left:
+                    st.subheader('Feedback')
+                    st.write(feedback)
+    
+                    st.subheader("Criteria Instruction In SOP:")
+                    st.write(criteria)
+                    
+                    st.subheader('Evaluation Based on SOP')
+                    # Load credentials from Streamlit secrets
+                    creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
+                    
+                    # Create a client to interact with the Google Drive API
+                    sop_client = gspread.authorize(creds)
+                    
+                    # Open the Google Sheet
+                    sheet = sop_client.open("sop").sheet1
+                    df = parse_sop_evaluation(sop_evaluation)
+                    df = df.drop(0)
+                    # st.dataframe(df)
+                    # conn.write(df, sheet="Employee Performance", mode="append")
+                        # Convert DataFrame to a list of lists for appending
+                    data_to_append = df.values.tolist()
+                    sheet.append_rows(data_to_append, value_input_option="RAW")
+                    st.success("Data appended to Google Sheets successfully!")
+                    st.table(df)
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
             
             suggested_alternatives_text = feedback_parts[1].strip()
             subject_start = suggested_alternatives_text.find("Subject:")
