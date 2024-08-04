@@ -676,6 +676,15 @@ def evaluator(client):
         if st.session_state.feedback:
             feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
             feedback_text = feedback_parts[0].strip()
+
+            # Load credentials from Streamlit secrets
+            creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
+            
+            # Create a client to interact with the Google Drive API
+            client = gspread.authorize(creds)
+            
+            # Open the Google Sheet
+            sheet = client.open_by_url(st.secrets["https://docs.google.com/spreadsheets/d/1WWGaGc-rVpMYhUjsxDuYDELynzQlq5XKVv3kDU1DuVU/"]).worksheet("Employee Performance")
             
             if feedback_text:
                 feedback_criteria, sop_evaluation = process_feedback(feedback_text)
@@ -691,6 +700,9 @@ def evaluator(client):
                 st.subheader('Evaluation Based on SOP')
                 df = parse_sop_evaluation(sop_evaluation)
                 df = df.drop(0)
+                data_to_append = df.values.tolist()
+                sheet.append_rows(data_to_append, value_input_option="RAW")
+                st.success("Data appended to Google Sheets successfully!")
                 st.table(df)
             
             suggested_alternatives_text = feedback_parts[1].strip()
