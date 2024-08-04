@@ -700,20 +700,20 @@ def evaluator(client):
                         st.secrets["gcp_service_account"],
                         scopes=scope
                     )
-                    st.write("hello there")
+                    # st.write("hello there")
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
                 try:
                     # Create a client to interact with the Google Drive API
                     sop_client = gspread.authorize(credentials)
-                    st.write("hello tere")
+                    # st.write("hello tere")
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
 
                 try:
                     # Open the Google Sheet
                     sheet = sop_client.open_by_key("1h9Mfg-VRZKm9YB9dhg5iguX_Yfg01BCyl2qzpvGPMcU").worksheet("Employee Performance")
-                    st.write('hellololo')
+                    # st.write('hellololo')
                     df = parse_sop_evaluation(sop_evaluation)
                     df = df.drop(0)
                     # st.dataframe(df)
