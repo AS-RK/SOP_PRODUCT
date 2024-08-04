@@ -673,7 +673,7 @@ def evaluator(client):
                             {"role": "user", "content": st.session_state.user_input}
                         ],
                         model="llama3-70b-8192",
-                        temperature=0.01,
+                        temperature=0,
                     )
                     st.session_state.feedback = completion.choices[0].message.content
                 except Exception as e:
@@ -767,6 +767,7 @@ def evaluator(client):
                 if st.session_state.evaluation_count > st.session_state.gsheet_count:
                     sheet.append_rows(data_to_append, value_input_option="RAW")
                     st.session_state.gsheet_count = st.session_state.gsheet_count + 1
+                    st.success("Record Updated")
             
             suggested_alternatives_text = feedback_parts[1].strip()
             subject_start = suggested_alternatives_text.find("Subject:")
