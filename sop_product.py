@@ -669,7 +669,7 @@ def evaluator(client):
                             {"role": "system", "content": prompt},
                             {"role": "user", "content": st.session_state.user_input}
                         ],
-                        model="llama3-8b-8192",
+                        model="llama3-70b-8192",
                         temperature=0,
                     )
                     st.session_state.feedback = completion.choices[0].message.content
@@ -889,7 +889,7 @@ def sop_creator(client):
                                 {"role": "system", "content": prompt},
                                 {"role": "user", "content": f"department:{st.session_state.department } purpose:{st.session_state.purpose} criteria:{st.session_state.criteria}"}
                             ],
-                            model="llama3-8b-8192",
+                            model="llama3-70b-8192",
                             temperature=0,
                         )
                 st.session_state.created_sop = completion.choices[0].message.content
