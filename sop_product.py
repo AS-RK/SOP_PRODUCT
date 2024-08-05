@@ -738,10 +738,10 @@ def evaluator(client):
                         'Client_Request_subject': st.session_state.fetched_subject,
                         'client_Request' : st.session_state.fetched_content,
                         'User_Email':st.session_state.user_input,
-                        'Grammar': [marks[0]],
-                        'Structure and Style': [marks[1]],
-                        'Empathy': [marks[2]],
-                        'Ownership': [marks[3]],
+                        'Grammar': int([marks[0]]),
+                        'Structure and Style': int([marks[1]]),
+                        'Empathy': int([marks[2]]),
+                        'Ownership': int([marks[3]]),
                         'Reason': [reason]
                     }
                     
