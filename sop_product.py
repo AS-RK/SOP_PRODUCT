@@ -730,6 +730,7 @@ def evaluator(client):
                     data = sheet.get_all_values()
                     marks = df['Mark (out of 10)'].tolist()
                     reason = ' '.join(df['Reason'].values)
+                    marks = [int(mark) for mark in marks]
                     
                     # Create a new DataFrame with criteria as columns and marks as a single row
                     transformed_data = {
