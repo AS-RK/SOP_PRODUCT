@@ -620,6 +620,8 @@ def evaluator(client):
         # if st.sidebar.button("Step 2: Client Request"):
         #     navigate_to_step(2)
         st.title("Step 3: Type your content to evaluate")
+        if not st.session_state.user_gmail:
+            st.session_state.user_gmail = st.text_input('Your Email Address',st.session_state.user_gmail)
         st.session_state.user_subject = st.text_area("Subject:",st.session_state.user_subject, height=50)
         st.session_state.user_msg= st.text_area("Message:",st.session_state.user_msg, height=400)
         st.session_state.user_input = f"subject: {st.session_state.user_subject} content:{st.session_state.user_msg}"
