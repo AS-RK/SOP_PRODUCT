@@ -839,12 +839,13 @@ def sop_creator(client):
     # st.checkbox("Grammer")
     st.session_state.department = st.text_input("Department:",st.session_state.department)
     st.session_state.purpose = st.text_input("Purpose of the SOP:", st.session_state.purpose)
-    st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 400)
+    st.session_state.procedure = st.text_area("Workflow procedures",st.session_state.procedure, height = 400)
+    st.session_state.criteria = st.text_area("Criteria to be Included in SOP",st.session_state.criteria, height = 200)
     if st.button("Create SOP"):
         if st.session_state.department and st.session_state.purpose and st.session_state.criteria:
             prompt =f"""
-                You are an SOP (Standard Operating Procedure) engineer tasked with creating a comprehensive SOP for the "mentioned br user". 
-                The purpose of this SOP is to "mentioned by user". Ensure that the SOP adheres to the following criteria:
+                You are an SOP (Standard Operating Procedure) engineer tasked with creating a comprehensive SOP for the {st.session_state.department}. 
+                The purpose of this SOP is to {st.session_state.purpose} and the workflow given by the user. Ensure that the SOP adheres to the following criteria:
                 
                 Introduction:
                 
@@ -886,7 +887,7 @@ def sop_creator(client):
                 Include methods for auditing and continuous improvement.
                 Criteria:
                 
-                Ensure the SOP meets the specific criteria mentioned by the user: "user gven criteria".
+                Ensure the SOP meets the specific criteria mentioned by the user: {st.session_state.criteria}.
                 Must Provide detailed instructions or guidelines on how to adhere to these criteria.
                 Appendices:
                 
@@ -895,7 +896,7 @@ def sop_creator(client):
                 completion = client.chat.completions.create(
                 messages=[
                                 {"role": "system", "content": prompt},
-                                {"role": "user", "content": f"department:{st.session_state.department } purpose:{st.session_state.purpose} criteria:{st.session_state.criteria}"}
+                                {"role": "user", "content": f"workflow Procedures{st.session_state.procedure}"}
                             ],
                             model="llama3-70b-8192",
                             temperature=0,
@@ -998,6 +999,8 @@ def main():
         st.session_state.gsheet_count = 0
     if 'sop_created' not in st.session_state:
         st.session_state.created_sop = ""
+    if 'procedure' not in st.session_state:
+        st.session_state.procedure = ""
 
     # gsheet_id = "1WWGaGc-rVpMYhUjsxDuYDELynzQlq5XKVv3kDU1DuVU"
     # workbook = get_workbook(gsheet_id)
