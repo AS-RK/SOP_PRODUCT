@@ -556,7 +556,7 @@ def evaluator(client):
         with st.expander("Upload File", expanded=False):
             uploaded_file = st.file_uploader("Choose a file", type=["txt", "pdf", "docx"])
             if st.button("Use default SOP"):
-                st.session_state.default_sop_content = load_default_sop_file()
+                st.session_state.sop_content = load_default_sop_file()
         
         if uploaded_file is not None:
             if uploaded_file.name.endswith(".txt"):
@@ -565,9 +565,9 @@ def evaluator(client):
                 st.session_state.sop_content = read_pdf(uploaded_file)
             elif uploaded_file.name.endswith(".docx"):
                 st.session_state.sop_content = read_docx(uploaded_file)
-        else:
-            if st.session_state.default_sop_content:
-                st.session_state.sop_content = st.session_state.default_sop_content
+        # else:
+        #     if st.session_state.default_sop_content:
+        #         st.session_state.sop_content = st.session_state.default_sop_content
         # st.session_state.sop_content = sop_content
         st.session_state.sop_content = st.text_area("Edit Your SOP Content", st.session_state.sop_content, height=300)
         col1, col3 = st.columns([1,1])
