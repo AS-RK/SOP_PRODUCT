@@ -735,6 +735,9 @@ def evaluator(client):
                     transformed_data = {
                         'User': st.session_state.user_gmail,
                         'Time': [datetime.now().strftime('%Y-%m-%d %H:%M:%S')],
+                        'Client_Request_subject': st.session_state.fetched_subject,
+                        'client_Request' : st.session_state.fetched_content,
+                        'User_Email':st.session_state.user_input,
                         'Grammar': [marks[0]],
                         'Structure and Style': [marks[1]],
                         'Empathy': [marks[2]],
