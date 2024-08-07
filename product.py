@@ -81,6 +81,60 @@ def get_message_details(message):
     return subject, "No content available"
 
 # Function to fetch the latest email from a sender
+# def fetch_latest_email():
+#     if st.button("Fetch Gmail"):
+#         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+#             imap_server = "imap.gmail.com"
+            
+#             # Connect to the IMAP server
+#             mail = imaplib.IMAP4_SSL(imap_server)
+#             try:
+#                 mail.login(st.session_state.user_gmail, st.session_state.password)
+#             except Exception as e:
+#                 st.error("invalid username or password")
+#             mail.select("inbox")
+            
+#             # Search for emails from the specific sender
+#             status, data = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
+            
+#             email_ids = data[0].split()
+#             if not email_ids:
+#                 mail.logout()
+#                 return None, None, None
+            
+#             latest_email_id = email_ids[-1]
+#             status, msg_data = mail.fetch(latest_email_id, "(RFC822)")
+#             raw_email = msg_data[0][1]
+#             original_email = email.message_from_bytes(raw_email)
+            
+#             mail.logout()
+            
+#             # return original_email, latest_email_id, raw_email
+        
+#         # # Function to display email content
+#         # def display_email_content(original_email):
+#             st.session_state.fetched_subject = original_email["Subject"]
+#             st.session_state.fetched_sender_gmail = original_email["From"]
+#             st.session_state.msg_id = original_email["Message-ID"]
+            
+#             st.write(f"**Subject:** {st.session_state.fetched_subject}")
+#             st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
+            
+#             # Extract and display the body of the email
+#             email_body = ""
+#             if original_email.is_multipart():
+#                 for part in original_email.walk():
+#                     if part.get_content_type() == "text/plain":
+#                         st.session_state.fetched_content = part.get_payload(decode=True).decode()
+#                         break
+#             else:
+#                 st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
+            
+#             st.write(f"**Body:**\n{st.session_state.fetched_content}")
+#         else:
+#             st.error("Please fill all the field")
+   
+    # return original_subject, original_from, original_message_id, email_body
 def fetch_latest_email():
     if st.button("Fetch Gmail"):
         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
@@ -91,7 +145,9 @@ def fetch_latest_email():
             try:
                 mail.login(st.session_state.user_gmail, st.session_state.password)
             except Exception as e:
-                st.error("invalid username or password")
+                st.error("Invalid username or password")
+                return
+            
             mail.select("inbox")
             
             # Search for emails from the specific sender
@@ -100,41 +156,41 @@ def fetch_latest_email():
             email_ids = data[0].split()
             if not email_ids:
                 mail.logout()
-                return None, None, None
+                st.error("No emails found from the specified sender")
+                return
             
-            latest_email_id = email_ids[-1]
-            status, msg_data = mail.fetch(latest_email_id, "(RFC822)")
-            raw_email = msg_data[0][1]
-            original_email = email.message_from_bytes(raw_email)
+            emails = []
+            for email_id in email_ids:
+                status, msg_data = mail.fetch(email_id, "(RFC822)")
+                raw_email = msg_data[0][1]
+                original_email = email.message_from_bytes(raw_email)
+                emails.append(original_email)
             
             mail.logout()
             
-            # return original_email, latest_email_id, raw_email
-        
-        # # Function to display email content
-        # def display_email_content(original_email):
-            st.session_state.fetched_subject = original_email["Subject"]
-            st.session_state.fetched_sender_gmail = original_email["From"]
-            st.session_state.msg_id = original_email["Message-ID"]
-            
-            st.write(f"**Subject:** {st.session_state.fetched_subject}")
-            st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
-            
-            # Extract and display the body of the email
-            email_body = ""
-            if original_email.is_multipart():
-                for part in original_email.walk():
-                    if part.get_content_type() == "text/plain":
-                        st.session_state.fetched_content = part.get_payload(decode=True).decode()
-                        break
-            else:
-                st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
-            
-            st.write(f"**Body:**\n{st.session_state.fetched_content}")
+            # Display emails as buttons
+            for i, original_email in enumerate(emails):
+                if st.button(f"Email {i+1}: {original_email['Subject']}"):
+                    st.session_state.fetched_subject = original_email["Subject"]
+                    st.session_state.fetched_sender_gmail = original_email["From"]
+                    st.session_state.msg_id = original_email["Message-ID"]
+                    
+                    st.write(f"**Subject:** {st.session_state.fetched_subject}")
+                    st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
+                    
+                    # Extract and display the body of the email
+                    email_body = ""
+                    if original_email.is_multipart():
+                        for part in original_email.walk():
+                            if part.get_content_type() == "text/plain":
+                                st.session_state.fetched_content = part.get_payload(decode=True).decode()
+                                break
+                    else:
+                        st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
+                    
+                    st.write(f"**Body:**\n{st.session_state.fetched_content}")
         else:
-            st.error("Please fill all the field")
-    
-    # return original_subject, original_from, original_message_id, email_body
+            st.error("Please fill all the fields")
 
 # Function to send a reply email
 def send_reply_email():
