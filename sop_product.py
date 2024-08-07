@@ -910,10 +910,10 @@ def sop_creator(client):
             file_name = st.text_input("Enter the name of the file to save (e.g., improved_text.txt):", "sop.txt")
     
                 # Button to save the edited content to a new file
-            if st.button("Save to new file") or st.session_state.created_sop:
+            if st.session_state.created_sop:
                     # Save the edited content to a new file
-                st.sidebar.download_button(
-                        label="Download improved text file",
+                st.download_button(
+                        label="Download SOP file",
                         data=st.session_state.created_sop.encode('utf-8'),
                         file_name=file_name,
                         mime="text/plain"
