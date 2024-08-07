@@ -170,7 +170,8 @@ def fetch_latest_email():
             
             # Display emails as buttons
             for i, original_email in enumerate(emails):
-                if st.button(f"Email {i+1}: {original_email['Subject']}"):
+                if st.button(f"Email {i+1}: {original_email['Subject']}") or st.session_state.fetch_check:
+                    st.session_state.fetch_check = True
                     st.session_state.fetched_subject = original_email["Subject"]
                     st.session_state.fetched_sender_gmail = original_email["From"]
                     st.session_state.msg_id = original_email["Message-ID"]
@@ -999,6 +1000,8 @@ def main():
     
     if 'sop_uploaded' not in st.session_state:
         st.session_state.sop_uploaded = False
+    if 'fetch_check' not in st.session_state:
+        st.session_state.fetch_check = False
     if 'sop_content' not in st.session_state:
         st.session_state.sop_content = ''
     if 'gmail_fetched' not in st.session_state:
