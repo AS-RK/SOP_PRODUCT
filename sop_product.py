@@ -790,7 +790,7 @@ def evaluator(client):
             st.title("Suggested Alternatives")
             st.session_state.subject = st.text_area("Subject", st.session_state.subject, height=100)
             st.session_state.content = st.text_area("Content", st.session_state.content, height=300)
-            st.text_area("Content", st.session_state.feedback, height=300)
+            # st.text_area("Content", st.session_state.feedback, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
             # if st.button("Send Email",key = 'process_start'):
