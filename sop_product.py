@@ -147,7 +147,7 @@ def send_reply_email():
     password = st.text_input("Password", type="password")
     st.session_state.subject = st.text_input('Subject',st.session_state.subject)
     subject = st.session_state.subject
-    message_text = st.text_area('Message',st.session_state.content,height=500)
+    st.session_state.content = st.text_area('Message',st.session_state.content,height=500)
     message_text = st.session_state.content
     if st.button('Send Email',key = 'process_end'):
         
@@ -789,6 +789,7 @@ def evaluator(client):
             st.title("Suggested Alternatives")
             st.session_state.subject = st.text_area("Subject", st.session_state.subject, height=100)
             st.session_state.content = st.text_area("Content", st.session_state.content, height=300)
+            st.text_area("Content", st.session_state.feedback, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
             # if st.button("Send Email",key = 'process_start'):
