@@ -141,13 +141,14 @@ def send_reply_email():
     st.title('Send an Email via Gmail')
     st.write('Enter the details below to send an email.')
 
-    sender_email = st.text_input('Sender Email Address',st.session_state.user_gmail)
-    recipient_email = st.text_input('Recipient Email Address',st.session_state.gmail_sender)
+    sender_email = st.text_input('Employee Email Address',st.session_state.user_gmail)
+    recipient_email = st.text_input('Client Email Address',st.session_state.gmail_sender)
     Cc = st.text_input('Cc Email Address')
     password = st.text_input("Password", type="password")
-    subject = st.text_input('Subject',st.session_state.subject)
+    st.session_state.subject = st.text_input('Subject',st.session_state.subject)
+    subject = st.session_state.subject
     message_text = st.text_area('Message',st.session_state.content,height=500)
-
+    message_text = st.session_state.content
     if st.button('Send Email',key = 'process_end'):
         
         msg = EmailMessage()
@@ -590,8 +591,8 @@ def evaluator(client):
         
         if option == 'Fetch Client Request From Gmail':
             st.write('Enter your gmail and the sender email address and the date to fetch your Gmail messages from that sender.')
-            st.session_state.user_gmail = st.text_input('Your Email Address',st.session_state.user_gmail, key='usergmail')
-            st.session_state.gmail_sender = st.text_input('Sender Email Address',st.session_state.gmail_sender, key='sender_email')
+            st.session_state.user_gmail = st.text_input('Employee Email Address',st.session_state.user_gmail, key='usergmail')
+            st.session_state.gmail_sender = st.text_input('Client Email Address',st.session_state.gmail_sender, key='sender_email')
             st.session_state.password = st.text_input("Password", type="password")
             # try:
             fetch_latest_email()
