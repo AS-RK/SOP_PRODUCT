@@ -782,7 +782,7 @@ def evaluator(client):
             suggested_alternatives_text = feedback_parts[1].strip()
             subject_start = suggested_alternatives_text.find("Subject:**")
             subject_end = suggested_alternatives_text.find("\n\n", subject_start)
-            st.session_state.subject = suggested_alternatives_text[subject_start + len("Subject:"):subject_end].strip()
+            st.session_state.subject = suggested_alternatives_text[subject_start + len("Subject:**"):subject_end].strip()
             content_start = subject_end + 2
             st.session_state.content = suggested_alternatives_text[content_start:].strip()
     
