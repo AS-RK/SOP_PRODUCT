@@ -646,18 +646,18 @@ def evaluator(client):
                 
                 ### Evaluation Task
                 
-                1. **Client's Issue:**
+                1. Client's Issue:
                    - Clearly identify the specific problem or concern mentioned by the client in their email.
                 
-                2. **Constructive Feedback:**
+                2. Constructive Feedback:
                    - Provide actionable feedback aimed at improving future responses.
                    - Ensure feedback is specific and provides clear examples where applicable.
                 
-                3. **Criteria Instruction in SOP:**
+                3. Criteria Instruction in SOP:
                    - Go through the SOP.
                    - Provide the instruction for each criterion from the SOP.
                 
-                4. **Evaluation Based on SOP:**
+                4. Evaluation Based on SOP:
                    - For each criterion in the SOP, provide a mark (out of 10) with a reason for the score within 25 words.
                    - Present the criteria in a 2D list format:
                    
@@ -668,7 +668,7 @@ def evaluator(client):
                      | ... | ... | ... |
                    - Give the mark as a single integer.
                 
-                5. **Suggested Alternatives:**
+                5. Suggested Alternatives:
                    - Suggest better alternative email content, fully structured with subject and body, that aligns with the SOP and addresses the client's concern effectively.
                 """
     
