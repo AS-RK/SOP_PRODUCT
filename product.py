@@ -685,7 +685,7 @@ def evaluator(client):
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
         if st.session_state.feedback:
-            st.text_area('chheck', st.session_state.feedback,height=600)
+            # st.text_area('chheck', st.session_state.feedback,height=600)
             feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
             feedback_text = feedback_parts[0].strip()
             # st.write(st.secrets)
@@ -743,12 +743,12 @@ def evaluator(client):
                             # Skip non-numeric values like 'N/A'
                             continue
                     criteria_marks_dict = dict(zip(criteria, marks))
-                    st.write(data[0])
+                    # st.write(data[0])
                     reason = ' | '.join(df['Reason'].values)
-                    st.write(reason)
+                    # st.write(reason)
                     # reason = reason.replace("'", "\\'").replace('\n', ' ')
                     # reason = str(reason)
-                    st.write(len(data))
+                    # st.write(len(data))
                     batch_data = []
                     if data and len(data) > 1:
                         columns = data[0]
