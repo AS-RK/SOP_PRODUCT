@@ -738,7 +738,7 @@ def evaluator(client):
                     criteria_marks_dict = dict(zip(criteria, marks))
                     st.write(criteria_marks_dict)
                     reason = ' '.join(df['Reason'].values)
-                    print(len(data))
+                    st.write(len(data))
                     if data and len(data) > 1:
                         columns = data[0]
                     else:
