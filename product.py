@@ -736,7 +736,7 @@ def evaluator(client):
                     marks = df['Mark (out of 10)'].tolist()
                     marks = [int(mark) for mark in marks]
                     criteria_marks_dict = dict(zip(criteria, marks))
-                    st.write(criteria_marks_dict)
+                    st.write(data[0])
                     reason = ' '.join(df['Reason'].values)
                     st.write(len(data))
                     if data and len(data) > 1:
