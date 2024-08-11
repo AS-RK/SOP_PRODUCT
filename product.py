@@ -752,7 +752,7 @@ def evaluator(client):
                     # Create a new DataFrame with criteria as columns and marks as a single row
                     transformed_data = {
                         'User': st.session_state.user_gmail,
-                        'Time': [datetime.now().strftime('%Y-%m-%d %H:%M:%S')],
+                        'Time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                         'Client_Request_subject': st.session_state.fetched_subject,
                         'client_Request' : st.session_state.fetched_content,
                         'User_Email':st.session_state.user_input,
