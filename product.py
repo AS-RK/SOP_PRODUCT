@@ -738,6 +738,7 @@ def evaluator(client):
                     criteria_marks_dict = dict(zip(criteria, marks))
                     st.write(data[0])
                     reason = ' | '.join(df['Reason'].values)
+                    st.write(reason)
                     # reason = reason.replace("'", "\\'").replace('\n', ' ')
                     # reason = str(reason)
                     st.write(len(data))
