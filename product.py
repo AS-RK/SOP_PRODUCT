@@ -812,6 +812,8 @@ def evaluator(client):
             subject_end = suggested_alternatives_text.find("\n\n", subject_start)
             st.session_state.subject = suggested_alternatives_text[subject_start + len("Subject:**"):subject_end].strip()
             content_start = suggested_alternatives_text.find("Dear")
+            if content_start == -1:
+                content_start = suggested_alternatives_text.find("Hi")
             # content_start = subject_end + 2
             st.session_state.content = suggested_alternatives_text[content_start:].strip()
     
