@@ -722,7 +722,7 @@ def evaluator(client):
 
                 try:
                     # Open the Google Sheet
-                    sheet = sop_client.open_by_key("1h9Mfg-VRZKm9YB9dhg5iguX_Yfg01BCyl2qzpvGPMcU").worksheet("Employee Performance")
+                    sheet = sop_client.open_by_key("1h9Mfg-VRZKm9YB9dhg5iguX_Yfg01BCyl2qzpvGPMcU").worksheet("Employee Performance 1")
                     # st.write('hellololo')
                     df = parse_sop_evaluation(sop_evaluation)
                     df = df.drop(0)
