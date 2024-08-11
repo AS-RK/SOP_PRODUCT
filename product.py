@@ -734,7 +734,13 @@ def evaluator(client):
                     data = sheet.get_all_values()
                     criteria = df['Criteria'].tolist()
                     marks = df['Mark (out of 10)'].tolist()
-                    marks = [int(mark) for mark in marks]
+                    marks = []
+                    for mark in df['Mark (out of 10)']:
+                        try:
+                            marks.append(int(mark))
+                        except ValueError:
+                            # Skip non-numeric values like 'N/A'
+                            continue
                     criteria_marks_dict = dict(zip(criteria, marks))
                     st.write(data[0])
                     reason = ' | '.join(df['Reason'].values)
