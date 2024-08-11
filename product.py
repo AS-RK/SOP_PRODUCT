@@ -732,8 +732,10 @@ def evaluator(client):
                     # st.write(df)
                     # st.write('table')
                     data = sheet.get_all_values()
-                    st.write(df['Criteria'].tolist())
+                    criteria = df['Criteria'].tolist()
                     marks = df['Mark (out of 10)'].tolist()
+                    criteria_marks_dict = dict(zip(criteria, marks))
+                    st.write(criteria_marks_dict)
                     reason = ' '.join(df['Reason'].values)
                     marks = [int(mark) for mark in marks]
                     
