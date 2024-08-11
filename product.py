@@ -81,60 +81,6 @@ def get_message_details(message):
     return subject, "No content available"
 
 # Function to fetch the latest email from a sender
-# def fetch_latest_email():
-#     if st.button("Fetch Gmail"):
-#         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
-#             imap_server = "imap.gmail.com"
-            
-#             # Connect to the IMAP server
-#             mail = imaplib.IMAP4_SSL(imap_server)
-#             try:
-#                 mail.login(st.session_state.user_gmail, st.session_state.password)
-#             except Exception as e:
-#                 st.error("invalid username or password")
-#             mail.select("inbox")
-            
-#             # Search for emails from the specific sender
-#             status, data = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
-            
-#             email_ids = data[0].split()
-#             if not email_ids:
-#                 mail.logout()
-#                 return None, None, None
-            
-#             latest_email_id = email_ids[-1]
-#             status, msg_data = mail.fetch(latest_email_id, "(RFC822)")
-#             raw_email = msg_data[0][1]
-#             original_email = email.message_from_bytes(raw_email)
-            
-#             mail.logout()
-            
-#             # return original_email, latest_email_id, raw_email
-        
-#         # # Function to display email content
-#         # def display_email_content(original_email):
-#             st.session_state.fetched_subject = original_email["Subject"]
-#             st.session_state.fetched_sender_gmail = original_email["From"]
-#             st.session_state.msg_id = original_email["Message-ID"]
-            
-#             st.write(f"**Subject:** {st.session_state.fetched_subject}")
-#             st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
-            
-#             # Extract and display the body of the email
-#             email_body = ""
-#             if original_email.is_multipart():
-#                 for part in original_email.walk():
-#                     if part.get_content_type() == "text/plain":
-#                         st.session_state.fetched_content = part.get_payload(decode=True).decode()
-#                         break
-#             else:
-#                 st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
-            
-#             st.write(f"**Body:**\n{st.session_state.fetched_content}")
-#         else:
-#             st.error("Please fill all the field")
-   
-    # return original_subject, original_from, original_message_id, email_body
 def fetch_latest_email():
     if st.button("Fetch Gmail"):
         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
@@ -145,9 +91,7 @@ def fetch_latest_email():
             try:
                 mail.login(st.session_state.user_gmail, st.session_state.password)
             except Exception as e:
-                st.error("Invalid username or password")
-                return
-            
+                st.error("invalid username or password")
             mail.select("inbox")
             
             # Search for emails from the specific sender
@@ -156,55 +100,55 @@ def fetch_latest_email():
             email_ids = data[0].split()
             if not email_ids:
                 mail.logout()
-                st.error("No emails found from the specified sender")
-                return
+                return None, None, None
             
-            emails = []
-            for email_id in email_ids:
-                status, msg_data = mail.fetch(email_id, "(RFC822)")
-                raw_email = msg_data[0][1]
-                original_email = email.message_from_bytes(raw_email)
-                emails.append(original_email)
+            latest_email_id = email_ids[-1]
+            status, msg_data = mail.fetch(latest_email_id, "(RFC822)")
+            raw_email = msg_data[0][1]
+            original_email = email.message_from_bytes(raw_email)
             
             mail.logout()
             
-            # Display emails as buttons
-            for i, original_email in enumerate(emails):
-                if st.button(f"Email {i+1}: {original_email['Subject']}") or st.session_state.fetch_check:
-                    st.session_state.fetch_check = True
-                    st.session_state.fetched_subject = original_email["Subject"]
-                    st.session_state.fetched_sender_gmail = original_email["From"]
-                    st.session_state.msg_id = original_email["Message-ID"]
-                    
-                    st.write(f"**Subject:** {st.session_state.fetched_subject}")
-                    st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
-                    
-                    # Extract and display the body of the email
-                    email_body = ""
-                    if original_email.is_multipart():
-                        for part in original_email.walk():
-                            if part.get_content_type() == "text/plain":
-                                st.session_state.fetched_content = part.get_payload(decode=True).decode()
-                                break
-                    else:
-                        st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
-                    
-                    st.write(f"**Body:**\n{st.session_state.fetched_content}")
+            # return original_email, latest_email_id, raw_email
+        
+        # # Function to display email content
+        # def display_email_content(original_email):
+            st.session_state.fetched_subject = original_email["Subject"]
+            st.session_state.fetched_sender_gmail = original_email["From"]
+            st.session_state.msg_id = original_email["Message-ID"]
+            
+            st.write(f"**Subject:** {st.session_state.fetched_subject}")
+            st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
+            
+            # Extract and display the body of the email
+            email_body = ""
+            if original_email.is_multipart():
+                for part in original_email.walk():
+                    if part.get_content_type() == "text/plain":
+                        st.session_state.fetched_content = part.get_payload(decode=True).decode()
+                        break
+            else:
+                st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
+            
+            st.write(f"**Body:**\n{st.session_state.fetched_content}")
         else:
-            st.error("Please fill all the fields")
+            st.error("Please fill all the field")
+    
+    # return original_subject, original_from, original_message_id, email_body
 
 # Function to send a reply email
 def send_reply_email():
     st.title('Send an Email via Gmail')
     st.write('Enter the details below to send an email.')
 
-    sender_email = st.text_input('Sender Email Address',st.session_state.user_gmail)
-    recipient_email = st.text_input('Recipient Email Address',st.session_state.gmail_sender)
+    sender_email = st.text_input('Employee Email Address',st.session_state.user_gmail)
+    recipient_email = st.text_input('Client Email Address',st.session_state.gmail_sender)
     Cc = st.text_input('Cc Email Address')
     password = st.text_input("Password", type="password")
-    subject = st.text_input('Subject',st.session_state.subject)
-    message_text = st.text_area('Message',st.session_state.content,height=500)
-
+    st.session_state.subject = st.text_input('Subject',st.session_state.subject)
+    subject = st.session_state.subject
+    st.session_state.content = st.text_area('Message',st.session_state.content,height=500)
+    message_text = st.session_state.content
     if st.button('Send Email',key = 'process_end'):
         
         msg = EmailMessage()
@@ -647,8 +591,8 @@ def evaluator(client):
         
         if option == 'Fetch Client Request From Gmail':
             st.write('Enter your gmail and the sender email address and the date to fetch your Gmail messages from that sender.')
-            st.session_state.user_gmail = st.text_input('Your Email Address',st.session_state.user_gmail, key='usergmail')
-            st.session_state.gmail_sender = st.text_input('Sender Email Address',st.session_state.gmail_sender, key='sender_email')
+            st.session_state.user_gmail = st.text_input('Employee Email Address',st.session_state.user_gmail, key='usergmail')
+            st.session_state.gmail_sender = st.text_input('Client Email Address',st.session_state.gmail_sender, key='sender_email')
             st.session_state.password = st.text_input("Password", type="password")
             # try:
             fetch_latest_email()
@@ -702,18 +646,18 @@ def evaluator(client):
                 
                 ### Evaluation Task
                 
-                1. **Client's Issue:**
+                1. Client's Issue:
                    - Clearly identify the specific problem or concern mentioned by the client in their email.
                 
-                2. **Constructive Feedback:**
+                2. Constructive Feedback:
                    - Provide actionable feedback aimed at improving future responses.
                    - Ensure feedback is specific and provides clear examples where applicable.
                 
-                3. **Criteria Instruction in SOP:**
+                3. Criteria Instruction in SOP:
                    - Go through the SOP.
                    - Provide the instruction for each criterion from the SOP.
                 
-                4. **Evaluation Based on SOP:**
+                4. Evaluation Based on SOP:
                    - For each criterion in the SOP, provide a mark (out of 10) with a reason for the score within 25 words.
                    - Present the criteria in a 2D list format:
                    
@@ -724,7 +668,7 @@ def evaluator(client):
                      | ... | ... | ... |
                    - Give the mark as a single integer.
                 
-                5. **Suggested Alternatives:**
+                5. Suggested Alternatives:
                    - Suggest better alternative email content, fully structured with subject and body, that aligns with the SOP and addresses the client's concern effectively.
                 """
     
@@ -836,15 +780,17 @@ def evaluator(client):
                     st.success("Record Updated")
             
             suggested_alternatives_text = feedback_parts[1].strip()
-            subject_start = suggested_alternatives_text.find("Subject:")
+            subject_start = suggested_alternatives_text.find("Subject:**")
             subject_end = suggested_alternatives_text.find("\n\n", subject_start)
-            st.session_state.subject = suggested_alternatives_text[subject_start + len("Subject:"):subject_end].strip()
-            content_start = subject_end + 2
+            st.session_state.subject = suggested_alternatives_text[subject_start + len("Subject:**"):subject_end].strip()
+            content_start = suggested_alternatives_text.find("Dear")
+            # content_start = subject_end + 2
             st.session_state.content = suggested_alternatives_text[content_start:].strip()
     
             st.title("Suggested Alternatives")
             st.session_state.subject = st.text_area("Subject", st.session_state.subject, height=100)
             st.session_state.content = st.text_area("Content", st.session_state.content, height=300)
+            # st.text_area("Content", st.session_state.feedback, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
             
             # if st.button("Send Email",key = 'process_start'):
@@ -1000,8 +946,6 @@ def main():
     
     if 'sop_uploaded' not in st.session_state:
         st.session_state.sop_uploaded = False
-    if 'fetch_check' not in st.session_state:
-        st.session_state.fetch_check = False
     if 'sop_content' not in st.session_state:
         st.session_state.sop_content = ''
     if 'gmail_fetched' not in st.session_state:
