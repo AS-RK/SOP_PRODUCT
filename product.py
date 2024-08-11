@@ -742,7 +742,7 @@ def evaluator(client):
                     if data and len(data) > 1:
                         columns = data[0]
                     else:
-                        columns = [user, date, Client_Request_subject, client_Request, User_Email,	Reason]
+                        columns = ['User', 'Time', 'Client_Request_subject', 'client_Request', 'User_Email', 'Reason']
                     # Create a new DataFrame with criteria as columns and marks as a single row
                     transformed_data = {
                         'User': st.session_state.user_gmail,
@@ -752,11 +752,11 @@ def evaluator(client):
                         'User_Email':st.session_state.user_input,
                         'Reason': [reason]
                     }
-                    st.write(transformed_data)
+                    # st.write(transformed_data)
                     modi_transformed_data = transformed_data | criteria_marks_dict
-                    st.write(modi_transformed_data)
+                    # st.write(modi_transformed_data)
                     pre_transformed_df = pd.DataFrame(modi_transformed_data, columns = columns)
-                    st.write(pre_transformed_df)
+                    # st.write(pre_transformed_df)
                     transformed_df = pre_transformed_df.fillna('')
                     data_to_append = transformed_df.values.tolist()
                     # st.write(data)
