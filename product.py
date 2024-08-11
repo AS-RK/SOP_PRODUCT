@@ -792,7 +792,7 @@ def evaluator(client):
                     sheet.clear()
                     try:
                         sheet.append_rows([columns] + data_to_append)
-                    except exception as e:
+                    except gspread.exceptions.APIError as e:
                         st.write(e)
                     st.session_state.gsheet_count = st.session_state.gsheet_count + 1
                     st.success("Record Updated")
