@@ -745,7 +745,7 @@ def evaluator(client):
                     batch_data = []
                     if data and len(data) > 1:
                         columns = data[0]
-                        batch_data = [dict(zip(columns, row)) for row in data]
+                        batch_data = [dict(zip(columns, row)) for row in data[1:]]
                     else:
                         columns = ['User', 'Time', 'Client_Request_subject', 'client_Request', 'User_Email', 'Reason']
 
