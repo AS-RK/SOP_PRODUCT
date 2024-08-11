@@ -734,10 +734,11 @@ def evaluator(client):
                     data = sheet.get_all_values()
                     criteria = df['Criteria'].tolist()
                     marks = df['Mark (out of 10)'].tolist()
+                    marks = [int(mark) for mark in marks]
                     criteria_marks_dict = dict(zip(criteria, marks))
                     st.write(criteria_marks_dict)
                     reason = ' '.join(df['Reason'].values)
-                    marks = [int(mark) for mark in marks]
+                    print(len(data))
                     if data and len(data) > 1:
                         columns = data[0]
                     else:
