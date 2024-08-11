@@ -755,6 +755,7 @@ def evaluator(client):
                     # st.write(transformed_data)
                     modi_transformed_data = transformed_data | criteria_marks_dict
                     # st.write(modi_transformed_data)
+                    
                     pre_transformed_df = pd.DataFrame(modi_transformed_data, columns = columns)
                     # st.write(pre_transformed_df)
                     transformed_df = pre_transformed_df.fillna('')
@@ -782,7 +783,8 @@ def evaluator(client):
                 # data_to_append = [df.columns.tolist()] + df.values.tolist()
                         
                 if st.session_state.evaluation_count > st.session_state.gsheet_count:
-                    sheet.append_rows(data_to_append)
+                    sheet.clear()
+                    sheet.append_rows([columns] + data_to_append)
                     st.session_state.gsheet_count = st.session_state.gsheet_count + 1
                     st.success("Record Updated")
             
