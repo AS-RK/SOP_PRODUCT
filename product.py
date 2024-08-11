@@ -790,7 +790,10 @@ def evaluator(client):
                         
                 if st.session_state.evaluation_count > st.session_state.gsheet_count:
                     sheet.clear()
-                    sheet.append_rows([columns] + data_to_append)
+                    try:
+                        sheet.append_rows([columns] + data_to_append)
+                    except exception as e:
+                        st.write(e)
                     st.session_state.gsheet_count = st.session_state.gsheet_count + 1
                     st.success("Record Updated")
             
