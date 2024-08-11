@@ -752,8 +752,11 @@ def evaluator(client):
                         'User_Email':st.session_state.user_input,
                         'Reason': [reason]
                     }
+                    st.write(transformed_data)
                     modi_transformed_data = transformed_data | criteria_marks_dict
+                    st.write(modi_transformed_data)
                     pre_transformed_df = pd.DataFrame(modi_transformed_data, columns = columns)
+                    st.write(pre_transformed_df)
                     transformed_df = pre_transformed_df.fillna('')
                     data_to_append = transformed_df.values.tolist()
                     # st.write(data)
