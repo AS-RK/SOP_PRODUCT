@@ -738,6 +738,7 @@ def evaluator(client):
                     criteria_marks_dict = dict(zip(criteria, marks))
                     st.write(data[0])
                     reason = ' '.join(df['Reason'].values)
+                    reason = str(reason)
                     st.write(len(data))
                     batch_data = []
                     if data and len(data) > 1:
