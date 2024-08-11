@@ -741,8 +741,13 @@ def evaluator(client):
                     st.write(len(data))
                     if data and len(data) > 1:
                         columns = data[0]
+                        batch_data = [dict(zip(columns, row)) for row in data[1:]]
                     else:
                         columns = ['User', 'Time', 'Client_Request_subject', 'client_Request', 'User_Email', 'Reason']
+
+                    for c in criteria:
+                        if c not in columns:
+                            columns.insert(-1,c)
                     # Create a new DataFrame with criteria as columns and marks as a single row
                     transformed_data = {
                         'User': st.session_state.user_gmail,
@@ -755,7 +760,7 @@ def evaluator(client):
                     # st.write(transformed_data)
                     modi_transformed_data = transformed_data | criteria_marks_dict
                     # st.write(modi_transformed_data)
-                    
+                    batch_data.append(modi_transformed_data)
                     pre_transformed_df = pd.DataFrame(modi_transformed_data, columns = columns)
                     # st.write(pre_transformed_df)
                     transformed_df = pre_transformed_df.fillna('')
