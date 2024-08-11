@@ -739,6 +739,7 @@ def evaluator(client):
                     st.write(data[0])
                     reason = ' '.join(df['Reason'].values)
                     st.write(len(data))
+                    batch_data = []
                     if data and len(data) > 1:
                         columns = data[0]
                         batch_data = [dict(zip(columns, row)) for row in data]
