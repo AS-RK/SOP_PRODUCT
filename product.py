@@ -685,6 +685,7 @@ def evaluator(client):
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
         if st.session_state.feedback:
+            st.text_area('chheck', st.session_state.feedback,height=600)
             feedback_parts = st.session_state.feedback.split("Suggested Alternatives:")
             feedback_text = feedback_parts[0].strip()
             # st.write(st.secrets)
