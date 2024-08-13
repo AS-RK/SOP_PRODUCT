@@ -311,7 +311,7 @@ def get_email_body(original_email):
     return ""
 
 def fetch_latest_email():
-    if st.button("Fetch Gmail")
+    if st.button("Fetch Gmail"):
         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
             imap_server = "imap.gmail.com"
             
