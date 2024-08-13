@@ -577,16 +577,28 @@ def fetch_sent_emails():
     else:
         st.error("Please fill all the fields")
 
+# def combine_emails():
+#     # Combine received and sent emails
+#     if 'received_emails' in st.session_state and 'sent_emails' in st.session_state:
+#         st.session_state.emails = st.session_state.received_emails + st.session_state.sent_emails
+#     elif 'received_emails' in st.session_state:
+#         st.session_state.emails = st.session_state.received_emails
+#     elif 'sent_emails' in st.session_state:
+#         st.session_state.emails = st.session_state.sent_emails
+#     else:
+#         st.session_state.emails = []
 def combine_emails():
-    # Combine received and sent emails
     if 'received_emails' in st.session_state and 'sent_emails' in st.session_state:
-        st.session_state.emails = st.session_state.received_emails + st.session_state.sent_emails
+        received_subjects = {email['subject'] for email in st.session_state.received_emails}
+        sent_emails_to_include = [email for email in st.session_state.sent_emails if email['subject'] in received_subjects]
+        st.session_state.emails = st.session_state.received_emails + sent_emails_to_include
     elif 'received_emails' in st.session_state:
         st.session_state.emails = st.session_state.received_emails
     elif 'sent_emails' in st.session_state:
-        st.session_state.emails = st.session_state.sent_emails
+        st.session_state.emails = []  # No matching subjects to include sent emails alone
     else:
         st.session_state.emails = []
+
 
 def filter_emails(filter_option):
     if filter_option == "Pending Request":
@@ -1123,7 +1135,7 @@ def evaluator(client):
             #     st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
             if st.button("Fetch Emails"):
                 fetch_received_emails()
-                # fetch_sent_emails()
+                fetch_sent_emails()
             # if st.session_state.email_count_total:
             #     st.write(f"Total Request is: {st.session_state.email_count_total}")
             
