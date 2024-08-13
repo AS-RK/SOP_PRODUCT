@@ -19,7 +19,8 @@ from email.message import EmailMessage
 import smtplib
 import gspread
 from google.oauth2.service_account import Credentials
-import re
+
+
 
 # Set up the necessary scopes and credentials file
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send','https://www.googleapis.com/auth/gmail.modify']
@@ -81,6 +82,13 @@ def get_message_details(message):
                 return subject, body_decoded
     return subject, "No content available"
 
+def remove_prefix(subject):
+    prefixes = ["Re:", "Fwd:", "Fw:", "RE:", "FWD:", "FW:"]
+    for prefix in prefixes:
+        if subject.startswith(prefix):
+            return subject[len(prefix):].strip()
+    return subject.strip()
+
 def count_email():
     imap_server = 'imap.gmail.com'
     email_user = st.session_state.user_gmail
@@ -91,7 +99,6 @@ def count_email():
     mail.select('inbox')  # Select the mailbox you want to use
     
     # Search for emails from a specific sender
-    sender_email = 'rajk0067890@gmail.com'
     status, messages = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
     
     # Get the list of email IDs
@@ -100,16 +107,15 @@ def count_email():
     # Use a set to store unique subjects
     unique_subjects = set()
     
-    # Regex to remove common prefixes like "Re:", "Fwd:", etc.
-    subject_prefixes = re.compile(r'^\s*(Re:|Fwd:|Fw:|RE:|FWD:|FW:)\s*', re.IGNORECASE)
+    # Function to remove common prefixes
     
     for email_id in email_ids:
         status, data = mail.fetch(email_id, '(BODY.PEEK[HEADER])')
         msg = email.message_from_bytes(data[0][1])
         subject = msg.get('Subject')
         if subject:
-            # Normalize the subject by removing prefixes like "Re:" or "Fwd:"
-            normalized_subject = subject_prefixes.sub('', subject).strip()
+            # Normalize the subject by removing common prefixes
+            normalized_subject = remove_prefix(subject)
             unique_subjects.add(normalized_subject)
     
     # Count the number of unique subjects
