@@ -481,6 +481,31 @@ def fetch_latest_email():
             mail.logout()
         else:
             st.error("Please fill all the fields")
+
+def display_thread(selected_email_index):
+    email_threads = {}
+    for email_data in st.session_state.emails:
+        email_threads[email_data['message_id']] = email_data
+
+    current_email = st.session_state.emails[selected_email_index]
+    thread = []
+
+    # Traverse replies in chronological order
+    while current_email:
+        thread.append(current_email)
+        in_reply_to_id = current_email['in_reply_to']
+        if in_reply_to_id:
+            current_email = email_threads.get(in_reply_to_id, None)
+        else:
+            current_email = None
+    
+    for email_data in reversed(thread):
+        st.write(f"**Date:** {email_data['date']}")
+        st.write(f"**Subject:** {email_data['subject']}")
+        st.write(f"**From:** {email_data['from']}")
+        st.write(f"**To:** {email_data['to']}")
+        st.write(f"**Body:**\n{email_data['body']}")
+        st.write("---")
 # Function to send a reply email
 def send_reply_email():
     st.title('Send an Email via Gmail')
@@ -956,6 +981,32 @@ def evaluator(client):
             # if st.button("Next"):
             #     st.session_state.gmail_fetched = True
             #     navigate_to_step(3)
+            # if 'emails' in st.session_state and st.session_state.emails:
+            # # Extract unique subjects
+            #     unique_subjects = {}
+            #     for email_data in st.session_state.emails:
+            #         subject = email_data['subject']
+            #         if subject not in unique_subjects:
+            #             unique_subjects[subject] = []
+            #         unique_subjects[subject].append(email_data)
+    
+            #     sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s]), reverse=True)
+            
+            #     # Display unique subjects
+            #     selected_subject = st.selectbox("Select a unique request", sorted_subjects)
+                
+            #     # Display responses related to the selected subject
+            #     related_emails = unique_subjects[selected_subject]
+                
+            #     # Sort related emails by date in descending order
+            #     related_emails_sorted = sorted(related_emails, key=lambda e: e['date'], reverse=True)
+                
+            #     email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S')}" for email in related_emails_sorted]
+            #     selected_email_index = st.selectbox("Select a response", email_options)
+            #     selected_email = related_emails_sorted[email_options.index(selected_email_index)]
+    
+            #     st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
+            #     st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
             if 'emails' in st.session_state and st.session_state.emails:
             # Extract unique subjects
                 unique_subjects = {}
@@ -965,8 +1016,9 @@ def evaluator(client):
                         unique_subjects[subject] = []
                     unique_subjects[subject].append(email_data)
     
-                sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s]), reverse=True)
-            
+                # Sort subjects by the most recent email date
+                sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
+                
                 # Display unique subjects
                 selected_subject = st.selectbox("Select a unique request", sorted_subjects)
                 
@@ -974,9 +1026,9 @@ def evaluator(client):
                 related_emails = unique_subjects[selected_subject]
                 
                 # Sort related emails by date in descending order
-                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'], reverse=True)
+                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min, reverse=True)
                 
-                email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S')}" for email in related_emails_sorted]
+                email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}" for email in related_emails_sorted]
                 selected_email_index = st.selectbox("Select a response", email_options)
                 selected_email = related_emails_sorted[email_options.index(selected_email_index)]
     
