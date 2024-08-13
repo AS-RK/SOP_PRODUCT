@@ -818,6 +818,8 @@ def evaluator(client):
             st.session_state.password = st.text_input("Password", type="password")
             # try:
             fetch_latest_email()
+            if st.session_state.email_count_total:
+                    st.write(f"Total Request is: {st.session_state.email_count_total}")
             if 'emails' in st.session_state and st.session_state.emails:
                 email_options = [f"{email['subject']} - {email['date']}" for email in st.session_state.emails]
                 selected_email_index = st.selectbox("Select an email to view", email_options)
@@ -825,8 +827,7 @@ def evaluator(client):
     
                 st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
                 st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
-                if st.session_state.email_count_total:
-                    st.write(f"Total Request is: {st.session_state.email_count_total}")
+                
             # except Exception as e:
             #     st.error("please Authenticate your mail")
             # if st.button("Next"):
