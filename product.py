@@ -482,6 +482,111 @@ def fetch_latest_email():
         else:
             st.error("Please fill all the fields")
 
+def fetch_received_emails():
+    if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+        imap_server = "imap.gmail.com"
+        
+        # Connect to the IMAP server
+        mail = imaplib.IMAP4_SSL(imap_server)
+        try:
+            mail.login(st.session_state.user_gmail, st.session_state.password)
+        except Exception as e:
+            st.error("Invalid username or password")
+            return
+        
+        # Select the "Inbox" label to search for received emails
+        mail.select("inbox")
+        
+        # Search for emails from the specific sender
+        status_from, data_from = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
+        
+        email_ids = data_from[0].split()
+        if not email_ids:
+            mail.logout()
+            st.error("No received emails found from the specified sender")
+            return
+        
+        st.session_state.received_emails = []
+        for email_id in email_ids:
+            status, msg_data = mail.fetch(email_id, "(RFC822)")
+            raw_email = msg_data[0][1]
+            original_email = email.message_from_bytes(raw_email)
+            subject = remove_prefix(original_email['Subject'])
+            date_str = original_email['Date']
+            date = parsedate_to_datetime(date_str) if date_str else None
+            st.session_state.received_emails.append({
+                'subject': subject,
+                'from': original_email['From'],
+                'to': original_email.get('To', 'N/A'),
+                'message_id': original_email['Message-ID'],
+                'in_reply_to': original_email['In-Reply-To'],
+                'references': original_email['References'],
+                'body': get_email_body(original_email),
+                'date': date
+            })
+        
+        mail.logout()
+    else:
+        st.error("Please fill all the fields")
+
+def fetch_sent_emails():
+    if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+        imap_server = "imap.gmail.com"
+        
+        # Connect to the IMAP server
+        mail = imaplib.IMAP4_SSL(imap_server)
+        try:
+            mail.login(st.session_state.user_gmail, st.session_state.password)
+        except Exception as e:
+            st.error("Invalid username or password")
+            return
+        
+        # Select the "Sent" label to search for sent emails
+        mail.select('"[Gmail]/Sent Mail"')
+        
+        # Search for emails sent to the specific recipient
+        status, data = mail.search(None, f'TO "{st.session_state.gmail_sender}"')
+        
+        email_ids = data[0].split()
+        if not email_ids:
+            mail.logout()
+            st.error("No sent emails found to the specified recipient")
+            return
+        
+        st.session_state.sent_emails = []
+        for email_id in email_ids:
+            status, msg_data = mail.fetch(email_id, "(RFC822)")
+            raw_email = msg_data[0][1]
+            original_email = email.message_from_bytes(raw_email)
+            subject = remove_prefix(original_email['Subject'])
+            date_str = original_email['Date']
+            date = parsedate_to_datetime(date_str) if date_str else None
+            st.session_state.sent_emails.append({
+                'subject': subject,
+                'from': original_email['From'],
+                'to': original_email.get('To', 'N/A'),
+                'message_id': original_email['Message-ID'],
+                'in_reply_to': original_email['In-Reply-To'],
+                'references': original_email['References'],
+                'body': get_email_body(original_email),
+                'date': date
+            })
+        
+        mail.logout()
+    else:
+        st.error("Please fill all the fields")
+
+def combine_emails():
+    # Combine received and sent emails
+    if 'received_emails' in st.session_state and 'sent_emails' in st.session_state:
+        st.session_state.emails = st.session_state.received_emails + st.session_state.sent_emails
+    elif 'received_emails' in st.session_state:
+        st.session_state.emails = st.session_state.received_emails
+    elif 'sent_emails' in st.session_state:
+        st.session_state.emails = st.session_state.sent_emails
+    else:
+        st.session_state.emails = []
+
 def display_thread(selected_email_index):
     email_threads = {}
     for email_data in st.session_state.emails:
@@ -965,9 +1070,43 @@ def evaluator(client):
             st.session_state.gmail_sender = st.text_input('Client Email Address',st.session_state.gmail_sender, key='sender_email')
             st.session_state.password = st.text_input("Password", type="password")
             # try:
-            fetch_latest_email()
-            if st.session_state.email_count_total:
-                    st.write(f"Total Request is: {st.session_state.email_count_total}")
+            # fetch_latest_email()
+            if st.button("Fetch Emails"):
+                fetch_received_emails()
+                fetch_sent_emails()
+            
+            
+            combine_emails()
+            
+            if 'emails' in st.session_state and st.session_state.emails:
+                # Extract unique subjects
+                unique_subjects = {}
+                for email_data in st.session_state.emails:
+                    subject = email_data['subject']
+                    if subject not in unique_subjects:
+                        unique_subjects[subject] = []
+                    unique_subjects[subject].append(email_data)
+    
+                # Sort subjects by the most recent email date
+                sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
+                
+                # Display unique subjects
+                selected_subject = st.selectbox("Select a unique request", sorted_subjects)
+                
+                # Display responses related to the selected subject
+                related_emails = unique_subjects[selected_subject]
+                
+                # Sort related emails by date in ascending order
+                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min)
+                
+                email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}" for email in related_emails_sorted]
+                selected_email_index = st.selectbox("Select a response", email_options)
+                selected_email = related_emails_sorted[email_options.index(selected_email_index)]
+    
+                st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
+                st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
+                if st.session_state.email_count_total:
+                        st.write(f"Total Request is: {st.session_state.email_count_total}")
             # if 'emails' in st.session_state and st.session_state.emails:
             #     email_options = [f"{email['subject']} - {email['date']}" for email in st.session_state.emails]
             #     selected_email_index = st.selectbox("Select an email to view", email_options)
@@ -1007,33 +1146,33 @@ def evaluator(client):
     
             #     st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
             #     st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
-            if 'emails' in st.session_state and st.session_state.emails:
-            # Extract unique subjects
-                unique_subjects = {}
-                for email_data in st.session_state.emails:
-                    subject = email_data['subject']
-                    if subject not in unique_subjects:
-                        unique_subjects[subject] = []
-                    unique_subjects[subject].append(email_data)
+            # if 'emails' in st.session_state and st.session_state.emails:
+            # # Extract unique subjects
+            #     unique_subjects = {}
+            #     for email_data in st.session_state.emails:
+            #         subject = email_data['subject']
+            #         if subject not in unique_subjects:
+            #             unique_subjects[subject] = []
+            #         unique_subjects[subject].append(email_data)
     
-                # Sort subjects by the most recent email date
-                sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
+            #     # Sort subjects by the most recent email date
+            #     sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
                 
-                # Display unique subjects
-                selected_subject = st.selectbox("Select a unique request", sorted_subjects)
+            #     # Display unique subjects
+            #     selected_subject = st.selectbox("Select a unique request", sorted_subjects)
                 
-                # Display responses related to the selected subject
-                related_emails = unique_subjects[selected_subject]
+            #     # Display responses related to the selected subject
+            #     related_emails = unique_subjects[selected_subject]
                 
-                # Sort related emails by date in descending order
-                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min, reverse=True)
+            #     # Sort related emails by date in descending order
+            #     related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min, reverse=True)
                 
-                email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}" for email in related_emails_sorted]
-                selected_email_index = st.selectbox("Select a response", email_options)
-                selected_email = related_emails_sorted[email_options.index(selected_email_index)]
+            #     email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}" for email in related_emails_sorted]
+            #     selected_email_index = st.selectbox("Select a response", email_options)
+            #     selected_email = related_emails_sorted[email_options.index(selected_email_index)]
     
-                st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
-                st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
+            #     st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
+            #     st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
         
         else:
             st.session_state.fetched_subject = st.text_area("Client Subject:",st.session_state.fetched_subject,height = 50)
