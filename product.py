@@ -842,14 +842,20 @@ def evaluator(client):
                         unique_subjects[subject] = []
                     unique_subjects[subject].append(email_data)
     
+                sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s]), reverse=True)
+            
                 # Display unique subjects
-                selected_subject = st.selectbox("Select a unique request", list(unique_subjects.keys()))
+                selected_subject = st.selectbox("Select a unique request", sorted_subjects)
                 
                 # Display responses related to the selected subject
                 related_emails = unique_subjects[selected_subject]
-                email_options = [f"{email['subject']} - {email['date']}" for email in related_emails]
+                
+                # Sort related emails by date in descending order
+                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'], reverse=True)
+                
+                email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S')}" for email in related_emails_sorted]
                 selected_email_index = st.selectbox("Select a response", email_options)
-                selected_email = related_emails[email_options.index(selected_email_index)]
+                selected_email = related_emails_sorted[email_options.index(selected_email_index)]
     
                 st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
                 st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
