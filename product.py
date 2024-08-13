@@ -1220,7 +1220,7 @@ def evaluator(client):
                 related_emails = unique_subjects[selected_subject]
                 
                 # Sort related emails by date in descending order
-                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min, reverse=True)
+                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min)
                 
                 email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}" for email in related_emails_sorted]
                 selected_email_index = st.selectbox("Select a response", email_options)
