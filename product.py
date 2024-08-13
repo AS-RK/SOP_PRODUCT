@@ -484,6 +484,7 @@ def fetch_latest_email():
 
 def fetch_received_emails():
     if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+        st.session_state.email_count_total = count_email()
         imap_server = "imap.gmail.com"
         
         # Connect to the IMAP server
@@ -1123,6 +1124,8 @@ def evaluator(client):
             if st.button("Fetch Emails"):
                 fetch_received_emails()
                 # fetch_sent_emails()
+            if st.session_state.email_count_total:
+                st.write(f"Total Request is: {st.session_state.email_count_total}")
             
             
             combine_emails()
