@@ -484,6 +484,7 @@ def fetch_latest_email():
 
 def fetch_received_emails():
     if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+        count_email()
         imap_server = "imap.gmail.com"
         
         # Connect to the IMAP server
@@ -1077,6 +1078,8 @@ def evaluator(client):
             
             
             combine_emails()
+            if st.session_state.email_count_total:
+                st.write(f"Total Request is: {st.session_state.email_count_total}")
             
             if 'emails' in st.session_state and st.session_state.emails:
                 # Extract unique subjects
@@ -1105,8 +1108,7 @@ def evaluator(client):
     
                 st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
                 st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
-                if st.session_state.email_count_total:
-                        st.write(f"Total Request is: {st.session_state.email_count_total}")
+                
             # if 'emails' in st.session_state and st.session_state.emails:
             #     email_options = [f"{email['subject']} - {email['date']}" for email in st.session_state.emails]
             #     selected_email_index = st.selectbox("Select an email to view", email_options)
