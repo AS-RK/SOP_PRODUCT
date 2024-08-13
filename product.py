@@ -484,7 +484,7 @@ def fetch_latest_email():
 
 def fetch_received_emails():
     if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
-        count_email()
+        st.session_state.email_count_total = count_email()
         imap_server = "imap.gmail.com"
         
         # Connect to the IMAP server
