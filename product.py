@@ -484,7 +484,7 @@ def fetch_latest_email():
 
 def fetch_received_emails():
     if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
-        st.session_state.email_count_total = count_email()
+        # st.session_state.email_count_total = count_email()
         imap_server = "imap.gmail.com"
         
         # Connect to the IMAP server
@@ -1124,8 +1124,8 @@ def evaluator(client):
             if st.button("Fetch Emails"):
                 fetch_received_emails()
                 # fetch_sent_emails()
-            if st.session_state.email_count_total:
-                st.write(f"Total Request is: {st.session_state.email_count_total}")
+            # if st.session_state.email_count_total:
+            #     st.write(f"Total Request is: {st.session_state.email_count_total}")
             
             
             combine_emails()
@@ -1207,7 +1207,8 @@ def evaluator(client):
                     if subject not in unique_subjects:
                         unique_subjects[subject] = []
                     unique_subjects[subject].append(email_data)
-    
+
+                st.write(len(unique_subjects))
                 # Sort subjects by the most recent email date
                 sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
                 
