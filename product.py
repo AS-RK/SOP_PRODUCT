@@ -587,17 +587,38 @@ def fetch_sent_emails():
 #         st.session_state.emails = st.session_state.sent_emails
 #     else:
 #         st.session_state.emails = []
+# def combine_emails():
+#     if 'received_emails' in st.session_state and 'sent_emails' in st.session_state:
+#         received_subjects = {email['subject'] for email in st.session_state.received_emails}
+#         sent_emails_to_include = [email for email in st.session_state.sent_emails if email['subject'] in received_subjects]
+#         st.session_state.emails = st.session_state.received_emails + sent_emails_to_include
+#     elif 'received_emails' in st.session_state:
+#         st.session_state.emails = st.session_state.received_emails
+#     elif 'sent_emails' in st.session_state:
+#         st.session_state.emails = []  # No matching subjects to include sent emails alone
+#     else:
+#         st.session_state.emails = []
 def combine_emails():
-    if 'received_emails' in st.session_state and 'sent_emails' in st.session_state:
-        received_subjects = {email['subject'] for email in st.session_state.received_emails}
-        sent_emails_to_include = [email for email in st.session_state.sent_emails if email['subject'] in received_subjects]
-        st.session_state.emails = st.session_state.received_emails + sent_emails_to_include
-    elif 'received_emails' in st.session_state:
-        st.session_state.emails = st.session_state.received_emails
-    elif 'sent_emails' in st.session_state:
-        st.session_state.emails = []  # No matching subjects to include sent emails alone
-    else:
-        st.session_state.emails = []
+    if 'received_emails' not in st.session_state:
+        st.session_state.received_emails = []
+    if 'sent_emails' not in st.session_state:
+        st.session_state.sent_emails = []
+
+    st.session_state.emails = []
+
+    # Create a dictionary of subjects from received emails
+    received_subjects = {email['subject']: email for email in st.session_state.received_emails}
+
+    # Combine sent emails with matching subjects in received emails
+    for sent_email in st.session_state.sent_emails:
+        if sent_email['subject'] in received_subjects:
+            st.session_state.emails.append(sent_email)
+
+    # Add the received emails that were not replied to
+    st.session_state.emails.extend(st.session_state.received_emails)
+
+    # Sort the emails by date in ascending order
+    st.session_state.emails.sort(key=lambda e: e['date'] if e['date'] else datetime.min)
 
 
 def filter_emails(filter_option):
