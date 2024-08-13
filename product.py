@@ -588,6 +588,15 @@ def combine_emails():
     else:
         st.session_state.emails = []
 
+def filter_emails(filter_option):
+    if filter_option == "Pending Request":
+        return [email for email in st.session_state.received_emails if email['message_id'] not in {e['in_reply_to'] for e in st.session_state.sent_emails}]
+    elif filter_option == "Replied Request":
+        sent_message_ids = {email['message_id'] for email in st.session_state.sent_emails}
+        return [email for email in st.session_state.received_emails if email['in_reply_to'] in sent_message_ids]
+    else:
+        return st.session_state.emails
+
 def display_thread(selected_email_index):
     email_threads = {}
     for email_data in st.session_state.emails:
@@ -1074,17 +1083,21 @@ def evaluator(client):
             # fetch_latest_email()
             if st.button("Fetch Emails"):
                 fetch_received_emails()
+            # if st.button("Fetch Sent Emails"):
                 fetch_sent_emails()
-            
             
             combine_emails()
             if st.session_state.email_count_total:
                 st.write(f"Total Request is: {st.session_state.email_count_total}")
             
-            if 'emails' in st.session_state and st.session_state.emails:
+            filter_option = st.selectbox("Filter Emails", ["All Request", "Pending Request", "Replied Request"], index=0)
+    
+            filtered_emails = filter_emails(filter_option)
+    
+            if filtered_emails:
                 # Extract unique subjects
                 unique_subjects = {}
-                for email_data in st.session_state.emails:
+                for email_data in filtered_emails:
                     subject = email_data['subject']
                     if subject not in unique_subjects:
                         unique_subjects[subject] = []
@@ -1108,6 +1121,42 @@ def evaluator(client):
     
                 st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
                 st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
+            # if st.button("Fetch Emails"):
+            #     fetch_received_emails()
+            #     fetch_sent_emails()
+            
+            
+            # combine_emails()
+            # if st.session_state.email_count_total:
+            #     st.write(f"Total Request is: {st.session_state.email_count_total}")
+            
+            # if 'emails' in st.session_state and st.session_state.emails:
+            #     # Extract unique subjects
+            #     unique_subjects = {}
+            #     for email_data in st.session_state.emails:
+            #         subject = email_data['subject']
+            #         if subject not in unique_subjects:
+            #             unique_subjects[subject] = []
+            #         unique_subjects[subject].append(email_data)
+    
+            #     # Sort subjects by the most recent email date
+            #     sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
+                
+            #     # Display unique subjects
+            #     selected_subject = st.selectbox("Select a unique request", sorted_subjects)
+                
+            #     # Display responses related to the selected subject
+            #     related_emails = unique_subjects[selected_subject]
+                
+            #     # Sort related emails by date in ascending order
+            #     related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min)
+                
+            #     email_options = [f"{email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}" for email in related_emails_sorted]
+            #     selected_email_index = st.selectbox("Select a response", email_options)
+            #     selected_email = related_emails_sorted[email_options.index(selected_email_index)]
+    
+            #     st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
+            #     st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
                 
             # if 'emails' in st.session_state and st.session_state.emails:
             #     email_options = [f"{email['subject']} - {email['date']}" for email in st.session_state.emails]
