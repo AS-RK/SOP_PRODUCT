@@ -80,10 +80,46 @@ def get_message_details(message):
                 return subject, body_decoded
     return subject, "No content available"
 
+def count_email():
+    imap_server = 'imap.gmail.com'
+    email_user = st.session_state.user_gmail
+    email_pass = st.session_state.password
+    
+    mail = imaplib.IMAP4_SSL(imap_server)
+    mail.login(email_user, email_pass)
+    mail.select('inbox')  # Select the mailbox you want to use
+    
+    # Search for emails from a specific sender
+    sender_email = 'rajk0067890@gmail.com'
+    status, messages = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
+    
+    # Get the list of email IDs
+    email_ids = messages[0].split()
+    
+    # Use a set to store unique subjects
+    unique_subjects = set()
+    
+    # Regex to remove common prefixes like "Re:", "Fwd:", etc.
+    subject_prefixes = re.compile(r'^\s*(Re:|Fwd:|Fw:|RE:|FWD:|FW:)\s*', re.IGNORECASE)
+    
+    for email_id in email_ids:
+        status, data = mail.fetch(email_id, '(BODY.PEEK[HEADER])')
+        msg = email.message_from_bytes(data[0][1])
+        subject = msg.get('Subject')
+        if subject:
+            # Normalize the subject by removing prefixes like "Re:" or "Fwd:"
+            normalized_subject = subject_prefixes.sub('', subject).strip()
+            unique_subjects.add(normalized_subject)
+    
+    # Count the number of unique subjects
+    return len(unique_subjects)
+
 # Function to fetch the latest email from a sender
 def fetch_latest_email():
     if st.button("Fetch Gmail"):
         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+            st.session_state.email_count_total = count_email()
+            st.write(f"Total Request is :{st.session_state.email_count_total}")
             imap_server = "imap.gmail.com"
             
             # Connect to the IMAP server
@@ -1033,6 +1069,8 @@ def main():
         st.session_state.step = 1
     if 'evaluation_count' not in st.session_state:
         st.session_state.evaluation_count = 0
+    if 'email_count_total' not in st.session_state:
+        st.session_state.email_count_total = 0
     if 'gsheet_count' not in st.session_state:
         st.session_state.gsheet_count = 0
     if 'sop_created' not in st.session_state:
