@@ -118,8 +118,6 @@ def count_email():
 def fetch_latest_email():
     if st.button("Fetch Gmail"):
         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
-            st.session_state.email_count_total = count_email()
-            st.write(f"Total Request is :{st.session_state.email_count_total}")
             imap_server = "imap.gmail.com"
             
             # Connect to the IMAP server
@@ -152,6 +150,8 @@ def fetch_latest_email():
             st.session_state.fetched_subject = original_email["Subject"]
             st.session_state.fetched_sender_gmail = original_email["From"]
             st.session_state.msg_id = original_email["Message-ID"]
+            st.session_state.email_count_total = count_email()
+            st.write(f"Total Request is :{st.session_state.email_count_total}")
             st.write(st.session_state.msg_id)
             
             st.write(f"**Subject:** {st.session_state.fetched_subject}")
