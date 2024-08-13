@@ -1208,7 +1208,8 @@ def evaluator(client):
                         unique_subjects[subject] = []
                     unique_subjects[subject].append(email_data)
 
-                st.write(len(unique_subjects))
+                total_request = len(unique_subjects)
+                st.write(total_request)
                 # Sort subjects by the most recent email date
                 sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
                 
