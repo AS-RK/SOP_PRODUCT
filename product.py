@@ -314,7 +314,6 @@ def fetch_latest_email():
     if st.button("Fetch Gmail"):
         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
             st.session_state.email_count_total = count_email()
-            st.write(f"Total Request is: {st.session_state.email_count_total}")
             
             imap_server = "imap.gmail.com"
             
@@ -826,6 +825,8 @@ def evaluator(client):
     
                 st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
                 st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
+                if st.session_state.email_count_total:
+                    st.write(f"Total Request is: {st.session_state.email_count_total}")
             # except Exception as e:
             #     st.error("please Authenticate your mail")
             # if st.button("Next"):
