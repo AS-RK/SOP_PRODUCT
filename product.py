@@ -82,6 +82,103 @@ def get_message_details(message):
                 return subject, body_decoded
     return subject, "No content available"
 
+# def remove_prefix(subject):
+#     prefixes = ["Re:", "Fwd:", "Fw:", "RE:", "FWD:", "FW:"]
+#     for prefix in prefixes:
+#         if subject.startswith(prefix):
+#             return subject[len(prefix):].strip()
+#     return subject.strip()
+
+# def count_email():
+#     imap_server = 'imap.gmail.com'
+#     email_user = st.session_state.user_gmail
+#     email_pass = st.session_state.password
+    
+#     mail = imaplib.IMAP4_SSL(imap_server)
+#     mail.login(email_user, email_pass)
+#     mail.select('inbox')  # Select the mailbox you want to use
+    
+#     # Search for emails from a specific sender
+#     status, messages = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
+    
+#     # Get the list of email IDs
+#     email_ids = messages[0].split()
+    
+#     # Use a set to store unique subjects
+#     unique_subjects = set()
+    
+#     # Function to remove common prefixes
+    
+#     for email_id in email_ids:
+#         status, data = mail.fetch(email_id, '(BODY.PEEK[HEADER])')
+#         msg = email.message_from_bytes(data[0][1])
+#         subject = msg.get('Subject')
+#         if subject:
+#             # Normalize the subject by removing common prefixes
+#             normalized_subject = remove_prefix(subject)
+#             unique_subjects.add(normalized_subject)
+    
+#     # Count the number of unique subjects
+#     return len(unique_subjects)
+
+# # Function to fetch the latest email from a sender
+# def fetch_latest_email():
+#     if st.button("Fetch Gmail"):
+#         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+#             imap_server = "imap.gmail.com"
+            
+#             # Connect to the IMAP server
+#             mail = imaplib.IMAP4_SSL(imap_server)
+#             try:
+#                 mail.login(st.session_state.user_gmail, st.session_state.password)
+#             except Exception as e:
+#                 st.error("invalid username or password")
+#             mail.select("inbox")
+            
+#             # Search for emails from the specific sender
+#             status, data = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
+            
+#             email_ids = data[0].split()
+#             if not email_ids:
+#                 mail.logout()
+#                 return None, None, None
+            
+#             latest_email_id = email_ids[-1]
+#             status, msg_data = mail.fetch(latest_email_id, "(RFC822)")
+#             raw_email = msg_data[0][1]
+#             original_email = email.message_from_bytes(raw_email)
+            
+#             mail.logout()
+            
+#             # return original_email, latest_email_id, raw_email
+        
+#         # # Function to display email content
+#         # def display_email_content(original_email):
+#             st.session_state.fetched_subject = original_email["Subject"]
+#             st.session_state.fetched_sender_gmail = original_email["From"]
+#             st.session_state.msg_id = original_email["Message-ID"]
+#             st.session_state.email_count_total = count_email()
+#             st.write(f"Total Request is :{st.session_state.email_count_total}")
+#             st.write(st.session_state.msg_id)
+            
+#             st.write(f"**Subject:** {st.session_state.fetched_subject}")
+#             st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
+            
+#             # Extract and display the body of the email
+#             email_body = ""
+#             if original_email.is_multipart():
+#                 for part in original_email.walk():
+#                     if part.get_content_type() == "text/plain":
+#                         st.session_state.fetched_content = part.get_payload(decode=True).decode()
+#                         break
+#             else:
+#                 st.session_state.fetched_content = original_email.get_payload(decode=True).decode()
+            
+#             st.write(f"**Body:**\n{st.session_state.fetched_content}")
+#         else:
+#             st.error("Please fill all the field")
+    
+#     # return original_subject, original_from, original_message_id, email_body
 def remove_prefix(subject):
     prefixes = ["Re:", "Fwd:", "Fw:", "RE:", "FWD:", "FW:"]
     for prefix in prefixes:
@@ -89,6 +186,7 @@ def remove_prefix(subject):
             return subject[len(prefix):].strip()
     return subject.strip()
 
+# Function to count unique subjects from a specific sender
 def count_email():
     imap_server = 'imap.gmail.com'
     email_user = st.session_state.user_gmail
@@ -107,10 +205,10 @@ def count_email():
     # Use a set to store unique subjects
     unique_subjects = set()
     
-    # Function to remove common prefixes
-    
     for email_id in email_ids:
         status, data = mail.fetch(email_id, '(BODY.PEEK[HEADER])')
+        if status != 'OK':
+            continue
         msg = email.message_from_bytes(data[0][1])
         subject = msg.get('Subject')
         if subject:
@@ -118,6 +216,9 @@ def count_email():
             normalized_subject = remove_prefix(subject)
             unique_subjects.add(normalized_subject)
     
+    # Close the connection
+    mail.logout()
+
     # Count the number of unique subjects
     return len(unique_subjects)
 
@@ -132,7 +233,9 @@ def fetch_latest_email():
             try:
                 mail.login(st.session_state.user_gmail, st.session_state.password)
             except Exception as e:
-                st.error("invalid username or password")
+                st.error("Invalid username or password")
+                return
+            
             mail.select("inbox")
             
             # Search for emails from the specific sender
@@ -140,32 +243,35 @@ def fetch_latest_email():
             
             email_ids = data[0].split()
             if not email_ids:
+                st.error("No emails found from the specified sender.")
                 mail.logout()
-                return None, None, None
+                return
             
             latest_email_id = email_ids[-1]
             status, msg_data = mail.fetch(latest_email_id, "(RFC822)")
+            if status != 'OK':
+                st.error("Failed to fetch the latest email.")
+                mail.logout()
+                return
+            
             raw_email = msg_data[0][1]
             original_email = email.message_from_bytes(raw_email)
             
+            # Close the connection
             mail.logout()
             
-            # return original_email, latest_email_id, raw_email
-        
-        # # Function to display email content
-        # def display_email_content(original_email):
+            # Display the email content
             st.session_state.fetched_subject = original_email["Subject"]
             st.session_state.fetched_sender_gmail = original_email["From"]
             st.session_state.msg_id = original_email["Message-ID"]
             st.session_state.email_count_total = count_email()
-            st.write(f"Total Request is :{st.session_state.email_count_total}")
-            st.write(st.session_state.msg_id)
+            st.write(f"Total Request is: {st.session_state.email_count_total}")
+            st.write(f"Message-ID: {st.session_state.msg_id}")
             
             st.write(f"**Subject:** {st.session_state.fetched_subject}")
             st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
             
             # Extract and display the body of the email
-            email_body = ""
             if original_email.is_multipart():
                 for part in original_email.walk():
                     if part.get_content_type() == "text/plain":
@@ -176,10 +282,7 @@ def fetch_latest_email():
             
             st.write(f"**Body:**\n{st.session_state.fetched_content}")
         else:
-            st.error("Please fill all the field")
-    
-    # return original_subject, original_from, original_message_id, email_body
-
+            st.error("Please fill in all the fields")
 # Function to send a reply email
 def send_reply_email():
     st.title('Send an Email via Gmail')
