@@ -835,24 +835,24 @@ def evaluator(client):
             #     navigate_to_step(3)
             if 'emails' in st.session_state and st.session_state.emails:
             # Extract unique subjects
-            unique_subjects = {}
-            for email_data in st.session_state.emails:
-                subject = email_data['subject']
-                if subject not in unique_subjects:
-                    unique_subjects[subject] = []
-                unique_subjects[subject].append(email_data)
-
-            # Display unique subjects
-            selected_subject = st.selectbox("Select a unique request", list(unique_subjects.keys()))
-            
-            # Display responses related to the selected subject
-            related_emails = unique_subjects[selected_subject]
-            email_options = [f"{email['subject']} - {email['date']}" for email in related_emails]
-            selected_email_index = st.selectbox("Select a response", email_options)
-            selected_email = related_emails[email_options.index(selected_email_index)]
-
-            st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
-            st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
+                unique_subjects = {}
+                for email_data in st.session_state.emails:
+                    subject = email_data['subject']
+                    if subject not in unique_subjects:
+                        unique_subjects[subject] = []
+                    unique_subjects[subject].append(email_data)
+    
+                # Display unique subjects
+                selected_subject = st.selectbox("Select a unique request", list(unique_subjects.keys()))
+                
+                # Display responses related to the selected subject
+                related_emails = unique_subjects[selected_subject]
+                email_options = [f"{email['subject']} - {email['date']}" for email in related_emails]
+                selected_email_index = st.selectbox("Select a response", email_options)
+                selected_email = related_emails[email_options.index(selected_email_index)]
+    
+                st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
+                st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
         
         else:
             st.session_state.fetched_subject = st.text_area("Client Subject:",st.session_state.fetched_subject,height = 50)
