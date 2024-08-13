@@ -1121,8 +1121,8 @@ def evaluator(client):
             #     st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
             #     st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
             if st.button("Fetch Emails"):
-                # fetch_received_emails()
-                fetch_sent_emails()
+                fetch_received_emails()
+                # fetch_sent_emails()
             
             
             combine_emails()
