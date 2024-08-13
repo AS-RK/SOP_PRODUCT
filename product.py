@@ -19,6 +19,7 @@ from email.message import EmailMessage
 import smtplib
 import gspread
 from google.oauth2.service_account import Credentials
+import re
 
 # Set up the necessary scopes and credentials file
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send','https://www.googleapis.com/auth/gmail.modify']
