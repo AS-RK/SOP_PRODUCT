@@ -116,6 +116,7 @@ def fetch_latest_email():
             st.session_state.fetched_subject = original_email["Subject"]
             st.session_state.fetched_sender_gmail = original_email["From"]
             st.session_state.msg_id = original_email["Message-ID"]
+            st.write(st.session_state.msg_id)
             
             st.write(f"**Subject:** {st.session_state.fetched_subject}")
             st.write(f"**From:** {st.session_state.fetched_sender_gmail}")
