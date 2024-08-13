@@ -295,6 +295,71 @@ def count_email():
 
 
 
+# def remove_prefix(subject):
+#     prefixes = ["Re:", "Fwd:", "Fw:", "RE:", "FWD:", "FW:"]
+#     for prefix in prefixes:
+#         if subject.startswith(prefix):
+#             return subject[len(prefix):].strip()
+#     return subject.strip()
+
+# def get_email_body(original_email):
+#     if original_email.is_multipart():
+#         for part in original_email.walk():
+#             if part.get_content_type() == "text/plain":
+#                 return part.get_payload(decode=True).decode()
+#     else:
+#         return original_email.get_payload(decode=True).decode()
+#     return ""
+
+# def fetch_latest_email():
+#     if st.button("Fetch Gmail"):
+#         if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
+#             st.session_state.email_count_total = count_email()
+            
+#             imap_server = "imap.gmail.com"
+            
+#             # Connect to the IMAP server
+#             mail = imaplib.IMAP4_SSL(imap_server)
+#             try:
+#                 mail.login(st.session_state.user_gmail, st.session_state.password)
+#             except Exception as e:
+#                 st.error("Invalid username or password")
+#                 return
+            
+#             mail.select("inbox")
+            
+#             # Search for emails from the specific sender
+#             status_from, data_from = mail.search(None, f'FROM "{st.session_state.gmail_sender}"')
+#             status_to, data_to = mail.search(None, f'TO "{st.session_state.gmail_sender}"')
+            
+#             # Combine results and remove duplicates
+#             email_ids = list(set(data_from[0].split() + data_to[0].split()))
+#             if not email_ids:
+#                 mail.logout()
+#                 st.error("No emails found from the specified sender")
+#                 return
+            
+#             st.session_state.emails = []
+            
+#             for email_id in email_ids:
+#                 status, msg_data = mail.fetch(email_id, "(RFC822)")
+#                 raw_email = msg_data[0][1]
+#                 original_email = email.message_from_bytes(raw_email)
+#                 subject = remove_prefix(original_email['Subject'])
+#                 st.session_state.emails.append({
+#                     'subject': subject,
+#                     'from': original_email['From'],
+#                     'message_id': original_email['Message-ID'],
+#                     'in_reply_to': original_email['In-Reply-To'],
+#                     'references': original_email['References'],
+#                     'body': get_email_body(original_email),
+#                     'date': original_email['Date']
+#                 })
+            
+#             mail.logout()
+#         else:
+#             st.error("Please fill all the fields")
+
 def remove_prefix(subject):
     prefixes = ["Re:", "Fwd:", "Fw:", "RE:", "FWD:", "FW:"]
     for prefix in prefixes:
@@ -346,6 +411,8 @@ def fetch_latest_email():
                 raw_email = msg_data[0][1]
                 original_email = email.message_from_bytes(raw_email)
                 subject = remove_prefix(original_email['Subject'])
+                date_str = original_email['Date']
+                date = parsedate_to_datetime(date_str) if date_str else None
                 st.session_state.emails.append({
                     'subject': subject,
                     'from': original_email['From'],
@@ -353,7 +420,7 @@ def fetch_latest_email():
                     'in_reply_to': original_email['In-Reply-To'],
                     'references': original_email['References'],
                     'body': get_email_body(original_email),
-                    'date': original_email['Date']
+                    'date': date
                 })
             
             mail.logout()
