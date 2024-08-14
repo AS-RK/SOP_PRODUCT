@@ -1040,7 +1040,7 @@ def evaluator(client):
                 email_options = []
                 for email in related_emails_sorted:
                     email_address = extract_email_address(email['from'])
-                    prefix = "customer" if email['from'].lower() == st.session_state.gmail_sender.lower() else "employee"
+                    prefix = "customer" if email_address.lower() == st.session_state.gmail_sender.lower() else "employee"
                     option_text = f"{prefix}: {email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}"
                     email_options.append(option_text)
                 
