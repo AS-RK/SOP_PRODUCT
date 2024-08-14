@@ -1009,8 +1009,8 @@ def evaluator(client):
                 fetch_sent_emails()
             # if st.session_state.email_count_total:
             #     st.write(f"Total Request is: {st.session_state.email_count_total}")
-            # st.write(st.session_state.received_emails)
-            # st.write(st.session_state.sent_emails)
+            st.write(st.session_state.received_emails)
+            st.write(st.session_state.sent_emails)
             combine_emails()
             if 'emails' in st.session_state and st.session_state.emails:
             # Extract unique subjects
