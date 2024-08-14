@@ -563,7 +563,7 @@ def fetch_sent_emails():
             date_str = original_email['Date']
             date = parsedate_to_datetime(date_str) if date_str else None
             st.session_state.sent_emails.append({
-                'subject': subject,
+                'subject': remove_prefix(original_email['Subject']),
                 'from': original_email['From'],
                 'to': original_email.get('To', 'N/A'),
                 'message_id': original_email['Message-ID'],
