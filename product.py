@@ -736,7 +736,7 @@ def send_reply_email():
         smtp_server.send_message(msg)
         smtp_server.quit()
         
-        st.success(f"Email sent to {st.session_state.fetched_sender_gmail}")
+        st.success(f"Email sent Successfully")
 
 def fetch_gmail(sender_email):
 
@@ -1028,7 +1028,7 @@ def evaluator(client):
                 sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
                 
                 # Display unique subjects
-                selected_subject = st.selectbox("Select a unique request", sorted_subjects)
+                selected_subject = st.selectbox("Client request", sorted_subjects)
                 
                 # Display responses related to the selected subject
                 related_emails = unique_subjects[selected_subject]
