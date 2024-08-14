@@ -520,7 +520,20 @@ def fetch_received_emails():
             original_email = email.message_from_bytes(raw_email)
             subject = remove_prefix(original_email['Subject'])
             date_str = original_email['Date']
-            date = parsedate_to_datetime(date_str) if date_str else None
+            date = None
+            if date_str:
+                try:
+                    # Parse the date and convert it to UTC if it's not already in UTC
+                    date = parsedate_to_datetime(date_str)
+                    if date.tzinfo is None:
+                        # Assume the time is in UTC if no time zone info is provided
+                        date = date.replace(tzinfo=datetime.timezone.utc)
+                    else:
+                        # Convert to UTC for consistency
+                        date = date.astimezone(datetime.timezone.utc)
+                except Exception as e:
+                    st.error(f"Error parsing date: {e}")
+            # date = parsedate_to_datetime(date_str) if date_str else None
             st.session_state.received_emails.append({
                 'subject': subject,
                 'from': original_email['From'],
@@ -567,7 +580,20 @@ def fetch_sent_emails():
             original_email = email.message_from_bytes(raw_email)
             subject = remove_prefix(original_email['Subject'])
             date_str = original_email['Date']
-            date = parsedate_to_datetime(date_str) if date_str else None
+            date = None
+            if date_str:
+                try:
+                    # Parse the date and convert it to UTC if it's not already in UTC
+                    date = parsedate_to_datetime(date_str)
+                    if date.tzinfo is None:
+                        # Assume the time is in UTC if no time zone info is provided
+                        date = date.replace(tzinfo=datetime.timezone.utc)
+                    else:
+                        # Convert to UTC for consistency
+                        date = date.astimezone(datetime.timezone.utc)
+                except Exception as e:
+                    st.error(f"Error parsing date: {e}")
+            # date = parsedate_to_datetime(date_str) if date_str else None
             st.session_state.sent_emails.append({
                 'subject': subject,
                 'from': original_email['From'],
