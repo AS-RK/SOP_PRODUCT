@@ -999,44 +999,44 @@ def evaluator(client):
             if st.button("Fetch Emails"):
                 fetch_received_emails()
                 fetch_sent_emails()
-                combine_emails()
-            
-                if 'emails' in st.session_state and st.session_state.emails:
-                    # Extract unique subjects
-                    unique_subjects = {}
-                    for email_data in st.session_state.emails:
-                        subject = email_data['subject']
-                        if subject not in unique_subjects:
-                            unique_subjects[subject] = []
-                        unique_subjects[subject].append(email_data)
-            
-                    total_request = len(unique_subjects)
-                    st.write(total_request)
-            
-                    # Sort subjects by the most recent email date
-                    sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
-                    
-                    # Display unique subjects
-                    selected_subject = st.selectbox("Select a unique request", sorted_subjects)
-                    
-                    # Display responses related to the selected subject
-                    related_emails = unique_subjects[selected_subject]
-                    
-                    # Sort related emails by date in descending order
-                    related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min)
-                    
-                    # Update email options with appropriate prefixes
-                    email_options = []
-                    for email in related_emails_sorted:
-                        prefix = "customer" if email['from'].lower() == st.session_state.gmail_sender.lower() else "employee"
-                        option_text = f"{prefix}: {email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}"
-                        email_options.append(option_text)
-                    
-                    selected_email_index = st.selectbox("Select a response", email_options)
-                    selected_email = related_emails_sorted[email_options.index(selected_email_index)]
-                    
-                    st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
-                    st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
+            combine_emails()
+        
+            if 'emails' in st.session_state and st.session_state.emails:
+                # Extract unique subjects
+                unique_subjects = {}
+                for email_data in st.session_state.emails:
+                    subject = email_data['subject']
+                    if subject not in unique_subjects:
+                        unique_subjects[subject] = []
+                    unique_subjects[subject].append(email_data)
+        
+                total_request = len(unique_subjects)
+                st.write(total_request)
+        
+                # Sort subjects by the most recent email date
+                sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
+                
+                # Display unique subjects
+                selected_subject = st.selectbox("Select a unique request", sorted_subjects)
+                
+                # Display responses related to the selected subject
+                related_emails = unique_subjects[selected_subject]
+                
+                # Sort related emails by date in descending order
+                related_emails_sorted = sorted(related_emails, key=lambda e: e['date'] if e['date'] else datetime.min)
+                
+                # Update email options with appropriate prefixes
+                email_options = []
+                for email in related_emails_sorted:
+                    prefix = "customer" if email['from'].lower() == st.session_state.gmail_sender.lower() else "employee"
+                    option_text = f"{prefix}: {email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}"
+                    email_options.append(option_text)
+                
+                selected_email_index = st.selectbox("Select a response", email_options)
+                selected_email = related_emails_sorted[email_options.index(selected_email_index)]
+                
+                st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
+                st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
             
             # if st.button("Fetch Emails"):
             #     fetch_received_emails()
