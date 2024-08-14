@@ -488,6 +488,17 @@ def fetch_latest_email():
         else:
             st.error("Please fill all the fields")
 
+def extract_email_address(from_field):
+    # Find the start and end of the email address within angle brackets
+    start_idx = from_field.find('<')
+    end_idx = from_field.find('>', start_idx)
+    
+    # Extract the email address if both brackets are found
+    if start_idx != -1 and end_idx != -1:
+        return from_field[start_idx + 1:end_idx]
+    return from_field
+
+
 def fetch_received_emails():
     if st.session_state.password and st.session_state.gmail_sender and st.session_state.user_gmail:
         # st.session_state.email_count_total = count_email()
@@ -1028,6 +1039,7 @@ def evaluator(client):
                 # Update email options with appropriate prefixes
                 email_options = []
                 for email in related_emails_sorted:
+                    email_address = extract_email_address(email['from'])
                     prefix = "customer" if email['from'].lower() == st.session_state.gmail_sender.lower() else "employee"
                     option_text = f"{prefix}: {email['subject']} - {email['date'].strftime('%Y-%m-%d %H:%M:%S') if email['date'] else 'No Date'}"
                     email_options.append(option_text)
