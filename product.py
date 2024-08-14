@@ -523,14 +523,18 @@ def fetch_received_emails():
             date = None
             if date_str:
                 try:
-                    # Parse the date and convert it to UTC if it's not already in UTC
+                    # Parse the date
                     date = parsedate_to_datetime(date_str)
                     if date.tzinfo is None:
-                        # Assume the time is in UTC if no time zone info is provided
+                        # Assume UTC if no time zone info is provided
                         date = date.replace(tzinfo=timezone.utc)
                     else:
                         # Convert to UTC for consistency
                         date = date.astimezone(timezone.utc)
+                    
+                    # Now 'date' is normalized to UTC
+                    date_utc = date
+                    
                 except Exception as e:
                     st.error(f"Error parsing date: {e}")
             # date = parsedate_to_datetime(date_str) if date_str else None
@@ -583,14 +587,18 @@ def fetch_sent_emails():
             date = None
             if date_str:
                 try:
-                    # Parse the date and convert it to UTC if it's not already in UTC
+                    # Parse the date
                     date = parsedate_to_datetime(date_str)
                     if date.tzinfo is None:
-                        # Assume the time is in UTC if no time zone info is provided
+                        # Assume UTC if no time zone info is provided
                         date = date.replace(tzinfo=timezone.utc)
                     else:
                         # Convert to UTC for consistency
                         date = date.astimezone(timezone.utc)
+                    
+                    # Now 'date' is normalized to UTC
+                    date_utc = date
+                    
                 except Exception as e:
                     st.error(f"Error parsing date: {e}")
             # date = parsedate_to_datetime(date_str) if date_str else None
