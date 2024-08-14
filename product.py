@@ -1022,7 +1022,7 @@ def evaluator(client):
                     unique_subjects[subject].append(email_data)
         
                 total_request = len(unique_subjects)
-                st.write(total_request)
+                st.write(f"Total Request: {total_request}")
         
                 # Sort subjects by the most recent email date
                 sorted_subjects = sorted(unique_subjects.keys(), key=lambda s: max(email['date'] for email in unique_subjects[s] if email['date']), reverse=True)
@@ -1049,8 +1049,8 @@ def evaluator(client):
                 
                 st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
                 st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
-                st.write(st.session_state.received_emails)
-                st.write(st.session_state.sent_emails)
+                # st.write(st.session_state.received_emails)
+                # st.write(st.session_state.sent_emails)
             
             # if st.button("Fetch Emails"):
             #     fetch_received_emails()
@@ -1307,7 +1307,7 @@ def evaluator(client):
             st.session_state.content = suggested_alternatives_text[content_start:].strip()
     
             st.title("Suggested Alternatives")
-            st.session_state.subject = st.text_area("Subject", st.session_state.subject, height=100)
+            st.session_state.subject = st.text_area("Subject", f"Re:{st.session_state.fetched_subject}", height=100)
             st.session_state.content = st.text_area("Content", st.session_state.content, height=300)
             # st.text_area("Content", st.session_state.feedback, height=300)
             # st.text_area("feedback",st.session_state.feedback,height = 500)
