@@ -527,10 +527,10 @@ def fetch_received_emails():
                     date = parsedate_to_datetime(date_str)
                     if date.tzinfo is None:
                         # Assume the time is in UTC if no time zone info is provided
-                        date = date.replace(tzinfo=datetime.timezone.utc)
+                        date = date.replace(tzinfo=timezone.utc)
                     else:
                         # Convert to UTC for consistency
-                        date = date.astimezone(datetime.timezone.utc)
+                        date = date.astimezone(timezone.utc)
                 except Exception as e:
                     st.error(f"Error parsing date: {e}")
             # date = parsedate_to_datetime(date_str) if date_str else None
@@ -587,10 +587,10 @@ def fetch_sent_emails():
                     date = parsedate_to_datetime(date_str)
                     if date.tzinfo is None:
                         # Assume the time is in UTC if no time zone info is provided
-                        date = date.replace(tzinfo=datetime.timezone.utc)
+                        date = date.replace(tzinfo=timezone.utc)
                     else:
                         # Convert to UTC for consistency
-                        date = date.astimezone(datetime.timezone.utc)
+                        date = date.astimezone(timezone.utc)
                 except Exception as e:
                     st.error(f"Error parsing date: {e}")
             # date = parsedate_to_datetime(date_str) if date_str else None
