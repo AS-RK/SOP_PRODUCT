@@ -1037,14 +1037,16 @@ def evaluator(client):
                 
                 st.session_state.fetched_subject = st.text_area("Client Subject:", selected_email['subject'], height=50)
                 st.session_state.fetched_content = st.text_area("Client Content:", selected_email['body'], height=500)
+                st.write(st.session_state.received_emails)
+                st.write(st.session_state.sent_emails)
             
             # if st.button("Fetch Emails"):
             #     fetch_received_emails()
             #     fetch_sent_emails()
             # # if st.session_state.email_count_total:
             # #     st.write(f"Total Request is: {st.session_state.email_count_total}")
-            # # st.write(st.session_state.received_emails)
-            # # st.write(st.session_state.sent_emails)
+            # st.write(st.session_state.received_emails)
+            # st.write(st.session_state.sent_emails)
             # combine_emails()
             # if 'emails' in st.session_state and st.session_state.emails:
             # # Extract unique subjects
