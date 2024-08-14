@@ -362,10 +362,16 @@ def count_email():
 
 def remove_prefix(subject):
     prefixes = ["Re:", "Fwd:", "Fw:", "RE:", "FWD:", "FW:"]
-    for prefix in prefixes:
-        if subject.startswith(prefix):
-            return subject[len(prefix):].strip()
-    return subject.strip()
+    subject = subject.strip()  # Remove leading and trailing spaces
+    while True:
+        for prefix in prefixes:
+            if subject.startswith(prefix):
+                subject = subject[len(prefix):].strip()
+                break
+        else:
+            break  # Exit the loop if no prefix is found
+    return subject
+
 
 def get_email_body(original_email):
     if original_email.is_multipart():
@@ -563,7 +569,7 @@ def fetch_sent_emails():
             date_str = original_email['Date']
             date = parsedate_to_datetime(date_str) if date_str else None
             st.session_state.sent_emails.append({
-                'subject': remove_prefix(original_email['Subject']),
+                'subject': subject,
                 'from': original_email['From'],
                 'to': original_email.get('To', 'N/A'),
                 'message_id': original_email['Message-ID'],
